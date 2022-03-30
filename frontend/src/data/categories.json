@@ -1,0 +1,20 @@
+{
+    "category": [
+        {
+            "id": "1",
+            "tag": "green"
+        },
+        {
+            "id": "2",
+            "tag": "red"
+        },
+        {
+            "id": "3",
+            "tag": "blue"
+        },
+        {
+            "id": "4",
+            "tag": "white"
+        }
+    ]
+}

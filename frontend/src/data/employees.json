@@ -1,0 +1,202 @@
+{
+    "employee": [
+        {
+            "id": "2",
+            "first_name": "huy",
+            "last_name": "chung",
+            "username": "huy",
+            "password": "huy",
+            "email": "huy@mail.com",
+            "role": "admin",
+            "department": "Math",
+            "idea": [
+                {
+                    "id": "2",
+                    "title": "idea title 5",
+                    "user": "huy",
+                    "content": "content5",
+                    "thumbs_up": "5",
+                    "thumbs_down": "100",
+                    "document": "img,content url",
+                    "academic_year": "2022",
+                    "category": [
+                        {
+                            "id": "2",
+                            "tag": "red"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "id": "4",
+                            "content": "your idea sucks 1"
+                        },
+                        {
+                            "id": "5",
+                            "content": "your idea sucks 2"
+                        },
+                        {
+                            "id": "6",
+                            "content": "your idea sucks 3"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "1",
+            "first_name": "khang",
+            "last_name": "nghiem",
+            "username": "khanguser",
+            "password": "khangpassword",
+            "email": "khang@mail.com",
+            "role": "admin",
+            "department": "Biology",
+            "idea": [
+                {
+                    "id": "1",
+                    "title": "idea title 1",
+                    "user": "khang",
+                    "content": "content1",
+                    "thumbs_up": "5",
+                    "thumbs_down": "100",
+                    "document": "img,content url",
+                    "academic_year": "2022",
+                    "category": [
+                        {
+                            "id": "1",
+                            "tag": "green"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "id": "1",
+                            "content": "your idea sucks 1"
+                        },
+                        {
+                            "id": "2",
+                            "content": "your idea sucks 2"
+                        },
+                        {
+                            "id": "3",
+                            "content": "your idea sucks 3"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "first_name": "vy",
+            "last_name": "pham",
+            "username": "vyuser",
+            "password": "vypassword",
+            "email": "vy@mail.com",
+            "role": "admin",
+            "department": "Biology",
+            "idea": [
+                {
+                    "id": "1",
+                    "title": "idea title 1",
+                    "user": "vy",
+                    "content": "content1",
+                    "thumbs_up": "5",
+                    "thumbs_down": "100",
+                    "document": "img,content url",
+                    "academic_year": "2022",
+                    "category": [
+                        {
+                            "id": "1",
+                            "tag": "green"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "id": "1",
+                            "content": "your idea sucks 1"
+                        },
+                        {
+                            "id": "2",
+                            "content": "your idea sucks 2"
+                        },
+                        {
+                            "id": "3",
+                            "content": "your idea sucks 3"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "3",
+            "first_name": "vy",
+            "last_name": "pham",
+            "username": "vyuser",
+            "password": "vypassword",
+            "email": "vy@mail.com",
+            "role": "admin",
+            "department": "Biology",
+            "idea": [
+                {
+                    "id": "1",
+                    "title": "idea title 1",
+                    "user": "vy",
+                    "content": "content1",
+                    "thumbs_up": "5",
+                    "thumbs_down": "100",
+                    "document": "img,content url",
+                    "academic_year": "2022",
+                    "category": [
+                        {
+                            "id": "1",
+                            "tag": "green"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "id": "1",
+                            "content": "your idea sucks 1"
+                        },
+                        {
+                            "id": "2",
+                            "content": "your idea sucks 2"
+                        },
+                        {
+                            "id": "3",
+                            "content": "your idea sucks 3"
+                        }
+                    ]
+                },
+                {
+                    "id": "9",
+                    "title": "idea title 9",
+                    "user": "vy",
+                    "content": "content9",
+                    "thumbs_up": "66",
+                    "thumbs_down": "100",
+                    "document": "img,content url",
+                    "academic_year": "2022",
+                    "category": [
+                        {
+                            "id": "1",
+                            "tag": "green"
+                        }
+                    ],
+                    "comment": [
+                        {
+                            "id": "1",
+                            "content": "your idea sucks 1"
+                        },
+                        {
+                            "id": "2",
+                            "content": "your idea sucks 2"
+                        },
+                        {
+                            "id": "3",
+                            "content": "your idea sucks 3"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

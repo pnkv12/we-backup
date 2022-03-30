@@ -1,0 +1,8 @@
+{
+    "base_url": "http://localhost:3000/",
+    "env": {
+        "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
+        "username": "trong@gmail.com",
+        "password": "trongvip"
+    }
+}
