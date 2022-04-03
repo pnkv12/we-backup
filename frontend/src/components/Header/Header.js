@@ -22,7 +22,7 @@ const pages = ["Ideas", "Employees", "Dashboard"];
 
 const settings = ["Category", "Your Ideas"];
 
-const Header = (props) => {
+function Header(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const userTitle = `${window.sessionStorage.username}`;
@@ -46,22 +46,27 @@ const Header = (props) => {
 
   const handleLogout = async () => {
     try {
-      // const token = window.sessionStorage.getItem("authToken");
-      const res = await axios({
-        method: "post", //you can set what request you want to be
-        url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/logout",
-        // headers: {
-        //   // Authorization: 'Bearer ' + `${loggedInUser.token}`
-        //   // Authorization: `Bearer ${token}`,
-        //   "Access-Control-Allow-Origin": "*",
-        // },
-        withCredentials: true,
-      });
-
+      // const res = await axios({
+      //   method: "post", //you can set what request you want to be
+      //   url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/logout",
+      //   // headers: {
+      //   //   // Authorization: 'Bearer ' + `${loggedInUser.token}`
+      //   //   // Authorization: `Bearer ${token}`,
+      //   //   "Access-Control-Allow-Origin": "*",
+      //   // },
+      //   withCredentials: true,
+      // });
+      const res = await axios.post(
+        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/logout`,
+        {
+          withCredentials: true,
+          // headers: { "Access-Control-Allow-Origin": "*" },
+        }
+      );
       if (res.session) {
-        // console.log(response.status);
-        res.destroySession(false);
-        window.sessionStorage.clear();
+        // res.destroySession(false);
+        // res.setIsAuthenticated(false);
+        sessionStorage.clear();
         window.location.reload(false);
         navigate("/login", { replace: true });
       }
@@ -241,5 +246,5 @@ const Header = (props) => {
       </Container>
     </AppBar>
   );
-};
+}
 export default Header;

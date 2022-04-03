@@ -68,14 +68,6 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   //     // Trong Edited
   // }, [Comments, ideaId])
 
-  const getReplies = (commentId) => {
-    return comments
-      .filter((Comment) => Comment.parentId === commentId)
-      .sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
-  };
 
   // const createComment = (content, parentId) => {
   //     console.log("Add Comment", content, parentId);
@@ -120,7 +112,6 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
           <Comment
             key={rootComment._id}
             comment={rootComment}
-            replies={getReplies(rootComment.id)}
             updateComment={updateComment}
             activeComment={activeComment}
             setActiveComment={setActiveComment}

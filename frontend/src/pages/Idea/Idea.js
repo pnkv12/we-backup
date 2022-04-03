@@ -16,7 +16,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
-// import ThumbsCount from "../../components/Idea/Thumbs";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -26,6 +25,8 @@ import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutline
 import Grid from "@mui/material/Grid";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+
+const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -39,7 +40,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&skip=0`,
+    url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&skip=0",
     method: "get",
   });
 
@@ -69,11 +70,11 @@ const Idea = () => {
 
   useEffect(() => {
     if (response != null) {
-      setIdeas(response);
+      setIdeas(response.results);
 
-      console.log(response);
+      console.log(response.results);
 
-      response.map(async (item) => {
+      response.results.map(async (item) => {
         const user = await axios.get(
           `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/users/${item.owner}`
         );
@@ -94,9 +95,9 @@ const Idea = () => {
         const comments = await axios.get(
           `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments`
         );
-        setTotalPages(Math.ceil(re.data.length / limit));
-        setIdeas(response.data);
-        setPagination(response.data);
+        setTotalPages(Math.ceil(re.results.length / limit));
+        setIdeas(response.results);
+        setPagination(response.results);
       } catch (error) {
         console.log("failed to fetch post list", error.message);
       }
@@ -127,7 +128,9 @@ const Idea = () => {
 
   if (error) throw error;
   if (loading) return <LoadingIndicator />;
-  if (ideas.length === 0) return <PageNotFound />;
+  if (ideas.length === 0) {
+    return <h1>No idea created yet</h1>;
+  }
 
   return (
     <Box
@@ -214,7 +217,6 @@ const Idea = () => {
                         >
                           {idea.title}
                         </Link>
-                        - by {ownerName}
                       </Typography>
                     </>
                   }

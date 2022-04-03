@@ -168,7 +168,10 @@ export default function EmployeeCreate(props) {
               name="department_id"
               onChange={(e) => setUser({ ...user, departId: e.target.value })}
             >
-              <MenuItem value={"6248fd5cb7d420daa06ee42d"}>Mặc định</MenuItem>
+              <MenuItem value={"6249c9dcabe8dbf2e9785f4c"}>IT Lab</MenuItem>
+              <MenuItem value={"6249cd25abe8dbf2e9785f8b"}>
+                Business Room
+              </MenuItem>
             </Select>
           </FormControl>
           <br />

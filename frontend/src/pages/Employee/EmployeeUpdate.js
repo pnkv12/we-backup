@@ -166,8 +166,8 @@ export default function EmployeeUpdate(props) {
               }}
               onChange={(e) => setUser({ ...user, departId: e.target.value })}
             >
-              <option value={"6248fd50b7d420daa06ee42b"}>Mặc định</option>
-              <option value={"62482a63ad01d9a46b24608b"}>Chọn 1</option>
+              <option value={"6249c9dcabe8dbf2e9785f4c"}>IT Lab</option>
+              <option value={"6249cd25abe8dbf2e9785f8b"}>Business Room</option>
             </NativeSelect>
           </FormControl>
           <br />

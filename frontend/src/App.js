@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { grey, orange, blue, red, green } from "@mui/material/colors";
-
+import { AppContext } from "./lib/contextLib";
 import {
   BrowserRouter as Router,
   Routes,
@@ -66,135 +66,142 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    setIsAuthenticated(window.localStorage.getItem("isAuthenticated"));
+    setIsAuthenticated(window.sessionStorage.getItem("isAuthenticated"));
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <Box className="App">
         <Router>
-          {isAuthenticated ? <Header clearToken={setIsAuthenticated} /> : <></>}
-
+          {isAuthenticated ? (
+            <Header belongToAuth={setIsAuthenticated} />
+          ) : (
+            <></>
+          )}
           <main>
-            <Routes>
-              {/* // TODO 1: when not authenticated, no NavBar */}
-              {/* // TODO 2: when authenticated, go to main page */}
-              {/* <Route path="/" element={<Login />}></Route>{" "} */}
-              <Route
-                path="/"
-                element={
-                  isAuthenticated ? (
-                    <Home />
-                  ) : (
-                    <Login authenticate={setIsAuthenticated} />
-                  )
-                }
-              />
+            <AppContext.Provider
+              value={{ isAuthenticated, setIsAuthenticated }}
+            >
+              <Routes>
+                {/* // TODO 1: when not authenticated, no NavBar */}
+                {/* // TODO 2: when authenticated, go to main page */}
+                {/* <Route path="/" element={<Login />}></Route>{" "} */}
+                <Route
+                  path="/"
+                  element={
+                    isAuthenticated ? (
+                      <Home />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
-              <Route
-                path="/ideas"
-                element={
-                  isAuthenticated ? (
-                    <Idea />
-                  ) : (
-                    <Login authenticate={setIsAuthenticated} />
-                  )
-                }
-              />
+                <Route
+                  path="/ideas"
+                  element={
+                    isAuthenticated ? (
+                      <Idea />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
-              <Route
-                path="/ideas/:id"
-                element={
-                  isAuthenticated ? (
-                    <IdeaDetails />
-                  ) : (
-                    <Login authenticate={setIsAuthenticated} />
-                  )
-                }
-              />
+                <Route
+                  path="/ideas/:id"
+                  element={
+                    isAuthenticated ? (
+                      <IdeaDetails />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
-              <Route path="/ideas/:category" element={<Idea />} />
-              <Route path="/ideas/:filter" element={<Idea />} />
+                <Route path="/ideas/:category" element={<Idea />} />
+                <Route path="/ideas/:filter" element={<Idea />} />
 
-              <Route
-                path="/employees"
-                element={
-                  isAuthenticated ? (
-                    <Employees authenticate={setIsAuthenticated} />
-                  ) : (
-                    <Login />
-                  )
-                }
-              />
-              <Route
-                path="/employees/create"
-                element={
-                  isAuthenticated ? (
-                    <EmployeeCreate authenticate={setIsAuthenticated} />
-                  ) : (
-                    <Login />
-                  )
-                }
-              />
-              <Route
-                path="/employees/edit/:userId"
-                element={
-                  isAuthenticated ? (
-                    <EmployeeUpdate authenticate={setIsAuthenticated} />
-                  ) : (
-                    <Login />
-                  )
-                }
-              />
-              <Route
-                path="/dashboard"
-                element={
-                  isAuthenticated ? (
-                    <Dashboard authenticate={setIsAuthenticated} />
-                  ) : (
-                    <Login />
-                  )
-                }
-              />
-              {/* <Route path="/idea/idealist" element={<IdeaList />}></Route> */}
+                <Route
+                  path="/employees"
+                  element={
+                    isAuthenticated ? (
+                      <Employees authenticate={setIsAuthenticated} />
+                    ) : (
+                      <Login />
+                    )
+                  }
+                />
+                <Route
+                  path="/employees/create"
+                  element={
+                    isAuthenticated ? (
+                      <EmployeeCreate authenticate={setIsAuthenticated} />
+                    ) : (
+                      <Login />
+                    )
+                  }
+                />
+                <Route
+                  path="/employees/edit/:userId"
+                  element={
+                    isAuthenticated ? (
+                      <EmployeeUpdate authenticate={setIsAuthenticated} />
+                    ) : (
+                      <Login />
+                    )
+                  }
+                />
+                <Route
+                  path="/dashboard"
+                  element={
+                    isAuthenticated ? (
+                      <Dashboard authenticate={setIsAuthenticated} />
+                    ) : (
+                      <Login />
+                    )
+                  }
+                />
+                {/* <Route path="/idea/idealist" element={<IdeaList />}></Route> */}
 
-              <Route
-                path="/ideas/ideacreate"
-                element={
-                  isAuthenticated ? (
-                    <IdeaCreate />
-                  ) : (
-                    <Login authenticate={setIsAuthenticated} />
-                  )
-                }
-              />
+                <Route
+                  path="/ideas/ideacreate"
+                  element={
+                    isAuthenticated ? (
+                      <IdeaCreate />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
-              <Route
-                path="/categories"
-                element={
-                  isAuthenticated ? (
-                    <CategoryCreate />
-                  ) : (
-                    <Login authenticate={setIsAuthenticated} />
-                  )
-                }
-              />
-              {/* <Route path="/your-ideas" element={}></Route> */}
+                <Route
+                  path="/categories"
+                  element={
+                    isAuthenticated ? (
+                      <CategoryCreate />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+                {/* <Route path="/your-ideas" element={}></Route> */}
 
-              <Route
-                path="/login"
-                element={
-                  isAuthenticated ? (
-                    <Navigate to="/" />
-                  ) : (
-                    <Login authenticate={setIsAuthenticated} />
-                  )
-                }
-              />
+                <Route
+                  path="/login"
+                  element={
+                    isAuthenticated ? (
+                      <Navigate to="/" />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
-              <Route path="/search" element={<Search />} />
-              <Route path="/comments" element={<Comments />} />
-            </Routes>
+                <Route path="/search" element={<Search />} />
+                <Route path="/comments" element={<Comments />} />
+              </Routes>
+            </AppContext.Provider>
           </main>
         </Router>
       </Box>

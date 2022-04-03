@@ -29,15 +29,19 @@ const TitleFrame = styled("div")({
 const CategoryCreate = () => {
   var date = new Date();
 
-  const [categoryName, setCategoryName] = useState("Unknown category");
+  const [name, setCategoryName] = useState("Unknown category");
   const [created_at, setCreateDate] = useState(date);
   const [updated_at, setUpdateDate] = useState();
   const [isPending, setIsPending] = useState(false);
 
+  const cateListUrl = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories";
+  const getCateURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/category";
+  const [CategoryList, setCategory] = useState([]);
+
   //H thêm
   useEffect(() => {
     axios
-      .get(url)
+      .get(cateListUrl)
       .then((res) => {
         // console.log(res.data);
         setCategory(res.data);
@@ -45,11 +49,9 @@ const CategoryCreate = () => {
       .catch((err) => console.error(err));
   });
 
-  const url = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories";
-  const [CategoryList, setCategory] = useState([]);
   const display = CategoryList.map((item) => (
     <tr key={item._id}>
-      <td>{item.categoryName}</td>
+      <td>{item.name}</td>
       <td>{item.used}</td>
       <td>
         <Button variant="text" color="error" onClick={() => remove(item._id)}>
@@ -62,7 +64,7 @@ const CategoryCreate = () => {
   function remove(id) {
     // console.log(id);
     axios
-      .delete(url + "/" + id)
+      .delete(getCateURL + "/" + id)
       .then((res) => {
         console.log(res.data);
         const myalldata = CategoryList.filter((item) => item._id !== id);
@@ -75,7 +77,7 @@ const CategoryCreate = () => {
     e.preventDefault();
 
     const category = {
-      categoryName,
+      name,
       created_at,
       updated_at,
     };
@@ -83,7 +85,7 @@ const CategoryCreate = () => {
     setIsPending(true);
 
     try {
-      const response = await axios.post(url, JSON.stringify(category), {
+      const response = await axios.post(getCateURL, JSON.stringify(category), {
         headers: {
           "Content-Type": "application/json",
         },
@@ -124,8 +126,7 @@ const CategoryCreate = () => {
               type="text"
               label="New Category"
               variant="outlined"
-              name="tag"
-              placeholder={categoryName}
+              name="name"
               onChange={(e) => setCategoryName(e.target.value)}
               size="small"
               sx={{

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 const Comment = ({
   comment,
-  replies,
   setActiveComment,
   activeComment,
   updateComment,
@@ -15,15 +14,13 @@ const Comment = ({
   parentId,
   currentUserId,
 }) => {
-  const canDelete = currentUserId === comment.userId && replies.length === 0;
-  const canReply = Boolean(currentUserId);
+  const canDelete = currentUserId === comment.userId;
   const canEdit = currentUserId === comment.userId;
 
   const isEditing =
     activeComment &&
     activeComment.type === "editing" &&
     activeComment.id === comment._id;
-  const replyId = parentId ? parentId : comment._id;
   const navigate = useNavigate();
   const [content, setContent] = useState();
   const deleteComment = async () => {

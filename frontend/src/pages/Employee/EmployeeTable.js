@@ -21,8 +21,8 @@ const rowsPerPageOptions = [5];
 
 const EmployeeTable = (props) => {
   const navigate = useNavigate();
-  const token = window.localStorage.getItem("authToken");
   const [users, setUsers] = useState({});
+  // const [role, setRole] = useState({});
 
   const { response, loading, error } = useAxios({
     url: "users",
@@ -32,14 +32,15 @@ const EmployeeTable = (props) => {
   useEffect(() => {
     if (response != null) {
       const userList = response.map((user, id) => {
+        // const role = response.roles.find((r) => r._id === user.role_id);
         return {
           id: id + 1,
           userId: user._id,
           username: user.username,
           email: user.email,
           fullname: user.fullname,
-          role_id: "Có mà chưa gắn dô FE",
-          department_id: "Có mà chưa gắn dô FE",
+          role_id: user.role_id,
+          department_id: user.department_id,
         };
       });
       setUsers(userList);
@@ -99,7 +100,6 @@ const EmployeeTable = (props) => {
       width: 200,
       editable: true,
     },
-    // { field: "role", headerName: "Role", width: 180, editable: true },
   ];
 
   const handleUpdate = async (params) => {
@@ -118,22 +118,18 @@ const EmployeeTable = (props) => {
 
   const handleDelete = async (userId) => {
     const confirm = window.confirm(
-      "Are you sure want to delete this user ? ",
+      "Are you sure want to delete this user?",
       userId
     );
     if (confirm) {
-      const response = await axios.delete(`${baseURL}/user/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.delete(`${baseURL}/user/${userId}`);
       if (response.status === 200 || 204 || 201) {
         // window.location.reload(false);
 
         const newUsers = users.filter((user) => user.userId !== userId);
         setUsers(newUsers);
         console.log(response.data);
-      } else if (response.status === 404) {
+      } else if (response.status === 404 || 500 || 401 || 403) {
         console.log(response.data);
       }
     }
@@ -168,12 +164,7 @@ const EmployeeTable = (props) => {
           pageSize={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}
           editMode="row"
-          // editRowsModel={editRowsModel}
-          // onEditRowsModelChange={handleEditRowsModelChange}
         />
-        {/* <Alert severity="info" style={{ marginBottom: 8 }}>
-          <code>editRowsModel: {JSON.stringify(editRowsModel)}</code>
-        </Alert> */}
       </Box>
     </Box>
   );
