@@ -20,10 +20,39 @@ const IdeaDetails = () => {
   const { id } = useParams();
 
   // const { data: idea, error, isPending } = useFetch("ideas/" + id);
-  const { response, loading, error } = useAxios({
-    url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas" + id,
-    method: "get",
-  });
+  const [idea, setIdea] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeUpdate, setActiveUpdate] = useState(false);
+  const [data, setNewIdea] = useState({
+      content:"",
+  })
+  const isEditing = activeUpdate && activeUpdate.type === 'editing' && activeUpdate.id === idea.id;
+  useEffect(() => {
+    setTimeout(() =>{
+        fetch('https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/' + id)
+        .then(res => {
+            if(!res.ok){
+                throw Error("could not fetch");
+            }
+            return res.json();
+        })
+        .then(idea => {
+            setIdea(idea);
+            setIsPending(false);
+            setError(null);
+            console.log(idea);
+        })
+        .catch(err => {
+            if (err.name === 'AbortError') {
+                console.log('fetch aborted')
+              } else {
+                setIsPending(false);
+                setError(err.message);
+              }
+        })
+    }, 1000);
+}, []);
 
   const navigate = useNavigate();
   const [content, setContent] = useState("Please input your idea");
@@ -38,7 +67,7 @@ const IdeaDetails = () => {
   //       .then((r) => {});
   //   }, []);
 
-  console.log(idea);
+  
   // const handleUpdate = async (idea) => {
   //   const response = await axios.put(`/ideas/${idea._id}`, idea);
   //   const { name, content } = response.results;
@@ -50,11 +79,35 @@ const IdeaDetails = () => {
   //   // );
   // };
 
+  useEffect(()=>{
+    axios.get('https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/'+ id)
+    .then(res=>{
+        console.log(res.data.results.content)
+        setNewIdea(res.data.results)
+    }).catch(err=>console.error(err))
+},[])
+
+function submit(e){
+    e.preventDefault()
+    axios.patch(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/${id}`,data)
+    .then(res=>{
+        console.log(res.data)
+        navigate('/ideas/' + id)
+        window.location.reload(false);
+    }).catch(err=>console.error(err))
+}
+
+function handle(e){
+    const newdata={...data}
+    newdata[e.target.id]=e.target.value
+    setNewIdea(newdata)
+}
+
   const handleDelete = () => {
-    fetch("https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas/" + id, {
+    fetch("https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/" + id, {
       method: "DELETE",
     }).then(() => {
-      navigate("/idea");
+      navigate("/ideas");
     });
   };
 
@@ -88,23 +141,37 @@ const IdeaDetails = () => {
               <IconButton onClick={handleDelete}>
                 <ClearIcon />
               </IconButton>
+              <Button
+                title="edit"
+                variant="text"
+                color="secondary"
+                fontSize="small"
+                onClick={() => setActiveUpdate({ id: idea.id, type: "editing" })}
+              >
+                <EditIcon />
+              </Button>
             </Typography>
+            
           </Box>
-          <Button
-            title="edit"
-            variant="text"
-            color="secondary"
-            fontSize="small"
-          >
-            <EditIcon />
-          </Button>
+          
 
           <Typography variant="subtitle1">ID: {id}</Typography>
           <Box>
-            <Typography variant="h6" color="primary">
-              Content:
-            </Typography>
-            <Typography variant="body1">{idea.content}</Typography>
+
+            {!isEditing && 
+            <p>
+              <Typography variant="h6" color="primary">
+                Content:
+              </Typography>
+              <Typography variant="body1">{idea.content}</Typography>
+            </p>}
+
+            {isEditing && (
+                <form onSubmit={(e) => submit(e)}>
+                    <textarea placeholder={idea.content} onChange={(e) => setNewIdea({ ...data, content: e.target.value })}/>
+                    <button>Post</button>
+                </form>
+            )}
           </Box>
         </Box>
       )}

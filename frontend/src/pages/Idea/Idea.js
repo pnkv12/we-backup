@@ -40,7 +40,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&skip=0",
+    url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&page=1",
     method: "get",
   });
 
@@ -55,14 +55,14 @@ const Idea = () => {
   //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
     limit: 5,
-    skip: 0,
+    page: 1,
   });
 
   const [totalPages, setTotalPages] = useState();
 
   const [filters, setFilters] = useState({
     limit: 5,
-    skip: 0,
+    page: 0,
     search: "",
   });
 
@@ -71,8 +71,6 @@ const Idea = () => {
   useEffect(() => {
     if (response != null) {
       setIdeas(response.results);
-
-      console.log(response.results);
 
       response.results.map(async (item) => {
         const user = await axios.get(
@@ -95,9 +93,10 @@ const Idea = () => {
         const comments = await axios.get(
           `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments`
         );
-        setTotalPages(Math.ceil(re.results.length / limit));
-        setIdeas(response.results);
-        setPagination(response.results);
+
+        setTotalPages(Math.ceil(response.data.results.length / limit));
+        setIdeas(response.data.results);
+        setPagination(response.data.results);
       } catch (error) {
         console.log("failed to fetch post list", error.message);
       }
@@ -109,7 +108,7 @@ const Idea = () => {
     setPage(num);
     setFilters({
       ...filters,
-      skip: (num - 1) * limit,
+      page: 1,
     });
   };
 
@@ -117,7 +116,7 @@ const Idea = () => {
     console.log(newFilters);
     setFilters({
       ...filters,
-      skip: 0,
+      page: 1,
       search: newFilters.searchTerm,
     });
   };
@@ -190,7 +189,6 @@ const Idea = () => {
           (async function () {
             const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${idea._id}`;
             const response = await axios.get(requestUrl);
-            console.log(response.data.length);
             // setCommentsCounter(response.data.length);
             // const comments = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${ideaId}`);
 

@@ -16,9 +16,7 @@ import { Typography } from "@material-ui/core";
 import Switch from "@mui/material/Switch";
 import axios from "axios";
 import useAxios from "../../services/useAxios";
-// import List from "@mui/material/List";
-// import ListItem from "@mui/material/ListItem";
-// import ListItemText from "@mui/material/ListItemText";
+
 // Mới tạo IdeaButtons.js trong Idea(components), chứa 3 function một cái là dạng link Back, cái thứ 2 là nút Cancel, 3 là nút Create Idea
 import { ReturnLink, CancelBtn } from "./IdeaButtons";
 
@@ -65,23 +63,23 @@ const LabelStyle = styled("label")({
 
 const IdeaCreate = () => {
   var date = new Date();
+  const [idea, setIdea] = useState(null);
   const [title, setTitle] = useState("Title");
-  const [owner, setUser] = useState("");
+  const [description,setDescription] = useState(null)
   const [content, setContent] = useState("Please input your idea");
-  const [thumbsUp, setThumbsUp] = useState();
-  const [thumbsDown, setThumbsDown] = useState();
-  const [academicYear, setAcademicyear] = useState("Academic year");
+  const [anonymousMode, setAnonymous] = useState(false);
+  const [user_id, setUserId] = useState(null);
+  const [submission_id, setSubmissionId] = useState(null);
   const [documents, setSelectedFile] = useState([]);
   const [document, setDocument] = useState(null);
   const [isFilePicked, setIsFilePicked] = useState(false);
-  const [isAnonymous, setIsAnonymous] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
-  const [updatedAt, setUpdateDate] = useState();
+  const [updatedAt, setUpdateDate] = useState(date);
   const [closedDate, setCloseDate] = useState();
   const [category, setSelectedTag] = useState([]);
+  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [isTagPicked, setIsTagPicked] = useState(false);
-  const [comments, setComment] = useState([]);
+  const [__v, setV] = useState();
   const [isPending, setIsPending] = useState(false);
   const [isBusy, setBusy] = useState(true);
   const [options, setOptions] = useState([]);
@@ -123,43 +121,40 @@ const IdeaCreate = () => {
     e.preventDefault();
     const idea = {
       title,
+      description,
       content,
-      thumbsUp,
-      thumbsDown,
-      academicYear,
-      documents,
-      closedDate,
-      category,
-      comments,
-      owner,
+      anonymousMode,
+      user_id,
+      submission_id,
+      category_id,
+      createdAt,
+      updatedAt,
+      __v,
     };
 
-    setIsPending(true);
+    // setIsPending(true);
 
     await axios
       .post(
-        "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas",
+        "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea",
         JSON.stringify(idea),
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization:
-              "Bearer " +
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjE4NGFhZDgxNTBlNjJlNDI1MWExNGQiLCJpYXQiOjE2NDY1Nzc4OTEsImV4cCI6MTY0NzE4MjY5MX0.-U07GGCliqt4y75uUFf50_kc0YBWsiCLO-7I8Co9pb0",
           },
         }
       )
-      .then(async (response) => {
-        console.log(`${JSON.stringify(response.data._id)}`);
-        if (document != null) {
-          console.log(document);
-          const url = await sendDocument(response.data._id, document.name);
-          console.log(`Document URL: ${url}`);
-        }
+      // .then(async (response) => {
+      //   console.log(`${JSON.stringify(response.data._id)}`);
+      //   if (document != null) {
+      //     console.log(document);
+      //     const url = await sendDocument(response.data._id, document.name);
+      //     console.log(`Document URL: ${url}`);
+      //   }
 
-        console.log("Idea added");
-        setIsPending(false);
-      });
+      //   console.log("Idea added");
+      //   setIsPending(false);
+      // });
   };
 
   useEffect(() => {
@@ -171,43 +166,17 @@ const IdeaCreate = () => {
 
       const result = categories.data.map((category) => ({
         value: category._id,
-        label: category.categoryName,
+        label: category.name,
       }));
       console.log(result);
 
       setOptions(result);
 
       setBusy(false);
-      //
-      // if (response != null) {
-      //     setBusy(true);
-      //
-      //     // setCategories(response.data);
-      //
-      //     response.map(async (item) => {
-      //         const categories = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories`);
-      //         //console.log(categories.data);
-      //
-      //         //console.log(categories.data[0].categoryName);
-      //
-      //         setCategories(categories.data);
-      //
-      //         setBusy(false);
-      //     });
-      // }
     })();
   }, []);
 
-  const handleAnonymousChange = (e) => {
-    const { checked } = e.target.value;
-    // console.log(checked);
-    if (checked === true) {
-      setIsAnonymous(true);
-    } else {
-      setIsAnonymous(false);
-    }
-    console.log(`Anonymous: ${isAnonymous}`);
-  };
+
 
   const sendDocument = async (ideaId, fileName) => {
     const data = new FormData();
@@ -215,7 +184,7 @@ const IdeaCreate = () => {
 
     try {
       const response = await axios.post(
-        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/uploadS3?ideaId=${ideaId}&fileName=${fileName}`,
+        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/submission`,
         data
       );
 
@@ -271,7 +240,6 @@ const IdeaCreate = () => {
         <form onSubmit={handleSubmit}>
           {/* From here is title input */}
           <Box>
-            {/* <FormControlLabel control={<Switch />} label="Post as Anonymous" /> */}
             <TextField
               id="outlined-basic"
               type="text"
@@ -389,31 +357,13 @@ const IdeaCreate = () => {
                 );
               }}
             />
-
-            {/* <center>
-            {" "}
-            The selected tag: <h3>{category}</h3>
-          </center> */}
           </div>
           <br />
           {categories.map((category) => {
             console.log(category);
-            return <div>{category.categoryName}</div>;
+            return <div>{category.name}</div>;
           })}
 
-          <Typography align="center">
-            <div>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Anonymous"
-                name="anonymous"
-                onChange={handleAnonymousChange}
-                sx={{
-                  marginBottom: "1rem",
-                }}
-              />
-            </div>
-          </Typography>
 
           {/* Terms and Conditions with overflow content not yet finished */}
           <div className="term-conditions">
