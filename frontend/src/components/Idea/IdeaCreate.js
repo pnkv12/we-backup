@@ -37,7 +37,6 @@ const Input = styled("input")({
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
-  // textAlign: "center",
   fontSize: 30,
   fontWeight: "bold",
   marginBottom: "1rem",
@@ -54,7 +53,7 @@ const LabelStyle = styled("label")({
 });
 
 // const getAllCategories = async () => {
-//     const response = await axios.get(`http://localhost:8000/categories`, {
+//     const response = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories`, {
 //             headers: {
 //                 'Content-Type': 'application/json',
 //                 'Accept': 'application/json'
@@ -137,16 +136,19 @@ const IdeaCreate = () => {
 
     setIsPending(true);
 
-
     await axios
-      .post("http://localhost:8000/ideas", JSON.stringify(idea), {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization:
-            "Bearer " +
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjE4NGFhZDgxNTBlNjJlNDI1MWExNGQiLCJpYXQiOjE2NDY1Nzc4OTEsImV4cCI6MTY0NzE4MjY5MX0.-U07GGCliqt4y75uUFf50_kc0YBWsiCLO-7I8Co9pb0",
-        },
-      })
+      .post(
+        "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas",
+        JSON.stringify(idea),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Bearer " +
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjE4NGFhZDgxNTBlNjJlNDI1MWExNGQiLCJpYXQiOjE2NDY1Nzc4OTEsImV4cCI6MTY0NzE4MjY5MX0.-U07GGCliqt4y75uUFf50_kc0YBWsiCLO-7I8Co9pb0",
+          },
+        }
+      )
       .then(async (response) => {
         console.log(`${JSON.stringify(response.data._id)}`);
         if (document != null) {
@@ -160,10 +162,11 @@ const IdeaCreate = () => {
       });
   };
 
-
   useEffect(() => {
     (async function () {
-      const categories = await axios.get(`http://localhost:8000/categories`);
+      const categories = await axios.get(
+        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories`
+      );
       //setCategories(categories.data);
 
       const result = categories.data.map((category) => ({
@@ -182,7 +185,7 @@ const IdeaCreate = () => {
       //     // setCategories(response.data);
       //
       //     response.map(async (item) => {
-      //         const categories = await axios.get(`http://localhost:8000/categories`);
+      //         const categories = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories`);
       //         //console.log(categories.data);
       //
       //         //console.log(categories.data[0].categoryName);
@@ -192,7 +195,7 @@ const IdeaCreate = () => {
       //         setBusy(false);
       //     });
       // }
-    })()
+    })();
   }, []);
 
   const handleAnonymousChange = (e) => {
@@ -212,7 +215,7 @@ const IdeaCreate = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/uploadS3?ideaId=${ideaId}&fileName=${fileName}`,
+        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/uploadS3?ideaId=${ideaId}&fileName=${fileName}`,
         data
       );
 
@@ -337,7 +340,7 @@ const IdeaCreate = () => {
                   id="contained-button-file"
                   color={"primary"}
                   placeholder={documents}
-                  onChange={event => {
+                  onChange={(event) => {
                     const file = event.target.files[0];
                     setDocument(file);
                   }}
@@ -360,32 +363,9 @@ const IdeaCreate = () => {
           <p>Select a file to show details</p>
         )} */}
           {/* <div>
-          <label>Create Date </label>
-          <input
-            readOnly
-            type="text"
-            name="createdate"
-            placeholder={new Date()}
-            defaultValue={new Date()}
-            onSubmit={(e) => setCreateDate(e.target.value)}
-          />
         </div>
         <br />
-                <div>
-                    <label>Update </label>
-                    <input disabled type="text" name="update" placeholder={updated_at} onChange={e => setUpdateDate(e.target.value)} />
-                </div>
-                <br/>
-        <div>
-          <label>Close Date </label>
-          <input
-            type="text"
-            name="closedate"
-            placeholder={closed_date}
-            onChange={(e) => setCloseDate(e.target.value)}
-          />
-        </div>
-        <br /> */}
+
 
           {/* Tag/CategoryCreate section with customed Label */}
           <div>
@@ -403,13 +383,13 @@ const IdeaCreate = () => {
                 setSelectedTag(
                   Array.isArray(e)
                     ? e.map((x) => {
-                      return { categories: x.label };
-                    })
+                        return { categories: x.label };
+                      })
                     : []
                 );
               }}
             />
-            {/* //custom add more tags */}
+
             {/* <center>
             {" "}
             The selected tag: <h3>{category}</h3>

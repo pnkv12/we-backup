@@ -21,7 +21,6 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
-  // textAlign: "center",
   fontSize: 30,
   fontWeight: "bold",
   marginBottom: "1rem",
@@ -46,14 +45,12 @@ const CategoryCreate = () => {
       .catch((err) => console.error(err));
   });
 
-  const url = "http://localhost:8000/categories";
+  const url = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories";
   const [CategoryList, setCategory] = useState([]);
   const display = CategoryList.map((item) => (
     <tr key={item._id}>
       <td>{item.categoryName}</td>
       <td>{item.used}</td>
-      {/* <td>{item.created_at}</td>
-      <td>{item.updated_at}</td> */}
       <td>
         <Button variant="text" color="error" onClick={() => remove(item._id)}>
           <HighlightOffIcon />

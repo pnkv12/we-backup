@@ -11,14 +11,17 @@ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ### npm i
+
 Automatically installs all dependencies
 
 ### Mock API
+
 #### `json-server --watch ~/enterprise/frontend/src/data/ideas.json --port=8080`
 
 Runs local json server with port 8080
 
 ### BACKEND
+
 in the Backend directory, run:
 
 ### npm run dev or npm start ( with nodemon debug)
@@ -26,5 +29,6 @@ in the Backend directory, run:
 Server user **PORT 8000**
 
 ### Admin Login
-username: trong@gmail.com
-password: trongvip
+
+username: huy
+password: 123456789

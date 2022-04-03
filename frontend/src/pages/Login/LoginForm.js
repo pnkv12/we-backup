@@ -45,8 +45,8 @@ function LoginForm({ Login, error }) {
         <TextField
           type="text"
           name="username"
-          placeholder="Email"
-          id="email"
+          placeholder="Username"
+          id="username"
           onChange={(e) => setDetails({ ...details, username: e.target.value })}
           value={details.username}
           autoFocus

@@ -4,7 +4,12 @@ import Button from "@mui/material/Button";
 import { Box, Divider } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { boxCreate } from "../../styles/boxStyles";
-import { Link as RouterLink, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link as RouterLink,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 // import useAxios from "../../services/useAxios";
 // import LoadingIndicator from "../../components/Loading";
 // import PageNotFound from "../../components/errorHandling/PageNotFound";
@@ -13,9 +18,14 @@ import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { lightBlue } from "@mui/material/colors";
 import styled from "@emotion/styled";
 import SaveIcon from "@mui/icons-material/Save";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import NativeSelect from "@mui/material/NativeSelect";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-const token = window.localStorage.getItem('authToken');
-axios.defaults.baseURL = "http://localhost:8000/";
+// const token = window.localStorage.getItem("authToken");
+axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -28,40 +38,46 @@ export default function EmployeeUpdate(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   let { userId } = useParams();
 
-  let name = searchParams.get('name')
-  let email = searchParams.get('email')
-  let age = searchParams.get('age')
+  let fullname = searchParams.get("fullname");
+  let email = searchParams.get("email");
+  // let username = searchParams.get("username");
+  let password = searchParams.get("password");
+  let role = searchParams.get("role_id");
+  let dept = searchParams.get("department_id");
 
   let navigate = useNavigate();
   const [user, setUser] = useState({
-    name,
+    fullname,
     email,
-    age,
+    password,
+    role,
+    dept,
   });
 
   useEffect(() => {
     setUser({
-      name,
+      fullname,
       email,
-      age,
-    })
-    console.log(user)
-  }, [name, email, age])
-
+      password,
+      role,
+      dept,
+    });
+    console.log(user);
+  }, [fullname, email, password, role, dept]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user != null) {
       axios({
         method: "patch",
-        url: `http://localhost:8000/users/${userId}`,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
+        url: `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/user/${userId}`,
+        // headers: {
+        //   "Content-Type": "application/json",
+        //   Authorization: `Bearer ${token}`,
+        // },
         data: JSON.stringify(user),
       }).then((response) => {
-        navigate('/employees')
+        navigate("/employees");
       });
     }
   };
@@ -81,12 +97,11 @@ export default function EmployeeUpdate(props) {
           <TextField
             id="outlined-basic"
             type="text"
-            // placeholder={user?.name}
             variant="outlined"
-            name="name"
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
+            name="fullname"
+            onChange={(e) => setUser({ ...user, fullname: e.target.value })}
             size="small"
-            value={user?.name}
+            value={user?.fullname}
           />
           <br />
           <TextField
@@ -100,27 +115,63 @@ export default function EmployeeUpdate(props) {
             size="small"
           />
           <br />
-          <TextField
+          {/* <TextField
             id="outlined-basic"
-            type="number"
-            value={user?.age}
+            type="text"
+            value={user?.username}
             variant="outlined"
-            name="age"
-            placeholder="Age"
-            onChange={(e) => setUser({ ...user, age: e.target.value })}
+            name="username"
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
             size="small"
           />
-          {/* <br />
+          <br /> */}
           <TextField
             id="outlined-basic"
-            type="number"
+            type="password"
             value={user?.password}
             variant="outlined"
             name="password"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             size="small"
-          /> */}
+          />
           <br />
+          <FormControl fullWidth>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Role
+            </InputLabel>
+            <NativeSelect
+              defaultValue={user?.role_id}
+              inputProps={{
+                name: "role_id",
+                id: "uncontrolled-native",
+              }}
+              onChange={(e) => setUser({ ...user, roleId: e.target.value })}
+            >
+              <option value={"6248fd50b7d420daa06ee42b"}>Admin</option>
+              <option value={"62482a63ad01d9a46b24608b"}>QAM</option>
+              <option value={"62482516ad01d9a46b246089"}>Coordinator</option>
+              <option value={"6248fd5cb7d420daa06ee42d"}>Staff</option>
+            </NativeSelect>
+          </FormControl>
+          <br />
+          <FormControl fullWidth>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Department
+            </InputLabel>
+            <NativeSelect
+              defaultValue={user?.department_id}
+              inputProps={{
+                name: "department_id",
+                id: "uncontrolled-native",
+              }}
+              onChange={(e) => setUser({ ...user, departId: e.target.value })}
+            >
+              <option value={"6248fd50b7d420daa06ee42b"}>Mặc định</option>
+              <option value={"62482a63ad01d9a46b24608b"}>Chọn 1</option>
+            </NativeSelect>
+          </FormControl>
+          <br />
+
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="submit"

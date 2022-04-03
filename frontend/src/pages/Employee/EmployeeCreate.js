@@ -13,8 +13,12 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { lightBlue } from "@mui/material/colors";
 import styled from "@emotion/styled";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -39,17 +43,10 @@ export default function EmployeeCreate(props) {
     if (user != null) {
       axios({
         method: "post",
-        url: "http://localhost:8000/users",
+        url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/register",
         data: user,
       }).then((response) => {
-        if (response.status === 201) {
-          // console.log('Khang')
-          // console.log('Khang')
-          // console.log('Khang')
-          // console.log('Khang')
-          // console.log('Khang')
-          // console.log(response);
-          // setResult(response);
+        if (response.status === 201 || 204 || 200) {
           navigate("/employees");
         } else {
           console.log("Cannot create");
@@ -87,9 +84,9 @@ export default function EmployeeCreate(props) {
             type="text"
             label="Name"
             variant="outlined"
-            name="name"
-            placeholder="Name"
-            onChange={(e) => setUser({ ...user, name: e.target.value })}
+            name="fullname"
+            placeholder="Full Name"
+            onChange={(e) => setUser({ ...user, fullname: e.target.value })}
             size="small"
             required
           />
@@ -109,6 +106,18 @@ export default function EmployeeCreate(props) {
           <TextField
             id="outlined-basic"
             type="text"
+            label="Username"
+            variant="outlined"
+            name="username"
+            placeholder="Username"
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            size="small"
+            required
+          />
+          <br />
+          <TextField
+            id="outlined-basic"
+            type="text"
             label="Password"
             variant="outlined"
             name="password"
@@ -120,16 +129,50 @@ export default function EmployeeCreate(props) {
           <br />
           <TextField
             id="outlined-basic"
-            type="number"
-            label="Age"
+            type="text"
+            label="confirmPassword"
             variant="outlined"
-            name="age"
-            placeholder="Age"
-            onChange={(e) => setUser({ ...user, age: e.target.value })}
+            name="confirmPassword"
+            placeholder="confirmPassword"
+            onChange={(e) =>
+              setUser({ ...user, confirmPassword: e.target.value })
+            }
             size="small"
             required
           />
           <br />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Role"
+              name="role_id"
+              onChange={(e) => setUser({ ...user, roleId: e.target.value })}
+            >
+              <MenuItem value={"6248fd50b7d420daa06ee42b"}>Admin</MenuItem>
+              <MenuItem value={"62482a63ad01d9a46b24608b"}>QAM</MenuItem>
+              <MenuItem value={"62482516ad01d9a46b246089"}>
+                Coordinator
+              </MenuItem>
+              <MenuItem value={"6248fd5cb7d420daa06ee42d"}>Staff</MenuItem>
+            </Select>
+          </FormControl>
+          <br />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Department</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Department"
+              name="department_id"
+              onChange={(e) => setUser({ ...user, departId: e.target.value })}
+            >
+              <MenuItem value={"6248fd5cb7d420daa06ee42d"}>Mặc định</MenuItem>
+            </Select>
+          </FormControl>
+          <br />
+
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="submit"

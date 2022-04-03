@@ -25,8 +25,8 @@ const settings = ["Category", "Your Ideas"];
 const Header = (props) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const userTitle = `${window.localStorage.firstName}`;
-  
+  const userTitle = `${window.sessionStorage.username}`;
+
   let navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -46,23 +46,24 @@ const Header = (props) => {
 
   const handleLogout = async () => {
     try {
-      const token = window.localStorage.getItem("authToken");
-      const response = await axios({
+      // const token = window.sessionStorage.getItem("authToken");
+      const res = await axios({
         method: "post", //you can set what request you want to be
-        url: "http://127.0.0.1:8000/users/logout",
-        headers: {
-          // Authorization: 'Bearer ' + `${loggedInUser.token}`
-          Authorization: `Bearer ${token}`,
-        },
+        url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/logout",
+        // headers: {
+        //   // Authorization: 'Bearer ' + `${loggedInUser.token}`
+        //   // Authorization: `Bearer ${token}`,
+        //   "Access-Control-Allow-Origin": "*",
+        // },
+        withCredentials: true,
       });
 
-      if (response.status === 200) {
+      if (res.session) {
         // console.log(response.status);
-        window.localStorage.clear();
-        // window.localStorage.setItem('isAuthenticated', false);
-        navigate("/login", { replace: true });
-        props.clearToken(false);
+        res.destroySession(false);
+        window.sessionStorage.clear();
         window.location.reload(false);
+        navigate("/login", { replace: true });
       }
     } catch (e) {
       throw e;

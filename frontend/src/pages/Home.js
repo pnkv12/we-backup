@@ -11,22 +11,22 @@ import styled from "@emotion/styled";
 import { Box, Divider } from "@mui/material";
 
 const Home = () => {
-  const { response, loading, error } = useAxios({
-    url: "ideas",
-    method: "get",
-  });
+  // const { response, loading, error } = useAxios({
+  //   url: "ideas",
+  //   method: "get",
+  // });
 
-  const [ideas, setIdeas] = useState([]);
+  // const [ideas, setIdeas] = useState([]);
 
-  useEffect(() => {
-    if (response != null) {
-      setIdeas(response);
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response != null) {
+  //     setIdeas(response);
+  //   }
+  // }, [response]);
 
-  if (error) throw error;
-  if (loading) return <LoadingIndicator />;
-  if (ideas.length === 0) return <PageNotFound />;
+  // if (error) throw error;
+  // if (loading) return <LoadingIndicator />;
+  // if (ideas.length === 0) return <PageNotFound />;
 
   return (
     <Box

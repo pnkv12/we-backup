@@ -6,38 +6,32 @@ import axios from "axios";
 
 // axios.defaults.baseURL = baseUrl;
 
-axios.defaults.baseURL = "http://localhost:8000/"
+axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
 
-// useFetch with headers, url, method and body. 
+// useFetch with headers, url, method and body.
 // url is the part after the baseURL
 const useAxios = ({ url, method, body = null, headers = null }) => {
-    const [response, setResponse] = useState(null)
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(true);
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
-    const fetchData = async () => {
-        try {
-            let res = await axios[method](url, JSON.parse(headers), JSON.parse(body))
-            const data = res.data;
-            setResponse(data);
-        } catch (err) {
-            setError(err)
-        }
-        finally {
-            setLoading(false);
-        }
-    };
+  const fetchData = async () => {
+    try {
+      let res = await axios[method](url, JSON.parse(headers), JSON.parse(body));
+      const data = res.data;
+      setResponse(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        fetchData();
-    }, [method, url, body, headers]);
+  useEffect(() => {
+    fetchData();
+  }, [method, url, body, headers]);
 
-    return { response, error, loading };
-}
-
+  return { response, error, loading };
+};
 
 export default useAxios;
-
-
-
-

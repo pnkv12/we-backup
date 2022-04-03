@@ -15,7 +15,7 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import { textAlign } from "@mui/system";
 
-const baseURL = "http://localhost:8000";
+const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
 const pageSize = 5;
 const rowsPerPageOptions = [5];
 
@@ -35,42 +35,32 @@ const EmployeeTable = (props) => {
         return {
           id: id + 1,
           userId: user._id,
-          name: user.name,
+          username: user.username,
           email: user.email,
-          age: user.age,
+          fullname: user.fullname,
+          role_id: "Có mà chưa gắn dô FE",
+          department_id: "Có mà chưa gắn dô FE",
         };
       });
       setUsers(userList);
     }
   }, [response]);
 
-
-
   const columns = [
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Name", width: 280, editable: true },
-    { field: "email", headerName: "Email", width: 300, editable: true },
-    {
-      field: "age",
-      headerName: "Age",
-      type: "number",
-      width: 80,
-      editable: true,
-    },
-    // { field: "role", headerName: "Role", width: 180, editable: true },
     {
       field: "action",
       headerName: "Action",
       width: 150,
       renderCell: (params) => {
         return (
-          <Box sx={{ display: "flex", m: 1 }}>
+          <Box sx={{ display: "flex" }}>
             <Button
               title="edit"
               variant="text"
               color="secondary"
               onClick={() => handleUpdate(params.row)}
               fontSize="small"
+              size="small"
             >
               <EditIcon />
             </Button>
@@ -80,6 +70,7 @@ const EmployeeTable = (props) => {
               color="error"
               onClick={() => handleDelete(params.row.userId)}
               fontSize="small"
+              size="small"
             >
               <HighlightOffIcon />
             </Button>
@@ -87,34 +78,56 @@ const EmployeeTable = (props) => {
         );
       },
     },
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "username", headerName: "Username", width: 150, editable: true },
+    { field: "email", headerName: "Email", width: 250, editable: true },
+    {
+      field: "fullname",
+      headerName: "Full Name",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "role_id",
+      headerName: "Role",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "department_id",
+      headerName: "Department",
+      width: 200,
+      editable: true,
+    },
+    // { field: "role", headerName: "Role", width: 180, editable: true },
   ];
 
   const handleUpdate = async (params) => {
-    navigate(`/employees/edit/${params.userId}?name=${params.name}&email=${params.email}&age=${params.age}`);
+    navigate(`edit/${params.userId}?username=${params.username}&email=${params.email}&fullname=${params.fullname}&password=${params.password}&role=${params.role_id}&dept=${params.department_id}
+  `);
   };
 
-  // const handleUpdate = async (user) => {
-  // this.navigate({
-  //     url: `/employees/edit/${userId}
-    //   id: userId,
-    //   name: user.name,
-    //   age: user.age,
-    // });
+  // const handleUpdate = async (userId) => {
+  //   this.navigate({
+  //     url: `/employees/edit/${userId}`,
+  //     username: user.username,
+  //     password: user.password,
+  //     fullname: user.fullname,
+  //   });
   // };
-
 
   const handleDelete = async (userId) => {
     const confirm = window.confirm(
-      "Are you sure wan to delete this user ? ",
+      "Are you sure want to delete this user ? ",
       userId
     );
     if (confirm) {
-      const response = await axios.delete(`${baseURL}/users/${userId}`, {
+      const response = await axios.delete(`${baseURL}/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if (response.status === 200) {
+      if (response.status === 200 || 204 || 201) {
         // window.location.reload(false);
 
         const newUsers = users.filter((user) => user.userId !== userId);
@@ -155,8 +168,8 @@ const EmployeeTable = (props) => {
           pageSize={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}
           editMode="row"
-        // editRowsModel={editRowsModel}
-        // onEditRowsModelChange={handleEditRowsModelChange}
+          // editRowsModel={editRowsModel}
+          // onEditRowsModelChange={handleEditRowsModelChange}
         />
         {/* <Alert severity="info" style={{ marginBottom: 8 }}>
           <code>editRowsModel: {JSON.stringify(editRowsModel)}</code>

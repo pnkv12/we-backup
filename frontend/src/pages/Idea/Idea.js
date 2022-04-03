@@ -17,32 +17,29 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
 // import ThumbsCount from "../../components/Idea/Thumbs";
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import IconButton from "@mui/material/IconButton";
-import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import Grid from '@mui/material/Grid';
-import { experimentalStyled as styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-
-
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import Grid from "@mui/material/Grid";
+import { experimentalStyled as styled } from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(2),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-
 
 const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: "http://127.0.0.1:8000/ideas?limit=5&skip=0",
+    url: `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&skip=0`,
     method: "get",
   });
 
@@ -53,44 +50,34 @@ const Idea = () => {
 
   const limit = 5;
   const startIndex = (page - 1) * limit;
+
   //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
     limit: 5,
-    skip: 0
-  })
+    skip: 0,
+  });
+
   const [totalPages, setTotalPages] = useState();
+
   const [filters, setFilters] = useState({
     limit: 5,
     skip: 0,
-    search: '',
+    search: "",
   });
 
-
   const [commentsCounter, setCommentsCounter] = useState();
-  // useEffect(() => {
-  //   (async function () {
-  //     const requestUrl = `http://127.0.0.1:8000/ideas`;
-  //     const response = await axios.get(requestUrl);
-  //     const ideaId = response.data.ideaId;
-  //     const comments = await axios.get(`http://localhost:8000/comments?ideaId=${ideaId}`);
-
-  //     //resonse.data.ideaId
-  //   })()
-  // }, []);
 
   useEffect(() => {
     if (response != null) {
       setIdeas(response);
 
+      console.log(response);
+
       response.map(async (item) => {
-        // const user = await axios.get(`http://localhost:8000/users/${idea.owner}`);
-        // setOwnerName(user.data.name);
         const user = await axios.get(
-          `http://localhost:8000/users/${item.owner}`
+          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/users/${item.owner}`
         );
         setOwnerName(user.data.name);
-
-
       });
     }
   }, [response]);
@@ -98,30 +85,32 @@ const Idea = () => {
   useEffect(() => {
     const fetchIdeaList = async () => {
       try {
-
         const paramsString = queryString.stringify(filters);
-        const requestUrl = `http://127.0.0.1:8000/ideas?${paramsString}`;
+        const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?${paramsString}`;
         const response = await axios.get(requestUrl);
-        const re = await axios.get(`http://127.0.0.1:8000/ideas`)
-        const comments = await axios.get(`http://localhost:8000/comments`);
+        const re = await axios.get(
+          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas`
+        );
+        const comments = await axios.get(
+          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments`
+        );
         setTotalPages(Math.ceil(re.data.length / limit));
         setIdeas(response.data);
         setPagination(response.data);
-
       } catch (error) {
         console.log("failed to fetch post list", error.message);
       }
-    }
+    };
     fetchIdeaList();
   }, [filters]);
 
-  const handlePageClick = num => {
+  const handlePageClick = (num) => {
     setPage(num);
     setFilters({
       ...filters,
       skip: (num - 1) * limit,
-    })
-  }
+    });
+  };
 
   const handleFiltersChange = (newFilters) => {
     console.log(newFilters);
@@ -129,8 +118,8 @@ const Idea = () => {
       ...filters,
       skip: 0,
       search: newFilters.searchTerm,
-    })
-  }
+    });
+  };
 
   // const { data: ideas, loading, error } = useFetch(
   //   "idea?category=" + category
@@ -173,7 +162,6 @@ const Idea = () => {
             justifyContent: "right",
           }}
         >
-
           <SearchFunction onSubmit={handleFiltersChange} />
 
           <NewIdeaBtn />
@@ -195,76 +183,16 @@ const Idea = () => {
           maxHeight: "100%",
         }}
       >
-        {/* <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-            {ideas.map((idea) => {
-              <Grid item xs={2} sm={4} md={4} key={idea._id}>
-                <Item>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="h6"
-                    color="text.primary"
-                    data-testid="idea-title"
-
-                  >
-                    <Link
-                      to={`/ideas/${idea._id}`}
-                      underline="hover"
-                      key={idea._id}
-                    >
-                      {idea.title}
-                    </Link>
-                    - by {ownerName}
-                  </Typography>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Views: {idea.views}
-                    <br />
-                    Content: {idea.content}
-                  </Typography>
-                  <Box sx={{ display: "flex" }} fullWidth>
-                    <Box sx={{ display: "flex", alignItems: 'center' }}>
-                      <IconButton color="secondary" aria-label="likes" component="span">
-                        <ThumbUpOffAltIcon />
-                      </IconButton >
-                      <Typography>(1)</Typography>
-
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: 'center' }}>
-                      <IconButton color="secondary" aria-label="dislikes" component="span">
-                        <ThumbDownOffAltIcon />
-                      </IconButton >
-                      <Typography>(3)</Typography>
-                    </Box>
-                    <Box sx={{ display: "flex", alignItems: 'center' }}>
-                      <IconButton color="secondary" aria-label="comments" component="span">
-                        <ChatBubbleOutlineOutlinedIcon />
-                      </IconButton >
-                      <Typography>{commentscounter}</Typography>
-                    </Box>
-                  </Box>
-                </Item>
-              </Grid>
-            })}
-          </Grid>
-        </Box> */}
         {ideas.map((idea) => {
           (async function () {
-
-            const requestUrl = `http://127.0.0.1:8000/comments?ideaId=${idea._id}`;
+            const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${idea._id}`;
             const response = await axios.get(requestUrl);
-            console.log(response.data.length)
+            console.log(response.data.length);
             // setCommentsCounter(response.data.length);
-            // const comments = await axios.get(`http://localhost:8000/comments?ideaId=${ideaId}`);
+            // const comments = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${ideaId}`);
 
             //resonse.data.ideaId
-          })()
-
+          })();
 
           return (
             <List>
@@ -278,7 +206,6 @@ const Idea = () => {
                         variant="h6"
                         color="text.primary"
                         data-testid="idea-title"
-
                       >
                         <Link
                           to={`/ideas/${idea._id}`}
@@ -304,23 +231,34 @@ const Idea = () => {
                         Content: {idea.content}
                       </Typography>
                       <Box sx={{ display: "flex" }} fullWidth>
-                        <Box sx={{ display: "flex", alignItems: 'center' }}>
-                          <IconButton color="secondary" aria-label="likes" component="span">
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <IconButton
+                            color="secondary"
+                            aria-label="likes"
+                            component="span"
+                          >
                             <ThumbUpOffAltIcon />
-                          </IconButton >
+                          </IconButton>
                           <Typography>(1)</Typography>
-
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: 'center' }}>
-                          <IconButton color="secondary" aria-label="dislikes" component="span">
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <IconButton
+                            color="secondary"
+                            aria-label="dislikes"
+                            component="span"
+                          >
                             <ThumbDownOffAltIcon />
-                          </IconButton >
+                          </IconButton>
                           <Typography>(3)</Typography>
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: 'center' }}>
-                          <IconButton color="secondary" aria-label="comments" component="span">
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <IconButton
+                            color="secondary"
+                            aria-label="comments"
+                            component="span"
+                          >
                             <ChatBubbleOutlineOutlinedIcon />
-                          </IconButton >
+                          </IconButton>
                           <Typography>{commentsCounter}</Typography>
                         </Box>
                       </Box>
@@ -339,9 +277,11 @@ const Idea = () => {
             justifyContent: "center",
           }}
         >
-          {/* <Pagination count={10} variant="outlined" color="primary"/> */}
-
-          <Paging pagination={pagination} totalPages={totalPages} handlePageClick={handlePageClick} />
+          <Paging
+            pagination={pagination}
+            totalPages={totalPages}
+            handlePageClick={handlePageClick}
+          />
         </Box>
       </Box>
     </Box>

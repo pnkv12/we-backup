@@ -3,39 +3,67 @@ import LoginForm from "./LoginForm";
 import PopUp from "../../components/PopUp/PopUp";
 import { Box } from "@mui/material";
 import axios, * as others from "axios";
-import loggedInUser from "../../data/login-user.json";
 import { Navigate } from "react-router-dom";
 import useAxios from "../../services/useAxios";
 import LoadingIndicator from "../../components/Loading";
+import Cookies from "universal-cookie";
 
-const baseURL = "http://localhost:8000";
+const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+
+function getSessionData(userId, data) {
+  const userData = sessionStorage.getItem(userId);
+  if (!userData) {
+    return data;
+  }
+  console.log(data);
+  return JSON.parse(userData);
+}
 
 function Login(props) {
-  const [buttonPopup, setButtonPopup] = useState(false);
-  const [user, setUser] = useState({ username: "" });
+  // const cookies = new Cookies();
+  // const [buttonPopup, setButtonPopup] = useState(false);
+  const [user, setUser] = useState(getSessionData("userId", false));
   const [error, setError] = useState("");
+
+  //This will run everytime the variable is updated, ensure most recent data is saved to storage, good for Edit User
+  // useEffect(() => {
+  //   sessionStorage.setItem("_id", JSON.stringify(user));
+  // }, [setUser]);
 
   const logIn = async (details) => {
     try {
-      const response = await axios.post(`${baseURL}/users/login`, {
-        email: details.username,
-        password: details.password,
-      });
+      const response = await axios.post(
+        `${baseURL}/login`,
+        {
+          username: details.username,
+          password: details.password,
+        },
+        {
+          withCredentials: true,
+          // headers: { "Access-Control-Allow-Origin": "*" },
+        }
+      );
+      console.log(response.headers);
+
+      // let cookie = response.headers["set-cookie"];
+      // console.log(cookie);
 
       if (response.status === 200) {
         props.authenticate(true);
 
         setUser({
-          name: response.data.name,
           username: details.username,
+          password: details.password,
         });
-        window.localStorage.setItem("authToken", response.data.token);
-        window.localStorage.setItem("firstName", response.data.user.name);
-        window.localStorage.setItem("email", response.data.user.email);
-        window.localStorage.setItem("password", response.data.user.password);
-        window.localStorage.setItem("age", response.data.user.age);
-        window.localStorage.setItem("isAuthenticated", true);
+        window.sessionStorage.setItem("username", details.username);
+        window.sessionStorage.setItem("fullname", response.data.fullname);
+        window.sessionStorage.setItem("role", response.data.role_id);
+        window.sessionStorage.setItem("password", details.password);
 
+        // window.sessionStorage.setItem("logged", details.logged);
+        // window.sessionStorage.setItem("userId", details.userId);
+        // window.sessionStorage.setItem("role", details.role);
+        // window.localStorage.setItem("isAuthenticated", true);
       }
     } catch (error) {
       console.error(error);
@@ -43,49 +71,32 @@ function Login(props) {
     }
   };
 
-  const logOut = async () => {
-    let token = window.localStorage.getItem("authToken");
+  // const logOut = async () => {
+  //   try {
+  //     const response = axios.get(`${baseURL}/logout`, {
+  //       withCredentials: true,
+  //     });
 
-    try {
-      const response = await axios({
-        method: "post", //you can set what request you want to be
-        url: `${baseURL}/users/logout`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  //     // const response = await axios(
+  //     //   {
+  //     //     method: "post", //you can set what request you want to be
+  //     //     url: `${baseURL}/logout`,
+  //     //   },
+  //     //   { withCredentials: true }
+  //     // );
 
-      if (response.status === 200) {
-        props.authenticate(false);
+  //     if (response.status === 200) {
+  //       props.authenticate(false);
 
-        setUser({ name: "", username: "" });
-        window.localStorage.setItem("firstName", "");
-        window.localStorage.setItem("isAuthenticated", false);
-      }
-    } catch (error) {
-      console.error(error);
-      setError("Username or Password do not match!");
-    }
-  };
+  //       setUser({ username: "", password: "" });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setError("Username or Password do not match!");
+  //   }
+  // };
 
-  return (
-    <Box component="main">
-      {user.username !== "" ? (
-        // show response of the request
-        <div className="welcome">
-          <h2>
-            Welcome, <span>{user.name}</span>
-          </h2>
-          <button onClick={() => setButtonPopup(true)}>Logout</button>
-        </div>
-      ) : (
-        <LoginForm Login={logIn} error={error} />
-      )}
-      <PopUp trigger={buttonPopup} setTrigger={setButtonPopup} setUser={logOut}>
-        <h3>Confirm Log out?</h3>
-      </PopUp>
-    </Box>
-  );
+  return <LoginForm Login={logIn} error={error} />;
 }
 
 export default Login;
