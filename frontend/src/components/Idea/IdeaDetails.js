@@ -11,9 +11,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Typography } from "@material-ui/core";
 import { ReturnLink } from "./IdeaButtons";
 import EditIcon from "@mui/icons-material/Edit";
+import TextField from "@mui/material/TextField";
 
-const COMMENT_URL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments";
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const COMMENT_URL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments";
+const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 
 let viewUpdated = false;
 const IdeaDetails = () => {
@@ -25,34 +26,37 @@ const IdeaDetails = () => {
   const [error, setError] = useState(null);
   const [activeUpdate, setActiveUpdate] = useState(false);
   const [data, setNewIdea] = useState({
-      content:"",
-  })
-  const isEditing = activeUpdate && activeUpdate.type === 'editing' && activeUpdate.id === idea.id;
+    content: "",
+  });
+  const isEditing =
+    activeUpdate &&
+    activeUpdate.type === "editing" &&
+    activeUpdate.id === idea.id;
   useEffect(() => {
-    setTimeout(() =>{
-        fetch('https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/' + id)
-        .then(res => {
-            if(!res.ok){
-                throw Error("could not fetch");
-            }
-            return res.json();
+    setTimeout(() => {
+      fetch("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("could not fetch");
+          }
+          return res.json();
         })
-        .then(idea => {
-            setIdea(idea);
+        .then((idea) => {
+          setIdea(idea);
+          setIsPending(false);
+          setError(null);
+          console.log(idea);
+        })
+        .catch((err) => {
+          if (err.name === "AbortError") {
+            console.log("fetch aborted");
+          } else {
             setIsPending(false);
-            setError(null);
-            console.log(idea);
-        })
-        .catch(err => {
-            if (err.name === 'AbortError') {
-                console.log('fetch aborted')
-              } else {
-                setIsPending(false);
-                setError(err.message);
-              }
-        })
+            setError(err.message);
+          }
+        });
     }, 1000);
-}, []);
+  }, []);
 
   const navigate = useNavigate();
   const [content, setContent] = useState("Please input your idea");
@@ -67,7 +71,6 @@ const IdeaDetails = () => {
   //       .then((r) => {});
   //   }, []);
 
-  
   // const handleUpdate = async (idea) => {
   //   const response = await axios.put(`/ideas/${idea._id}`, idea);
   //   const { name, content } = response.results;
@@ -79,32 +82,36 @@ const IdeaDetails = () => {
   //   // );
   // };
 
-  useEffect(()=>{
-    axios.get('https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/'+ id)
-    .then(res=>{
-        console.log(res.data.results.content)
-        setNewIdea(res.data.results)
-    }).catch(err=>console.error(err))
-},[])
+  useEffect(() => {
+    axios
+      .get("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
+      .then((res) => {
+        console.log(res.data.results.content);
+        setNewIdea(res.data.results);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
-function submit(e){
-    e.preventDefault()
-    axios.patch(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/${id}`,data)
-    .then(res=>{
-        console.log(res.data)
-        navigate('/ideas/' + id)
+  function submit(e) {
+    e.preventDefault();
+    axios
+      .patch(`https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/${id}`, data)
+      .then((res) => {
+        console.log(res.data);
+        navigate("/ideas/" + id);
         window.location.reload(false);
-    }).catch(err=>console.error(err))
-}
+      })
+      .catch((err) => console.error(err));
+  }
 
-function handle(e){
-    const newdata={...data}
-    newdata[e.target.id]=e.target.value
-    setNewIdea(newdata)
-}
+  function handle(e) {
+    const newdata = { ...data };
+    newdata[e.target.id] = e.target.value;
+    setNewIdea(newdata);
+  }
 
   const handleDelete = () => {
-    fetch("https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea/" + id, {
+    fetch("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id, {
       method: "DELETE",
     }).then(() => {
       navigate("/ideas");
@@ -146,31 +153,40 @@ function handle(e){
                 variant="text"
                 color="secondary"
                 fontSize="small"
-                onClick={() => setActiveUpdate({ id: idea.id, type: "editing" })}
+                onClick={() =>
+                  setActiveUpdate({ id: idea.id, type: "editing" })
+                }
               >
                 <EditIcon />
               </Button>
             </Typography>
-            
           </Box>
-          
 
           <Typography variant="subtitle1">ID: {id}</Typography>
           <Box>
-
-            {!isEditing && 
-            <p>
-              <Typography variant="h6" color="primary">
-                Content:
-              </Typography>
-              <Typography variant="body1">{idea.content}</Typography>
-            </p>}
+            {!isEditing && (
+              <p>
+                <Typography variant="h6" color="primary">
+                  Content:
+                </Typography>
+                <Typography variant="body1">{idea.content}</Typography>
+              </p>
+            )}
 
             {isEditing && (
-                <form onSubmit={(e) => submit(e)}>
-                    <textarea placeholder={idea.content} onChange={(e) => setNewIdea({ ...data, content: e.target.value })}/>
-                    <button>Post</button>
-                </form>
+              <form onSubmit={(e) => submit(e)}>
+                <TextField
+                  placeholder={idea.content}
+                  multiline
+                  rows={4}
+                  onChange={(e) =>
+                    setNewIdea({ ...data, content: e.target.value })
+                  }
+                />
+                <Button variant="contained" type="submit">
+                  Post
+                </Button>
+              </form>
             )}
           </Box>
         </Box>

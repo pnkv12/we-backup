@@ -1,8 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Comments from "./Comments";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { cmtBox } from "../../styles/boxStyles";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 
 const CommentForm = ({
   ideaId,
@@ -44,7 +49,7 @@ const CommentForm = ({
     event.preventDefault();
     // const comment = { content, ideaId, parentId, owner, closedDate };
     setIsPending(true);
-    // fetch("https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments", {
+    // fetch("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments", {
     //   method: "POST",
     //   headers: { Authorization: `Bearer ${token}` },
     //   body: JSON.stringify(comment),
@@ -110,23 +115,38 @@ const CommentForm = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <textarea
-        className="comment-form-textarea"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-      />
-      <button className="comment-form-button" disabled={isTextareaDisable}>
-        {submitLabel}
-      </button>
-      {hasCancelButton && (
-        <button
-          type="button"
-          className="comment-form-button comment-form-cancel-button"
-          onClick={handleCancel}
-        >
-          Cancel
-        </button>
-      )}
+      <Box sx={cmtBox}>
+        <Box sx={{ flexGrow: 1 }}>
+          <TextField
+            sx={{ width: "95%" }}
+            multiline
+            rows={2}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Say something..."
+          />
+        </Box>
+        <Box>
+          <Button
+            variant="contained"
+            className="comment-form-button"
+            disabled={isTextareaDisable}
+            type="submit"
+          >
+            {submitLabel} Post
+          </Button>
+          {hasCancelButton && (
+            <Button
+              variant="outlined"
+              type="button"
+              className="comment-form-button comment-form-cancel-button"
+              onClick={handleCancel}
+            >
+              Cancel
+            </Button>
+          )}
+        </Box>
+      </Box>
     </form>
   );
 };

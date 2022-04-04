@@ -26,7 +26,7 @@ import Grid from "@mui/material/Grid";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -40,7 +40,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&page=1",
+    url: "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/ideas?limit=5&page=1",
     method: "get",
   });
 
@@ -74,7 +74,7 @@ const Idea = () => {
 
       response.results.map(async (item) => {
         const user = await axios.get(
-          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/users/${item.owner}`
+          `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/users/${item.owner}`
         );
         setOwnerName(user.data.name);
       });
@@ -85,13 +85,13 @@ const Idea = () => {
     const fetchIdeaList = async () => {
       try {
         const paramsString = queryString.stringify(filters);
-        const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?${paramsString}`;
+        const requestUrl = `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/ideas?${paramsString}`;
         const response = await axios.get(requestUrl);
         const re = await axios.get(
-          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas`
+          `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/ideas`
         );
         const comments = await axios.get(
-          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments`
+          `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments`
         );
 
         setTotalPages(Math.ceil(response.data.results.length / limit));
@@ -187,10 +187,10 @@ const Idea = () => {
       >
         {ideas.map((idea) => {
           (async function () {
-            const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${idea._id}`;
+            const requestUrl = `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments?ideaId=${idea._id}`;
             const response = await axios.get(requestUrl);
             // setCommentsCounter(response.data.length);
-            // const comments = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${ideaId}`);
+            // const comments = await axios.get(`https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments?ideaId=${ideaId}`);
 
             //resonse.data.ideaId
           })();

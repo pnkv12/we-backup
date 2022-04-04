@@ -15,7 +15,7 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import { textAlign } from "@mui/system";
 
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 const pageSize = 5;
 const rowsPerPageOptions = [5];
 
@@ -39,10 +39,11 @@ const EmployeeTable = (props) => {
           username: user.username,
           email: user.email,
           fullname: user.fullname,
-          role_id: user.role_id,
-          department_id: user.department_id,
+          roleId: user.role_id,
+          departmentId: user.department_id,
         };
       });
+
       setUsers(userList);
     }
   }, [response]);
@@ -89,13 +90,13 @@ const EmployeeTable = (props) => {
       editable: true,
     },
     {
-      field: "role_id",
+      field: "roleId",
       headerName: "Role",
       width: 200,
       editable: true,
     },
     {
-      field: "department_id",
+      field: "departmentId",
       headerName: "Department",
       width: 200,
       editable: true,

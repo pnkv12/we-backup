@@ -30,3 +30,21 @@ export const boxCreate = {
   display: "flex",
   justifyContent: "center",
 };
+
+export const cmtBox = {
+  m: 1,
+  p: 2,
+  display: "flex",
+  width: "60%",
+};
+
+export const replyBox = {
+  border: 1,
+  borderRadius: "25px",
+  boxShadow: 4,
+  borderColor: "white",
+  m: 2,
+  p: 3,
+  display: "flex",
+  width: "50%",
+};

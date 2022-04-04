@@ -11,12 +11,14 @@ import useFetch from "./useFetch";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
 import useAxios from "../../services/useAxios";
+import { Box, Divider } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 import "./styles.css";
 import axios from "axios";
 
 const token = window.localStorage.getItem("authToken");
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');
@@ -68,7 +70,6 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   //     // Trong Edited
   // }, [Comments, ideaId])
 
-
   // const createComment = (content, parentId) => {
   //     console.log("Add Comment", content, parentId);
   // useCreateComment(text, parentId, ideaId).then(comment => {
@@ -97,17 +98,16 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   };
 
   return (
-    <div className="comments">
-      <h3 className="comments-title">Comment</h3>
-      <div className="comment-form-title">Write comment</div>
+    <Box>
+      <Typography variant="h6">Write comment</Typography>
       <CommentForm
-        submitLabel="Write"
         ideaId={ideaId}
         handleSubmit={(text, parentId) => {
           setRootComments([text, ...comments]);
         }}
       />
-      <div className="comments-container">
+      <Divider />
+      <Box>
         {rootComments.map((rootComment) => (
           <Comment
             key={rootComment._id}
@@ -118,9 +118,9 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
             currentUserId={currentUserId}
           />
         ))}
-      </div>
+      </Box>
       <br />
-    </div>
+    </Box>
   );
 };
 

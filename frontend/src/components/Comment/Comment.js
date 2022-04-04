@@ -4,6 +4,10 @@ import { useState, useEffect } from "react";
 import "./styles.css";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import { Box, Divider } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import { replyBox } from "../../styles/boxStyles";
 
 const Comment = ({
   comment,
@@ -25,7 +29,7 @@ const Comment = ({
   const [content, setContent] = useState();
   const deleteComment = async () => {
     fetch(
-      "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments/" + comment._id,
+      "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments/" + comment._id,
       {
         method: "DELETE",
       }
@@ -33,7 +37,7 @@ const Comment = ({
   };
 
   return (
-    <div key={comment.id} className="comment">
+    <Box key={comment.id} sx={replyBox}>
       <div className="comment-image-container">
         <Avatar alt="" src="/static/images/avatar/2.jpg" />
       </div>
@@ -45,18 +49,23 @@ const Comment = ({
         {!isEditing && <div className="comment-text">{comment.content}</div>}
         {isEditing && (
           <form>
-            <textarea
+            <TextField
               className="comment-form-textarea"
               value={content}
+              multiline
+              rows={2}
               onChange={(e) => setContent(e.target.value)}
             />
-            <button className="comment-form-button">Update</button>
-            <button
-              type="button"
-              className="comment-form-button comment-form-cancel-button"
+            <Button
+              variant="text"
+              // className="comment-form-button"
+              type="submit"
             >
+              Update
+            </Button>
+            <Button type="button" variant="text" color="secondary">
               Cancel
-            </button>
+            </Button>
           </form>
         )}
         <div className="comment-actions">
@@ -68,7 +77,6 @@ const Comment = ({
           >
             Edit
           </div>
-
           <div
             className="comment-action"
             onClick={() => deleteComment(comment.id)}
@@ -77,7 +85,7 @@ const Comment = ({
           </div>
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

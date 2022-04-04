@@ -48,7 +48,7 @@ function Header(props) {
     try {
       // const res = await axios({
       //   method: "post", //you can set what request you want to be
-      //   url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/logout",
+      //   url: "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/logout",
       //   // headers: {
       //   //   // Authorization: 'Bearer ' + `${loggedInUser.token}`
       //   //   // Authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ function Header(props) {
       //   withCredentials: true,
       // });
       const res = await axios.post(
-        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/logout`,
+        `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/logout`,
         {
           withCredentials: true,
           // headers: { "Access-Control-Allow-Origin": "*" },
@@ -65,7 +65,7 @@ function Header(props) {
       );
       if (res.session) {
         // res.destroySession(false);
-        // res.setIsAuthenticated(false);
+        res.setIsAuthenticated(false);
         sessionStorage.clear();
         window.location.reload(false);
         navigate("/login", { replace: true });

@@ -25,7 +25,7 @@ import NativeSelect from "@mui/material/NativeSelect";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 // const token = window.localStorage.getItem("authToken");
-axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/";
+axios.defaults.baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -62,7 +62,7 @@ export default function EmployeeUpdate(props) {
       role,
       dept,
     });
-    console.log(user);
+    // console.log(user);
   }, [fullname, email, password, role, dept]);
 
   const handleSubmit = (e) => {
@@ -70,12 +70,12 @@ export default function EmployeeUpdate(props) {
     if (user != null) {
       axios({
         method: "patch",
-        url: `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/user/${userId}`,
+        url: `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/user/${userId}`,
         // headers: {
         //   "Content-Type": "application/json",
         //   Authorization: `Bearer ${token}`,
         // },
-        data: JSON.stringify(user),
+        data: user,
       }).then((response) => {
         navigate("/employees");
       });

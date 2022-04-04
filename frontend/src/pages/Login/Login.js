@@ -9,7 +9,7 @@ import LoadingIndicator from "../../components/Loading";
 import Cookies from "universal-cookie";
 import { TrainOutlined } from "@material-ui/icons";
 
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
 
 function Login(props) {
   // const cookies = new Cookies();
@@ -30,7 +30,7 @@ function Login(props) {
           // headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      console.log(response.headers);
+      // console.log(response.headers);
 
       // let cookie = response.headers["set-cookie"];
       // console.log(cookie);
@@ -47,7 +47,7 @@ function Login(props) {
         window.sessionStorage.setItem("isAuthenticated", true);
         // window.sessionStorage.setItem("logged", details.logged);
         // window.sessionStorage.setItem("userId", details.userId);
-        // window.sessionStorage.setItem("role", details.roleId);
+        window.sessionStorage.setItem("role", response.data.role);
       }
     } catch (error) {
       console.error(error);

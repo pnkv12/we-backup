@@ -18,7 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/";
+axios.defaults.baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -43,7 +43,7 @@ export default function EmployeeCreate(props) {
     if (user != null) {
       axios({
         method: "post",
-        url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/register",
+        url: "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/register",
         data: user,
       }).then((response) => {
         if (response.status === 201 || 204 || 200) {

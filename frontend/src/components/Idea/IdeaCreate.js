@@ -51,7 +51,7 @@ const LabelStyle = styled("label")({
 });
 
 // const getAllCategories = async () => {
-//     const response = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories`, {
+//     const response = await axios.get(`https://bffb-14-226-238-211.ap.ngrok.io/v1.0/categories`, {
 //             headers: {
 //                 'Content-Type': 'application/json',
 //                 'Accept': 'application/json'
@@ -65,7 +65,7 @@ const IdeaCreate = () => {
   var date = new Date();
   const [idea, setIdea] = useState(null);
   const [title, setTitle] = useState("Title");
-  const [description,setDescription] = useState(null)
+  const [description, setDescription] = useState(null);
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
   const [user_id, setUserId] = useState(null);
@@ -134,33 +134,32 @@ const IdeaCreate = () => {
 
     // setIsPending(true);
 
-    await axios
-      .post(
-        "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/idea",
-        JSON.stringify(idea),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      // .then(async (response) => {
-      //   console.log(`${JSON.stringify(response.data._id)}`);
-      //   if (document != null) {
-      //     console.log(document);
-      //     const url = await sendDocument(response.data._id, document.name);
-      //     console.log(`Document URL: ${url}`);
-      //   }
+    await axios.post(
+      "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea",
+      JSON.stringify(idea),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    // .then(async (response) => {
+    //   console.log(`${JSON.stringify(response.data._id)}`);
+    //   if (document != null) {
+    //     console.log(document);
+    //     const url = await sendDocument(response.data._id, document.name);
+    //     console.log(`Document URL: ${url}`);
+    //   }
 
-      //   console.log("Idea added");
-      //   setIsPending(false);
-      // });
+    //   console.log("Idea added");
+    //   setIsPending(false);
+    // });
   };
 
   useEffect(() => {
     (async function () {
       const categories = await axios.get(
-        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories`
+        `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/categories`
       );
       //setCategories(categories.data);
 
@@ -176,15 +175,13 @@ const IdeaCreate = () => {
     })();
   }, []);
 
-
-
   const sendDocument = async (ideaId, fileName) => {
     const data = new FormData();
     data.append("document", document);
 
     try {
       const response = await axios.post(
-        `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/submission`,
+        `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/submission`,
         data
       );
 
@@ -363,7 +360,6 @@ const IdeaCreate = () => {
             console.log(category);
             return <div>{category.name}</div>;
           })}
-
 
           {/* Terms and Conditions with overflow content not yet finished */}
           <div className="term-conditions">
