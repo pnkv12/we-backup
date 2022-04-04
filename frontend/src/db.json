@@ -1,0 +1,43 @@
+{
+    "idea": [
+        {
+            "id": "2",
+            "title": "idea title 5",
+            "user": "huy",
+            "content": "content5",
+            "thumbs_up": "5",
+            "thumbs_down": "100",
+            "academic_year": "2022",
+            "document": "img,content url",
+            "created_at": "23:59 1-1-2022",
+            "updated_at": " ",
+            "closed_date": "23:59 30-4-2022",
+            "category": [
+                {
+                    "id": "2",
+                    "tag": "red"
+                }
+            ],
+            "comment": [
+                {
+                    "id": "4",
+                    "content": "your idea sucks 1",
+                    "created_at": "23:59 1-1-2022",
+                    "closed_date": "23:59 30-4-2023"
+                },
+                {
+                    "id": "5",
+                    "content": "your idea sucks 2",
+                    "created_at": "23:59 1-1-2022",
+                    "closed_date": "23:59 30-4-2023"
+                },
+                {
+                    "id": "6",
+                    "content": "your idea sucks 3",
+                    "created_at": "23:59 1-1-2022",
+                    "closed_date": "23:59 30-4-2023"
+                }
+            ]
+        }
+    ]
+}
