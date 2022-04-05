@@ -51,7 +51,7 @@ const LabelStyle = styled("label")({
 });
 
 // const getAllCategories = async () => {
-//     const response = await axios.get(`https://bffb-14-226-238-211.ap.ngrok.io/v1.0/categories`, {
+//     const response = await axios.get(`https://832a-14-226-238-211.ap.ngrok.io/v1.0/categories`, {
 //             headers: {
 //                 'Content-Type': 'application/json',
 //                 'Accept': 'application/json'
@@ -60,7 +60,7 @@ const LabelStyle = styled("label")({
 //     );
 //     console.log(response);
 // };
-
+const uid = window.sessionStorage.getItem("uid");
 const IdeaCreate = () => {
   var date = new Date();
   const [idea, setIdea] = useState(null);
@@ -68,10 +68,10 @@ const IdeaCreate = () => {
   const [description, setDescription] = useState(null);
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
-  const [user_id, setUserId] = useState(null);
-  const [submission_id, setSubmissionId] = useState(null);
+  const [user_id, setUserId] = useState(uid);
+  const [submission_id, setSubmissionId] = useState("");
   const [documents, setSelectedFile] = useState([]);
-  const [document, setDocument] = useState(null);
+  const [document, setDocument] = useState("");
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
   const [updatedAt, setUpdateDate] = useState(date);
@@ -119,6 +119,7 @@ const IdeaCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(uid);
     const idea = {
       title,
       description,
@@ -127,39 +128,33 @@ const IdeaCreate = () => {
       user_id,
       submission_id,
       category_id,
-      createdAt,
-      updatedAt,
-      __v,
     };
 
     // setIsPending(true);
 
-    await axios.post(
-      "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea",
-      JSON.stringify(idea),
-      {
+    await axios
+      .post("https://832a-14-226-238-211.ap.ngrok.io/v1.0/idea", idea, {
         headers: {
           "Content-Type": "application/json",
         },
-      }
-    );
-    // .then(async (response) => {
-    //   console.log(`${JSON.stringify(response.data._id)}`);
-    //   if (document != null) {
-    //     console.log(document);
-    //     const url = await sendDocument(response.data._id, document.name);
-    //     console.log(`Document URL: ${url}`);
-    //   }
+      })
+      .then(async (response) => {
+        console.log(`${JSON.stringify(response.data._id)}`);
+        if (document != null) {
+          console.log(document);
+          const url = await sendDocument(response.data._id, document.name);
+          console.log(`Document URL: ${url}`);
+        }
 
-    //   console.log("Idea added");
-    //   setIsPending(false);
-    // });
+        console.log("Idea added");
+        setIsPending(false);
+      });
   };
 
   useEffect(() => {
     (async function () {
       const categories = await axios.get(
-        `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/categories`
+        `https://832a-14-226-238-211.ap.ngrok.io/v1.0/categories`
       );
       //setCategories(categories.data);
 
@@ -178,10 +173,11 @@ const IdeaCreate = () => {
   const sendDocument = async (ideaId, fileName) => {
     const data = new FormData();
     data.append("document", document);
+    console.log(document);
 
     try {
       const response = await axios.post(
-        `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/submission`,
+        `https://832a-14-226-238-211.ap.ngrok.io/v1.0/submission`,
         data
       );
 
@@ -252,6 +248,22 @@ const IdeaCreate = () => {
           </Box>
           <br />
 
+          <Box>
+            <TextField
+              id="outlined-basic"
+              type="text"
+              label="Description"
+              variant="outlined"
+              name="description"
+              placeholder={description}
+              onChange={(e) => setDescription(e.target.value)}
+              sx={{
+                width: "100%",
+              }}
+            />
+          </Box>
+          <br />
+
           {/* Content input */}
           <div>
             <TextField
@@ -289,8 +301,11 @@ const IdeaCreate = () => {
                 accept="image/*"
                 id="icon-button-file"
                 type="file"
-                placeholder={documents}
-                onChange={(e) => setSelectedFile(e.target.files[0])}
+                onChange={(event) => {
+                  const file = event.target.files[0];
+                  setDocument(file);
+                  changeHandler(event);
+                }}
               />
               <Button color={"primary"} variant="text" component="span">
                 <PhotoCamera />
@@ -304,10 +319,10 @@ const IdeaCreate = () => {
                   accept="file/*"
                   id="contained-button-file"
                   color={"primary"}
-                  placeholder={documents}
                   onChange={(event) => {
                     const file = event.target.files[0];
                     setDocument(file);
+                    changeHandler(event);
                   }}
                 />
                 <AttachFileIcon /> Attachments
@@ -315,18 +330,19 @@ const IdeaCreate = () => {
             </InputLabel>
           </Box>
 
-          {/* {isFilePicked ? (
-          <div>
-            <p>Filename: {category.name}</p>
-            <p>Filetype: {category.type}</p>
-            <p>Size in bytes: {category.size}</p>
-            <p>
-              lastModifiedDate: {category.lastModifiedDate.toLocaleDateString()}
-            </p>
-          </div>
-        ) : (
-          <p>Select a file to show details</p>
-        )} */}
+          {isFilePicked ? (
+            <div>
+              <p>Filename: {documents.name}</p>
+              <p>Filetype: {documents.type}</p>
+              <p>Size in bytes: {documents.size}</p>
+              <p>
+                lastModifiedDate:{" "}
+                {documents.lastModifiedDate.toLocaleDateString()}
+              </p>
+            </div>
+          ) : (
+            <p>Select a file to show details</p>
+          )}
           {/* <div>
         </div>
         <br />

@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
 import { lightBlue } from "@mui/material/colors";
 import { Box, Divider } from "@mui/material";
+import axios from "axios";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -13,6 +14,8 @@ const TitleFrame = styled("div")({
   fontWeight: "bold",
   marginBottom: "1rem",
 });
+
+const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Department = () => {
   return (

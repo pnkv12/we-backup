@@ -8,6 +8,8 @@ import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
 import useAxios from "../../services/useAxios";
+// import Search from "@mui/icons-material/Search";
+import SearchFunction from "../../components/Search/SearchFunction";
 // import { DataGridPro, useGridApiRef } from "@mui/x-data-grid-pro";
 // import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
@@ -15,14 +17,13 @@ import Alert from "@mui/material/Alert";
 import { useNavigate } from "react-router-dom";
 import { textAlign } from "@mui/system";
 
-const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 const pageSize = 5;
 const rowsPerPageOptions = [5];
 
 const EmployeeTable = (props) => {
   const navigate = useNavigate();
   const [users, setUsers] = useState({});
-  // const [role, setRole] = useState({});
 
   const { response, loading, error } = useAxios({
     url: "users",
@@ -32,7 +33,6 @@ const EmployeeTable = (props) => {
   useEffect(() => {
     if (response != null) {
       const userList = response.map((user, id) => {
-        // const role = response.roles.find((r) => r._id === user.role_id);
         return {
           id: id + 1,
           userId: user._id,
@@ -40,7 +40,7 @@ const EmployeeTable = (props) => {
           email: user.email,
           fullname: user.fullname,
           roleId: user.role_id,
-          departmentId: user.department_id,
+          departId: user.department_id,
         };
       });
 
@@ -48,73 +48,14 @@ const EmployeeTable = (props) => {
     }
   }, [response]);
 
-  const columns = [
-    {
-      field: "action",
-      headerName: "Action",
-      width: 150,
-      renderCell: (params) => {
-        return (
-          <Box sx={{ display: "flex" }}>
-            <Button
-              title="edit"
-              variant="text"
-              color="secondary"
-              onClick={() => handleUpdate(params.row)}
-              fontSize="small"
-              size="small"
-            >
-              <EditIcon />
-            </Button>
-            <Button
-              title="delete"
-              variant="text"
-              color="error"
-              onClick={() => handleDelete(params.row.userId)}
-              fontSize="small"
-              size="small"
-            >
-              <HighlightOffIcon />
-            </Button>
-          </Box>
-        );
-      },
-    },
-    { field: "id", headerName: "ID", width: 70 },
-    { field: "username", headerName: "Username", width: 150, editable: true },
-    { field: "email", headerName: "Email", width: 250, editable: true },
-    {
-      field: "fullname",
-      headerName: "Full Name",
-      width: 200,
-      editable: true,
-    },
-    {
-      field: "roleId",
-      headerName: "Role",
-      width: 200,
-      editable: true,
-    },
-    {
-      field: "departmentId",
-      headerName: "Department",
-      width: 200,
-      editable: true,
-    },
-  ];
-
   const handleUpdate = async (params) => {
-    navigate(`edit/${params.userId}?username=${params.username}&email=${params.email}&fullname=${params.fullname}&password=${params.password}&role=${params.role_id}&dept=${params.department_id}
+    navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
   `);
   };
 
-  // const handleUpdate = async (userId) => {
-  //   this.navigate({
-  //     url: `/employees/edit/${userId}`,
-  //     username: user.username,
-  //     password: user.password,
-  //     fullname: user.fullname,
-  //   });
+  // const handleUpdate = async (params) => {
+  //   navigate(`/employees/edit/${params.userId}`);
+  //   console.log(params.userId);
   // };
 
   const handleDelete = async (userId) => {
@@ -139,6 +80,65 @@ const EmployeeTable = (props) => {
   if (error) throw error;
   if (loading) return <LoadingIndicator />;
   if (users.length === 0) return <PageNotFound />;
+
+  const columns = [
+    {
+      field: "action",
+      headerName: "",
+      width: 150,
+      renderCell: (params) => {
+        if (sessionStorage.getItem("role") !== "6248fd5cb7d420daa06ee42d") {
+          return (
+            <Box sx={{ display: "flex" }}>
+              <Button
+                title="edit"
+                variant="text"
+                color="secondary"
+                onClick={() => handleUpdate(params.row)}
+                fontSize="small"
+                size="small"
+              >
+                <EditIcon />
+              </Button>
+              <Button
+                title="delete"
+                variant="text"
+                color="error"
+                onClick={() => handleDelete(params.row.userId)}
+                fontSize="small"
+                size="small"
+              >
+                <HighlightOffIcon />
+              </Button>
+            </Box>
+          );
+        } else {
+          return null;
+        }
+      },
+    },
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "username", headerName: "Username", width: 150, editable: true },
+    { field: "email", headerName: "Email", width: 250, editable: true },
+    {
+      field: "fullname",
+      headerName: "Full Name",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "roleId",
+      headerName: "Role",
+      width: 200,
+      editable: true,
+    },
+    {
+      field: "departId",
+      headerName: "Department",
+      width: 200,
+      editable: true,
+    },
+  ];
 
   return (
     <Box

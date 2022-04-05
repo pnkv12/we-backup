@@ -35,17 +35,19 @@ const Home = () => {
         flexDirection: "column",
         m: 1,
         p: 3,
+        textAlign: "center",
+        alignItems: "center",
       }}
     >
       <h1>Welcome</h1>
       <img
-        src="images/jztr.png"
+        src="images/ak.jpg"
         style={{
-          height: "20rem",
-          width: "20rem",
+          height: "50%",
+          width: "50%",
         }}
       ></img>
-      <Box id="filters">
+      {/* <Box id="filters">
         <label htmlFor="category">Filter by:</label>{" "}
         <select
           id="size"
@@ -60,9 +62,8 @@ const Home = () => {
           <option value="Most Comments">Most Comments</option>
           <option value="CategoryCreate">CategoryCreate</option>
         </select>
-        {/* {category && <h2>Found {filteredProducts.length} items</h2>} */}
-      </Box>
-      <Box id="filters">
+      </Box> */}
+      {/* <Box id="filters">
         <label htmlFor="category">CategoryCreate:</label>{" "}
         <select
           id="size"
@@ -75,7 +76,7 @@ const Home = () => {
           <option value="Red">Red</option>
           <option value="Red">Red</option>
         </select>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

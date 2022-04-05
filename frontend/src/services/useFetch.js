@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const baseUrl = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
+const baseUrl = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 
 export default function useFetch(url) {
   const [data, setData] = useState(null);

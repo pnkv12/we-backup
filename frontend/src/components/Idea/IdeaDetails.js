@@ -13,8 +13,8 @@ import { ReturnLink } from "./IdeaButtons";
 import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
 
-const COMMENT_URL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/comments";
-const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
+const COMMENT_URL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0/comments";
+const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 
 let viewUpdated = false;
 const IdeaDetails = () => {
@@ -34,7 +34,7 @@ const IdeaDetails = () => {
     activeUpdate.id === idea.id;
   useEffect(() => {
     setTimeout(() => {
-      fetch("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
+      fetch("https://832a-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
         .then((res) => {
           if (!res.ok) {
             throw Error("could not fetch");
@@ -84,7 +84,7 @@ const IdeaDetails = () => {
 
   useEffect(() => {
     axios
-      .get("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
+      .get("https://832a-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
       .then((res) => {
         console.log(res.data.results.content);
         setNewIdea(res.data.results);
@@ -95,7 +95,7 @@ const IdeaDetails = () => {
   function submit(e) {
     e.preventDefault();
     axios
-      .patch(`https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/${id}`, data)
+      .patch(`https://832a-14-226-238-211.ap.ngrok.io/v1.0/idea/${id}`, data)
       .then((res) => {
         console.log(res.data);
         navigate("/ideas/" + id);
@@ -111,7 +111,7 @@ const IdeaDetails = () => {
   }
 
   const handleDelete = () => {
-    fetch("https://bffb-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id, {
+    fetch("https://832a-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id, {
       method: "DELETE",
     }).then(() => {
       navigate("/ideas");

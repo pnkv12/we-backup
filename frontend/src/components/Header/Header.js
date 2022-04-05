@@ -18,10 +18,12 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
 
+const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 const pages = ["Ideas", "Employees", "Dashboard"];
 
-const settings = ["Category", "Your Ideas"];
+const settings = ["Category"];
 
+const getRole = sessionStorage.getItem("role");
 function Header(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -46,29 +48,13 @@ function Header(props) {
 
   const handleLogout = async () => {
     try {
-      // const res = await axios({
-      //   method: "post", //you can set what request you want to be
-      //   url: "https://bffb-14-226-238-211.ap.ngrok.io/v1.0/logout",
-      //   // headers: {
-      //   //   // Authorization: 'Bearer ' + `${loggedInUser.token}`
-      //   //   // Authorization: `Bearer ${token}`,
-      //   //   "Access-Control-Allow-Origin": "*",
-      //   // },
-      //   withCredentials: true,
-      // });
-      const res = await axios.post(
-        `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/logout`,
-        {
-          withCredentials: true,
-          // headers: { "Access-Control-Allow-Origin": "*" },
-        }
-      );
-      if (res.session) {
-        // res.destroySession(false);
-        res.setIsAuthenticated(false);
-        sessionStorage.clear();
-        window.location.reload(false);
-        navigate("/login", { replace: true });
+      const res = await axios.post(`${baseURL}/logout`, {
+        withCredentials: true,
+      });
+      if (res.data != null || undefined) {
+        window.sessionStorage.clear();
+        navigate("/login");
+        window.location.reload();
       }
     } catch (e) {
       throw e;
@@ -85,166 +71,328 @@ function Header(props) {
     return `${count} notifications`;
   }
 
-  return (
-    <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Link to="/">
-            <img
-              src="images/Logo-Greenwich.png"
-              alt="FPTGreenwich"
-              style={{
-                maxHeight: "3rem",
-                marginRight: "2rem",
-                display: { xs: "none", md: "flex" },
-              }}
-            ></img>
-          </Link>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  {/* <Typography textAlign="center">{page}</Typography> */}
-                  <Button
-                    component={Link}
-                    sx={{ my: 1, color: "primary", display: "block" }}
-                    to={page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`}
-                  >
-                    {page}
-                  </Button>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                component={Link}
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
+  //Only Coordinator and Admin can create Cate
+  if (getRole === "62482516ad01d9a46b246089" || "6248fd50b7d420daa06ee42b") {
+    console.log(getRole);
+    return (
+      <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Link to="/">
+              <img
+                src="images/Logo-Greenwich.png"
+                alt="FPTGreenwich"
+                style={{
+                  maxHeight: "3rem",
                   marginRight: "2rem",
-                  color: "white",
-                  display: "block",
-                  textAlign: "center",
+                  display: { xs: "none", md: "flex" },
                 }}
-                to={page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`}
+              ></img>
+            </Link>
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
               >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
-          <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
-            <IconButton
-              color="whiteIcon"
-              aria-label={notificationsLabel(100)}
-              sx={{ marginRight: "2rem" }}
-            >
-              <Badge badgeContent={0} color="badge">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                <MenuIcon />
               </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem
-                key={userTitle}
-                onClick={handleCloseUserMenu}
-                divider={true}
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
+                }}
               >
-                <Typography color="primary">Hello,</Typography>
+                {pages.map((page) => (
+                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                    <Button
+                      component={Link}
+                      sx={{ my: 1, color: "primary", display: "block" }}
+                      to={
+                        page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`
+                      }
+                    >
+                      {page}
+                    </Button>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
                 <Button
                   component={Link}
+                  key={page}
+                  onClick={handleCloseNavMenu}
                   sx={{
-                    my: 1,
-                    color: "primary",
+                    marginRight: "2rem",
+                    color: "white",
                     display: "block",
-                    fontWeight: "bold",
                     textAlign: "center",
                   }}
-                  to={userTitle === "Username!" ? "/friend!" : `/${userTitle}`}
+                  to={page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`}
                 >
-                  {userTitle}
+                  {page}
                 </Button>
-              </MenuItem>
-              {settings.map((setting) => (
+              ))}
+            </Box>
+
+            <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
+              <IconButton
+                color="whiteIcon"
+                aria-label={notificationsLabel(100)}
+                sx={{ marginRight: "2rem" }}
+              >
+                <Badge badgeContent={0} color="badge">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
                 <MenuItem
-                  key={setting}
+                  key={userTitle}
                   onClick={handleCloseUserMenu}
                   divider={true}
                 >
+                  <Typography color="primary">Hello,</Typography>
                   <Button
+                    disabled
                     component={Link}
-                    to={setting === "Category" ? "/categories" : `/${setting}`}
+                    sx={{
+                      my: 1,
+                      color: "primary",
+                      display: "block",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                    to={
+                      userTitle === "Username!" ? "/friend!" : `/${userTitle}`
+                    }
                   >
-                    {setting}
+                    {userTitle}
                   </Button>
                 </MenuItem>
-              ))}
-              <MenuItem
-                onClick={() => {
-                  handleLogout();
-                  handleCloseUserMenu();
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting}
+                    onClick={handleCloseUserMenu}
+                    divider={true}
+                  >
+                    <Button
+                      component={Link}
+                      to={
+                        setting === "Category" ? "/categories" : `/${setting}`
+                      }
+                    >
+                      {setting}
+                    </Button>
+                  </MenuItem>
+                ))}
+
+                <MenuItem
+                  onClick={() => {
+                    handleLogout();
+                    handleCloseUserMenu();
+                  }}
+                >
+                  <Typography color="error">
+                    <LogoutIcon fontSize="small" /> Logout
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    );
+  } else {
+    return (
+      <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
+            <Link to="/">
+              <img
+                src="images/Logo-Greenwich.png"
+                alt="FPTGreenwich"
+                style={{
+                  maxHeight: "3rem",
+                  marginRight: "2rem",
+                  display: { xs: "none", md: "flex" },
+                }}
+              ></img>
+            </Link>
+
+            <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleOpenNavMenu}
+                color="inherit"
+              >
+                <MenuIcon />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorElNav}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                open={Boolean(anchorElNav)}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: "block", md: "none" },
                 }}
               >
-                <Typography color="error">
-                  <LogoutIcon fontSize="small" /> Logout
-                </Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
+                {pages.map((page) => (
+                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                    {/* <Typography textAlign="center">{page}</Typography> */}
+                    <Button
+                      component={Link}
+                      sx={{ my: 1, color: "primary", display: "block" }}
+                      to={
+                        page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`
+                      }
+                    >
+                      {page}
+                    </Button>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+
+            <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+              {pages.map((page) => (
+                <Button
+                  component={Link}
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                  sx={{
+                    marginRight: "2rem",
+                    color: "white",
+                    display: "block",
+                    textAlign: "center",
+                  }}
+                  to={page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Box>
+
+            <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
+              <IconButton
+                color="whiteIcon"
+                aria-label={notificationsLabel(100)}
+                sx={{ marginRight: "2rem" }}
+              >
+                <Badge badgeContent={0} color="badge">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  key={userTitle}
+                  onClick={handleCloseUserMenu}
+                  divider={true}
+                >
+                  <Typography color="primary">Hello,</Typography>
+                  <Button
+                    component={Link}
+                    sx={{
+                      my: 1,
+                      color: "primary",
+                      display: "block",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                    to={
+                      userTitle === "Username!" ? "/friend!" : `/${userTitle}`
+                    }
+                  >
+                    {userTitle}
+                  </Button>
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    handleLogout();
+                    handleCloseUserMenu();
+                  }}
+                >
+                  <Typography color="error">
+                    <LogoutIcon fontSize="small" /> Logout
+                  </Typography>
+                </MenuItem>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    );
+  }
 }
 export default Header;

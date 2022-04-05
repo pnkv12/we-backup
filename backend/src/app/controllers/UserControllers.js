@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Department = require("../models/Department");
+const Role = require("../models/Role");
 const bcrypt = require("bcrypt");
 const {
   registerValidation,
@@ -34,7 +36,6 @@ class UserController {
     try {
       const { username, password } = req.body;
       const user = await User.findOne({ username: username });
-
       if (!user) {
         return res.status(401).json("Username or password is incorrect");
       }
@@ -45,12 +46,15 @@ class UserController {
       if (check) {
         req.session.logged = user["_id"];
         req.session.userId = user["_id"];
-        req.session.userName = user["fullname"];
-        req.session.role = user["role_id"];
+        req.session.username = user["username"];
+        // req.session.userName = user["fullname"];
+        // req.session.role = user["role_id"];
         return res.status(200).json({
           status: "Login Successfully",
           fullname: user["fullname"],
+          email: user["email"],
           role: user["role_id"],
+          uid: user["_id"],
         });
       } else {
         return res.status(401).json("Username or password is incorrect");
@@ -80,7 +84,7 @@ class UserController {
       let updatedUser = {};
       if (req.body.password === undefined) {
         updatedUser = {
-          username: req.body.username,
+          // username: req.body.username,
           email: req.body.email,
           fullname: req.body.fullname,
           role_id: req.body.roleId,
@@ -92,7 +96,7 @@ class UserController {
         const hashedPassword = bcrypt.hashSync(req.body.password, salt);
 
         updatedUser = {
-          username: req.body.username,
+          // username: req.body.username,
           email: req.body.email,
           fullname: req.body.fullname,
           password: hashedPassword,

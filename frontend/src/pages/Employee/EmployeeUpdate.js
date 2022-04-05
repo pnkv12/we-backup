@@ -24,8 +24,7 @@ import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-// const token = window.localStorage.getItem("authToken");
-axios.defaults.baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -36,20 +35,20 @@ const TitleFrame = styled("div")({
 
 export default function EmployeeUpdate(props) {
   const [searchParams, setSearchParams] = useSearchParams();
+
   let { userId } = useParams();
 
   let fullname = searchParams.get("fullname");
   let email = searchParams.get("email");
-  // let username = searchParams.get("username");
-  let password = searchParams.get("password");
-  let role = searchParams.get("role_id");
-  let dept = searchParams.get("department_id");
-
+  // let password = searchParams.get("password");
+  let role = searchParams.get("role");
+  let dept = searchParams.get("dept");
   let navigate = useNavigate();
+
   const [user, setUser] = useState({
     fullname,
     email,
-    password,
+    // password,
     role,
     dept,
   });
@@ -58,26 +57,26 @@ export default function EmployeeUpdate(props) {
     setUser({
       fullname,
       email,
-      password,
+      // password,
       role,
       dept,
     });
-    // console.log(user);
-  }, [fullname, email, password, role, dept]);
+  }, [fullname, email, role, dept]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user != null) {
       axios({
         method: "patch",
-        url: `https://bffb-14-226-238-211.ap.ngrok.io/v1.0/user/${userId}`,
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   Authorization: `Bearer ${token}`,
-        // },
+        url: `${baseURL}/user/${userId}`,
         data: user,
       }).then((response) => {
+        sessionStorage.setItem("fullname", JSON.stringify(fullname));
+        sessionStorage.setItem("email", JSON.stringify(email));
+        sessionStorage.setItem("role", JSON.stringify(role));
+        sessionStorage.setItem("dept", JSON.stringify(dept));
         navigate("/employees");
+        window.location.reload();
       });
     }
   };
@@ -115,32 +114,12 @@ export default function EmployeeUpdate(props) {
             size="small"
           />
           <br />
-          {/* <TextField
-            id="outlined-basic"
-            type="text"
-            value={user?.username}
-            variant="outlined"
-            name="username"
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
-            size="small"
-          />
-          <br /> */}
-          <TextField
-            id="outlined-basic"
-            type="password"
-            value={user?.password}
-            variant="outlined"
-            name="password"
-            onChange={(e) => setUser({ ...user, password: e.target.value })}
-            size="small"
-          />
-          <br />
           <FormControl fullWidth>
             <InputLabel variant="standard" htmlFor="uncontrolled-native">
               Role
             </InputLabel>
             <NativeSelect
-              defaultValue={user?.role_id}
+              defaultValue={user?.role}
               inputProps={{
                 name: "role_id",
                 id: "uncontrolled-native",
@@ -159,7 +138,7 @@ export default function EmployeeUpdate(props) {
               Department
             </InputLabel>
             <NativeSelect
-              defaultValue={user?.department_id}
+              defaultValue={user?.dept}
               inputProps={{
                 name: "department_id",
                 id: "uncontrolled-native",
@@ -171,7 +150,6 @@ export default function EmployeeUpdate(props) {
             </NativeSelect>
           </FormControl>
           <br />
-
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="submit"

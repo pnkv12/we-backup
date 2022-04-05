@@ -9,7 +9,7 @@ import LoadingIndicator from "../../components/Loading";
 import Cookies from "universal-cookie";
 import { TrainOutlined } from "@material-ui/icons";
 
-const baseURL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
 
 function Login(props) {
   // const cookies = new Cookies();
@@ -43,15 +43,16 @@ function Login(props) {
         });
         window.sessionStorage.setItem("username", details.username);
         window.sessionStorage.setItem("fullname", response.data.fullname);
-        window.sessionStorage.setItem("password", details.password);
         window.sessionStorage.setItem("isAuthenticated", true);
         // window.sessionStorage.setItem("logged", details.logged);
-        // window.sessionStorage.setItem("userId", details.userId);
+        window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("role", response.data.role);
+        window.sessionStorage.setItem("department", response.data.dept);
+        window.sessionStorage.setItem("email", response.data.email);
       }
     } catch (error) {
       console.error(error);
-      setError("Username or Password do not match!");
+      setError(error);
     }
   };
 

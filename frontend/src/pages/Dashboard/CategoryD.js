@@ -16,7 +16,6 @@ const TitleFrame = styled("div")({
 
 const CategoryD = () => {
   return (
-
     <Box
       sx={{
         display: "flex",
@@ -75,7 +74,7 @@ const CategoryD = () => {
           <span>Latest comment: N/A</span>
         </Box>
         <Box>
-          Closure Date: { } <button>Download (.csv)</button>
+          Closure Date: {} <button>Download (.csv)</button>
         </Box>
       </Box>
 

@@ -1,9 +1,9 @@
-const API_URL = "https://bffb-14-226-238-211.ap.ngrok.io/v1.0";
-const https://bffb-14-226-238-211.ap.ngrok.io/v1.0 = "http://localhost:3000";
+const API_URL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
+const https://832a-14-226-238-211.ap.ngrok.io/v1.0 = "http://localhost:3000";
 
 describe("Login status", () => {
   before(() => {
-    cy.visit(`${https://bffb-14-226-238-211.ap.ngrok.io/v1.0}/login`);
+    cy.visit(`${https://832a-14-226-238-211.ap.ngrok.io/v1.0}/login`);
     // cy.get('input[name="username"]').type("trong@gmail.com")
     //     .get('input[name="password"]').type("trongvip")
     //     .get('button[type="submit"]').click();
@@ -29,7 +29,7 @@ describe("Login status", () => {
 
 // describe('API calls', () => {
 //     before(() => {
-//         cy.visit(`${https://bffb-14-226-238-211.ap.ngrok.io/v1.0}/login`);
+//         cy.visit(`${https://832a-14-226-238-211.ap.ngrok.io/v1.0}/login`);
 //         cy.get('input[name="username"]').type("trong@gmail.com")
 //             .get('input[name="password"]').type("trongvip")
 //             .get('button[type="submit"]').click();
