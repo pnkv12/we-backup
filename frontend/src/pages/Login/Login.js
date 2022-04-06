@@ -45,7 +45,6 @@ function Login(props) {
         window.sessionStorage.setItem("username", details.username);
         window.sessionStorage.setItem("fullname", response.data.fullname);
         window.sessionStorage.setItem("isAuthenticated", true);
-        // window.sessionStorage.setItem("logged", details.logged);
         window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("role", response.data.role);
         window.sessionStorage.setItem("department", response.data.dept);

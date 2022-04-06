@@ -16,6 +16,8 @@ import TextField from "@mui/material/TextField";
 const COMMENT_URL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments";
 const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
 
+const uid = window.sessionStorage.getItem("uid");
+
 let viewUpdated = false;
 const IdeaDetails = () => {
   const { id } = useParams();
@@ -86,7 +88,7 @@ const IdeaDetails = () => {
     axios
       .get("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
       .then((res) => {
-        console.log(res.data.results.content);
+        // console.log(res.data.results.content);
         setNewIdea(res.data.results);
       })
       .catch((err) => console.error(err));
@@ -192,7 +194,7 @@ const IdeaDetails = () => {
         </Box>
       )}
       <Divider sx={{ m: 2 }}>Comments</Divider>
-      {<Comments commentsUrl={COMMENT_URL} ideaId={id} currentUserId="1" />}
+      {<Comments ideaId={id} />}
     </Box>
   );
 };

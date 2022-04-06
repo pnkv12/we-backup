@@ -73,7 +73,7 @@ function Header(props) {
 
   //Only Coordinator and Admin can create Cate
   if (getRole === "62482516ad01d9a46b246089" || "6248fd50b7d420daa06ee42b") {
-    console.log(getRole);
+    // console.log(getRole);
     return (
       <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
         <Container maxWidth="xl">

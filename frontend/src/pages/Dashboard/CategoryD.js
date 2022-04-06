@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PieChart from "../../components/PieChart";
 import CateDD from "./Dropdown";
 import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
 import { lightBlue } from "@mui/material/colors";
 import { Box, Divider } from "@mui/material";
+import axios from "axios";
+import useAxios from "../../services/useAxios";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -14,7 +16,30 @@ const TitleFrame = styled("div")({
   marginBottom: "1rem",
 });
 
+const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+
 const CategoryD = () => {
+  
+
+  // const { res } = useAxios({
+  //   url: "ideas",
+  //   method: "get",
+  // });
+
+  // useEffect(() => {
+  //   if (res != null) {
+  //     const ideaList = response.map((idea) => {
+  //       return {
+  //         ideaId: idea._id,
+  //         view: idea.total_view,
+  //         reaction: idea.total_reaction,
+  //       };
+  //     });
+
+  //     setIdeas(ideaList);
+  //   }
+  // }, [res]);
+
   return (
     <Box
       sx={{

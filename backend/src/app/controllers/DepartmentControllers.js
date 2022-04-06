@@ -54,7 +54,6 @@ class DepartmentController {
         try {
             const depart = await Department.find({})
             res.status(200).json(depart)
-
         } catch (error) {
             res.status(500).json(error)
         }

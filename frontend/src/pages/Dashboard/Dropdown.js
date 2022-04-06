@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import useAxios from "../../services/useAxios";
+import axios from "axios";
 
 // This function get the Department list and show under dropdown
-function DeptDD({ list }) {
-  const [department, setDepartment] = useState("Select");
+const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
 
-  const departmentList = ["Math", "Science", "Biology", "IT", "Business"];
+/////////Lọc ra tổng ideas của mỗi department (theo department_id của user)//////////
+
+function DeptDropDown({ departmentList }) {
+  const [department, setDepartment] = useState();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -19,12 +23,9 @@ function DeptDD({ list }) {
       <label>
         Viewed by:
         <select value={department} onChange={handleChange}>
-          <option key={department} value="Select" hidden>
-            Select
-          </option>
           {departmentList.map((department) => (
-            <option key={department} value={department}>
-              {department}
+            <option key={department._id} value={department.name}>
+              {department.name}
             </option>
           ))}
         </select>
@@ -36,9 +37,18 @@ function DeptDD({ list }) {
 
 // This function get the CategoryCreate list and show under dropdown
 function CateDD({ list }) {
-  const [category, setCategory] = useState("Select");
+  const [category, setCategory] = useState();
+  const [categoryList, setCategoryList] = useState([]);
 
-  const categoryList = ["A", "B", "C"];
+  useEffect(() => {
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/categories`,
+        method: "get",
+      });
+      setCategoryList(response.data);
+    })();
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -53,12 +63,9 @@ function CateDD({ list }) {
       <label>
         Viewed by:
         <select value={category} onChange={handleChange}>
-          <option key={category} value="Select" hidden>
-            Select
-          </option>
           {categoryList.map((category) => (
-            <option key={category} value={category}>
-              {category}
+            <option key={category._id} value={category.name}>
+              {category.name}
             </option>
           ))}
         </select>
@@ -68,5 +75,5 @@ function CateDD({ list }) {
   );
 }
 
-export default DeptDD;
+export default DeptDropDown;
 export { CateDD };

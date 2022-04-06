@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PieChart from "../../components/PieChart";
-import DeptDD from "./Dropdown";
+import DeptDropDown from "./Dropdown";
 import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
 import { lightBlue } from "@mui/material/colors";
 import { Box, Divider } from "@mui/material";
 import axios from "axios";
+import useAxios from "../../services/useAxios";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -18,6 +19,38 @@ const TitleFrame = styled("div")({
 const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Department = () => {
+  const [ideas, setIdeas] = useState({});
+  const [departmentList, setDepartmentList] = useState([]);
+
+  const { response, loading, error } = useAxios({
+    url: "ideas",
+    method: "get",
+  });
+
+  useEffect(() => {
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/departments`,
+        method: "get",
+      });
+      setDepartmentList(response.data);
+    })();
+  }, []);
+
+  // useEffect(() => {
+  //   if (response != null) {
+  //     console.log(response);
+  //     const ideaList = response.map((idea) => {
+  //       return {
+  //         ideaId: idea._id,
+  //         view: idea.total_view,
+  //         reaction: idea.total_reaction,
+  //       };
+  //     });
+  //     setIdeas(ideaList);
+  //   }
+  // }, [response]);
+
   return (
     <Box
       sx={{
@@ -26,6 +59,8 @@ const Department = () => {
         justifyContent: "center",
       }}
     >
+      <p>Lấy tổng ideas của mỗi department (theo department_id của user)</p>
+
       <Box
         sx={{
           width: "50%",
@@ -39,7 +74,7 @@ const Department = () => {
           }}
         ></Divider>
         <Box>
-          <DeptDD />
+          <DeptDropDown departmentList={departmentList} />
         </Box>
         {/* Dynamic detail panel */}
         <Box
@@ -54,12 +89,12 @@ const Department = () => {
           }}
         >
           {/* Number of ideas by employees who belongs in a department */}
-          {/* <span>
-          Ideas:
-          {ideas.length}
-        </span> */}
+          <span>
+            Ideas:
+            {ideas.length}
+          </span>
           {/* Idea with most thumbs and comments in the department*/}
-          <span>Most popular: N/A</span>
+          <span>Most likes: N/A</span>
           <br />
           {
             //ideas.filter()
@@ -93,8 +128,19 @@ const Department = () => {
           borderRadius: "25px",
         }}
       >
-        {/* <p>Total ideas: {ideas.length} </p> */}
-        <PieChart />
+        <PieChart
+          data={{
+            // take the name in department table
+            labels: departmentList.map((department) => department.name),
+            datasets: [
+              {
+                //number of ideas belong to that department
+                data: [6, 7],
+                backgroundColor: ["red", "blue", "green", "yellow"],
+              },
+            ],
+          }}
+        />
       </Box>
     </Box>
   );

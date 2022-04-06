@@ -5,7 +5,7 @@ import {
   updateComment as updateCommentApi,
 } from "./api";
 import Comment from "./Comment";
-import CommentForm from "./CommentForm";
+import CreateComment from "./CreateComment";
 import data from "../../data/comments.json";
 import useFetch from "./useFetch";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
@@ -17,7 +17,6 @@ import Typography from "@mui/material/Typography";
 import "./styles.css";
 import axios from "axios";
 
-const token = window.localStorage.getItem("authToken");
 const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
@@ -30,12 +29,7 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
     (async function () {
       try {
         const response = await axios.get(
-          `${baseURL}/comments?ideaId=${ideaId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          `${baseURL}/comments?ideaId=${ideaId}`
         );
 
         console.log("comments of this idea:", response.data);
@@ -50,40 +44,6 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
     })();
   }, [ideaId]);
 
-  // if (response !== null) {
-  //     setComments(response.data)
-  // }
-  // if (loading) return <LoadingIndicator />;
-  // if (error) throw error;
-  // if (Comments.length === 0) return <PageNotFound />;
-
-  // useEffect(() => {
-  //     getCommentsApi().then((data) => {
-  //         setComments(data);
-  //     });
-  //     // Trong Edited
-  // }, [ideaId]);
-
-  // useEffect(() => {
-  //     setRootComments(Comments.filter(
-  //         (Comment) => Comment.parentId === null && Comment.ideaId === ideaId));
-  //     // Trong Edited
-  // }, [Comments, ideaId])
-
-  // const createComment = (content, parentId) => {
-  //     console.log("Add Comment", content, parentId);
-  // useCreateComment(text, parentId, ideaId).then(comment => {
-  //     setRootComments([comment, ...Comments])
-  // });
-  // }
-  // const deleteComment = (commentId) => {
-  //     if (window.confirm('Ae you sure')){
-  //         deleteCommentApi(commentId).then(() => {
-  //             const updatedComments = Comments.filter((Comment) => Comment.id !== commentId)
-  //             setComments(updatedComments);
-  //         });
-  //     }
-  // }
   const updateComment = (text, commentId) => {
     updateCommentApi(text).then(() => {
       const updatedComments = comments.map((Comment) => {
@@ -100,23 +60,11 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   return (
     <Box>
       <Typography variant="h6">Write comment</Typography>
-      <CommentForm
-        ideaId={ideaId}
-        handleSubmit={(text, parentId) => {
-          setRootComments([text, ...comments]);
-        }}
-      />
+      <CreateComment ideaId={ideaId} />
       <Divider />
       <Box>
         {rootComments.map((rootComment) => (
-          <Comment
-            key={rootComment._id}
-            comment={rootComment}
-            updateComment={updateComment}
-            activeComment={activeComment}
-            setActiveComment={setActiveComment}
-            currentUserId={currentUserId}
-          />
+          <Comment currentUserId={currentUserId} />
         ))}
       </Box>
       <br />

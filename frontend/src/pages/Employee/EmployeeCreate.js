@@ -31,13 +31,53 @@ export default function EmployeeCreate(props) {
   let navigate = useNavigate();
   // const token = window.localStorage.getItem('authToken');
   // const [result, setResult] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   // const { response, loading, error } = useAxios({
   //     url: "users",
   //     method: "post",
   //     body: user,
   //     // headers: { token: token }
   // });
+
+  // router.get("/roles", roleController.getAllRole); //? Get all roles
+  // const [role, setRole] = useState();
+  const [roleData, setRoleData] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/roles`,
+        method: "get",
+      });
+      console.log(response.data);
+      setRoleData(response.data);
+    })();
+
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/departments`,
+        method: "get",
+      });
+      setDepartmentData(response.data);
+    })();
+
+  }, []);
+
+  // useEffect(() => {
+  //   (async function () {
+  //     const response = await axios({
+  //       url: `${baseURL}/departments`,
+  //       method: "get",
+  //     });
+  //     setDepartmentData(response.data);
+  //   })();
+  // }, []);
+
+  // const handleChange = (e) => {
+  //   setRole(e.target.value);
+  //   // setDepartment(e.target.value);
+  // };
 
   const createUser = () => {
     if (user != null) {
@@ -143,35 +183,38 @@ export default function EmployeeCreate(props) {
           <br />
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
+
             <Select
+              // value={role}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Role"
               name="role_id"
               onChange={(e) => setUser({ ...user, roleId: e.target.value })}
             >
-              <MenuItem value={"6248fd50b7d420daa06ee42b"}>Admin</MenuItem>
-              <MenuItem value={"62482a63ad01d9a46b24608b"}>QAM</MenuItem>
-              <MenuItem value={"62482516ad01d9a46b246089"}>
-                Coordinator
-              </MenuItem>
-              <MenuItem value={"6248fd5cb7d420daa06ee42d"}>Staff</MenuItem>
+              {roleData.map((role) => (
+                <MenuItem key={role._id} value={role._id}>
+                  {role.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <br />
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Department</InputLabel>
             <Select
+              // value={department}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Department"
               name="department_id"
               onChange={(e) => setUser({ ...user, departId: e.target.value })}
             >
-              <MenuItem value={"6249c9dcabe8dbf2e9785f4c"}>IT Lab</MenuItem>
-              <MenuItem value={"6249cd25abe8dbf2e9785f8b"}>
-                Business Room
-              </MenuItem>
+              {departmentData.map((department) => (
+                <MenuItem key={department._id} value={department._id}>
+                  {department.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <br />

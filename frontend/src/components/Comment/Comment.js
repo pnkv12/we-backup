@@ -9,15 +9,13 @@ import { Box, Divider } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { replyBox } from "../../styles/boxStyles";
 
-const Comment = ({
-  comment,
-  setActiveComment,
-  activeComment,
-  updateComment,
-  createComment,
-  parentId,
-  currentUserId,
-}) => {
+const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const Comment = ({ currentUserId }) => {
+  const { id } = useParams();
+  const [comment, setComment] = useState();
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeComment, setActiveComment] = useState(null);
   const canDelete = currentUserId === comment.userId;
   const canEdit = currentUserId === comment.userId;
 
@@ -27,6 +25,33 @@ const Comment = ({
     activeComment.id === comment._id;
   const navigate = useNavigate();
   const [content, setContent] = useState();
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetch("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment/" + id)
+        .then((res) => {
+          if (!res.ok) {
+            throw Error("could not fetch");
+          }
+          return res.json();
+        })
+        .then((comment) => {
+          setComment(comment);
+          setIsPending(false);
+          setError(null);
+          console.log(comment);
+        })
+        .catch((err) => {
+          if (err.name === "AbortError") {
+            console.log("fetch aborted");
+          } else {
+            setIsPending(false);
+            setError(err.message);
+          }
+        });
+    }, 1000);
+  }, []);
+
   const deleteComment = async () => {
     fetch(
       "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments/" + comment._id,
@@ -35,6 +60,7 @@ const Comment = ({
       }
     );
   };
+  const updateComment = () => {};
 
   return (
     <Box key={comment.id} sx={replyBox}>
@@ -44,7 +70,6 @@ const Comment = ({
       <div className="comment-right-part">
         <div className="comment-content">
           <div className="comment-author">{comment._id}</div>
-          <div>{comment.createdAt}</div>
         </div>
         {!isEditing && <div className="comment-text">{comment.content}</div>}
         {isEditing && (

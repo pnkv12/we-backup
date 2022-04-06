@@ -44,6 +44,27 @@ export default function EmployeeUpdate(props) {
   let role = searchParams.get("role");
   let dept = searchParams.get("dept");
   let navigate = useNavigate();
+  const [roleData, setRoleData] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/roles`,
+        method: "get",
+      });
+      // console.log(response.data);
+      setRoleData(response.data);
+    })();
+
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/departments`,
+        method: "get",
+      });
+      setDepartmentData(response.data);
+    })();
+  }, []);
 
   const [user, setUser] = useState({
     fullname,
@@ -115,39 +136,42 @@ export default function EmployeeUpdate(props) {
           />
           <br />
           <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-              Role
-            </InputLabel>
-            <NativeSelect
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+
+            <Select
               defaultValue={user?.role}
-              inputProps={{
-                name: "role_id",
-                id: "uncontrolled-native",
-              }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Role"
+              name="role_id"
               onChange={(e) => setUser({ ...user, roleId: e.target.value })}
             >
-              <option value={"6248fd50b7d420daa06ee42b"}>Admin</option>
-              <option value={"62482a63ad01d9a46b24608b"}>QAM</option>
-              <option value={"62482516ad01d9a46b246089"}>Coordinator</option>
-              <option value={"6248fd5cb7d420daa06ee42d"}>Staff</option>
-            </NativeSelect>
+              {roleData.map((role) => (
+                <MenuItem key={role._id} value={role._id}>
+                  {role.name}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <br />
           <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+            <InputLabel variant="standard" id="demo-simple-select-label">
               Department
             </InputLabel>
-            <NativeSelect
+            <Select
               defaultValue={user?.dept}
-              inputProps={{
-                name: "department_id",
-                id: "uncontrolled-native",
-              }}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Department"
+              name="department_id"
               onChange={(e) => setUser({ ...user, departId: e.target.value })}
             >
-              <option value={"6249c9dcabe8dbf2e9785f4c"}>IT Lab</option>
-              <option value={"6249cd25abe8dbf2e9785f8b"}>Business Room</option>
-            </NativeSelect>
+              {departmentData.map((department) => (
+                <MenuItem key={department._id} value={department._id}>
+                  {department.name}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <br />
           <Box sx={{ display: "flex", justifyContent: "center" }}>

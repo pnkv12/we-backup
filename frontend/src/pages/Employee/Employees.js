@@ -13,7 +13,7 @@ function Employees() {
     return (
       <Box>
         <Box sx={employeeBoxStyle}>
-          <SearchFunction page="employees"></SearchFunction>
+          {/* <SearchFunction page="employees"></SearchFunction> */}
           <CreateStaffBtn />
         </Box>
         <EmployeeTable></EmployeeTable>
@@ -22,9 +22,9 @@ function Employees() {
   } else {
     return (
       <Box>
-        <Box sx={employeeBoxStyle}>
+        {/* <Box sx={employeeBoxStyle}>
           <SearchFunction page="employees"></SearchFunction>
-        </Box>
+        </Box> */}
         <EmployeeTable></EmployeeTable>
       </Box>
     );

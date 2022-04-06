@@ -2,26 +2,28 @@ import "chart.js/auto";
 import { Pie } from "react-chartjs-2";
 import { Box, Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from "react";
 
 // import useFetch from "../services/useFetch";
 // import PageNotFound from "./errorHandling/PageNotFound";
 // import LoadingIndicator from "./Loading";
 
-const data = {
-  // take the name in department
-  labels: ["Math", "Biology", "Physics", "IT", "Business"],
-  datasets: [
-    {
-      //number of ideas belong to that department
-      data: [6, 7, 10, 44, 23],
+// const [deptName, setDeptName] = useState();
 
-      // để yên đấy, xin cảm ơn
-      backgroundColor: ["red", "blue", "yellow", "green", "purple"],
-    },
-  ],
-};
+// const data = {
+//   // take the name in department table
+//   labels: ["IT Lab", "Business Room"],
+//   datasets: [
+//     {
+//       //number of ideas belong to that department
+//       data: [6, 7],
 
-function PieChart() {
+//       backgroundColor: ["red", "blue"],
+//     },
+//   ],
+// };
+
+function PieChart({ data }) {
   // const { data: ideas, loading, error } = useFetch(
   //   "idea"
   // );

@@ -49,7 +49,9 @@ const EmployeeTable = (props) => {
   }, [response]);
 
   const handleUpdate = async (params) => {
-    navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
+  //     navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
+  // `);
+          navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
   `);
   };
 
