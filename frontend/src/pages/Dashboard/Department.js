@@ -15,7 +15,7 @@ const TitleFrame = styled("div")({
   marginBottom: "1rem",
 });
 
-const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Department = () => {
   return (

@@ -9,10 +9,11 @@ import LoadingIndicator from "../../components/Loading";
 import Cookies from "universal-cookie";
 import { TrainOutlined } from "@material-ui/icons";
 
-const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+
+const localBaseURL = "http://localhost:8000/v1.0";
 
 function Login(props) {
-  // const cookies = new Cookies();
   const [user, setUser] = useState({ username: "" });
   const [error, setError] = useState("");
   const { setIsAuthenticated } = useAppContext();

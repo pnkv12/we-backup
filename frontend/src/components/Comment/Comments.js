@@ -18,7 +18,7 @@ import "./styles.css";
 import axios from "axios";
 
 const token = window.localStorage.getItem("authToken");
-const baseURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
 
 const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');

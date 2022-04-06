@@ -34,8 +34,8 @@ const CategoryCreate = () => {
   const [updated_at, setUpdateDate] = useState();
   const [isPending, setIsPending] = useState(false);
 
-  const cateListUrl = "https://832a-14-226-238-211.ap.ngrok.io/v1.0/categories";
-  const getCateURL = "https://832a-14-226-238-211.ap.ngrok.io/v1.0/category";
+  const cateListUrl = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/categories";
+  const getCateURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/category";
   const [CategoryList, setCategory] = useState([]);
 
   useEffect(() => {

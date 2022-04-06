@@ -1,5 +1,5 @@
 {
-    "https://832a-14-226-238-211.ap.ngrok.io/v1.0": "http://localhost:3000/",
+    "https://1d65-14-226-238-211.ap.ngrok.io/v1.0": "http://localhost:3000/",
     "env": {
         "authToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
         "username": "trong@gmail.com",

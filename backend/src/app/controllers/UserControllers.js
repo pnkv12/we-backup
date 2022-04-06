@@ -90,6 +90,8 @@ class UserController {
           role_id: req.body.roleId,
           department_id: req.body.departId,
         };
+
+
       } else {
         //? Hash password
         const salt = bcrypt.genSaltSync(10);
@@ -136,11 +138,16 @@ class UserController {
   async getAUser(req, res, next) {
     try {
       const user = await User.findById(req.params.id);
+      user.role_name =  (await Role.findById(user.role_id)).name;
+      user.department_name =  (await Department.findById(user.department_id)).name;
+
       res.status(200).json(user);
     } catch (error) {
       res.status(500).json(error);
     }
   }
+
+
 
   // [GET] /users
   async getAllUser(req, res, next) {
