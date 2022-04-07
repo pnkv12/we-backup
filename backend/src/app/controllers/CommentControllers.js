@@ -9,12 +9,12 @@ class CommentController {
 
         try {
             const ideaId = req.body.idea_id 
-            const userId = req.session.userId
+           
             const data = {
                 content: req.body.content,
                 anonymousMode: req.body.anonymousMode,
                 idea_id: req.body.idea_id,
-                user_id: userId
+                user_id: req.body.user_id
             }
             const newComment = await Comment(data)
             const savedComment = await newComment.save()

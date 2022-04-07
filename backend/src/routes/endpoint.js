@@ -79,6 +79,9 @@ router.post("/reaction", reactController.createReact);
 router.patch("/react/:id", reactController.updateReact);
 router.get("/react", reactController.getAllReact);
 
+router.post("/thumbUp/:ideaId/:userId", reactController.thumbUp);
+router.post("/thumbDown/:ideaId/:userId", reactController.thumbDown);
+
 //* Category
 router.post("/category", categoryController.categoryCreate); //? Create a category
 router.put("/category/:id", categoryController.categoryUpdate); //? Update a category

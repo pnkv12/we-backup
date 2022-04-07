@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
 import SearchFunction from "../../components/Search/SearchFunction";
+import VisibilityIcon from '@mui/icons-material/Visibility';
 // import useFetch from "../../services/useFetch";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
@@ -27,6 +28,7 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
 const baseURL = "http://localhost:8000/v1.0";
+const uid = window.sessionStorage.getItem("uid");
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -48,6 +50,7 @@ const Idea = () => {
   const [ownerName, setOwnerName] = useState();
 
   const [page, setPage] = useState(1);
+  const [state, setState] = useState(0);
 
   const limit = 5;
   const startIndex = (page - 1) * limit;
@@ -105,6 +108,20 @@ const Idea = () => {
       page: 1,
     });
   };
+
+
+  const thumbUp = async (ideaId) => {
+    console.log(`${uid} likes ${ideaId}`);
+    await axios.post(`http://localhost:8000/v1.0/thumbUp/${ideaId}/${uid}`);
+    window.location.reload(true);
+  };
+
+  const thumbDown = async (ideaId) => {
+    console.log(`${uid} dislikes ${ideaId}`);
+    await axios.post(`http://localhost:8000/v1.0/thumbDown/${ideaId}/${uid}`);
+    window.location.reload(true);
+  };
+
 
   const handleFiltersChange = (newFilters) => {
     console.log(newFilters);
@@ -215,12 +232,12 @@ const Idea = () => {
                   secondary={
                     <>
                       <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="h6"
+                          color="text.primary"
+                          data-testid="idea-title"
                       >
-                        Views: {idea.views}
                         <br />
                         Content: {idea.content}
                       </Typography>
@@ -230,20 +247,32 @@ const Idea = () => {
                             color="secondary"
                             aria-label="likes"
                             component="span"
+                            onClick={() => thumbUp(`${idea._id}`)}
                           >
                             <ThumbUpOffAltIcon />
                           </IconButton>
-                          <Typography>(1)</Typography>
+                          <Typography>{idea.thumbsUp.length}</Typography>
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
                             color="secondary"
                             aria-label="dislikes"
                             component="span"
+                            onClick={() => thumbDown(`${idea._id}`)}
                           >
                             <ThumbDownOffAltIcon />
                           </IconButton>
-                          <Typography>(3)</Typography>
+                          <Typography>{idea.thumbsDown.length}</Typography>
+                        </Box>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <IconButton
+                              color="secondary"
+                              aria-label="views"
+                              component="span"
+                          >
+                            <VisibilityIcon />
+                          </IconButton>
+                          <Typography>{idea.total_view}</Typography>
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
@@ -256,6 +285,7 @@ const Idea = () => {
                           <Typography>{commentsCounter}</Typography>
                         </Box>
                       </Box>
+
                     </>
                   }
                 />

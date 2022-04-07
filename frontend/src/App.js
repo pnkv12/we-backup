@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { grey, orange, blue, red, green } from "@mui/material/colors";
 import { AppContext } from "./lib/contextLib";
+import { useNavigate } from "react-router-dom";
 import {
   BrowserRouter as Router,
   Routes,
@@ -25,6 +26,10 @@ import CategoryCreate from "./components/CategoryCreate";
 import Comments from "./components/Comment/Comments";
 import IdeaDetails from "./components/Idea/IdeaDetails";
 import EmployeeUpdate from "./pages/Employee/EmployeeUpdate";
+import QCHome from "./pages/QCHome";
+import QAManagerHome from "./pages/QAManagerHome";
+import AdministratorHome from "./pages/AdministratorHome";
+
 
 const theme = createTheme({
   palette: {
@@ -97,16 +102,52 @@ function App() {
                   }
                 />
 
-                <Route
-                  path="/ideas"
-                  element={
-                    isAuthenticated ? (
-                      <Idea />
-                    ) : (
-                      <Login authenticate={setIsAuthenticated} />
-                    )
-                  }
-                />
+
+                  <Route
+                      path="/QC"
+                      element={
+                          isAuthenticated ? (
+                              <QCHome />
+                          ) : (
+                              <Login authenticate={setIsAuthenticated} />
+                          )
+                      }
+                  />
+
+                  <Route
+                      path="/QAManager"
+                      element={
+                          isAuthenticated ? (
+                              <QAManagerHome />
+                          ) : (
+                              <Login authenticate={setIsAuthenticated} />
+                          )
+                      }
+                  />
+                  <Route
+                      path="/Administrator"
+                      element={
+                          isAuthenticated ? (
+                              <AdministratorHome />
+                          ) : (
+                              <Login authenticate={setIsAuthenticated} />
+                          )
+                      }
+                  />
+
+
+                  <Route
+                      path="/ideas"
+                      element={
+                          isAuthenticated ? (
+                              <Idea />
+                          ) : (
+                              <Login authenticate={setIsAuthenticated} />
+                          )
+                      }
+                  />
+
+
 
                 <Route
                   path="/ideas/:id"

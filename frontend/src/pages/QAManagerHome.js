@@ -10,44 +10,44 @@ import { Button } from "@mui/material";
 import styled from "@emotion/styled";
 import { Box, Divider } from "@mui/material";
 
-const Home = () => {
-  // const { response, loading, error } = useAxios({
-  //   url: "ideas",
-  //   method: "get",
-  // });
+const QAManagerHome = () => {
+    // const { response, loading, error } = useAxios({
+    //   url: "ideas",
+    //   method: "get",
+    // });
 
-  // const [ideas, setIdeas] = useState([]);
+    // const [ideas, setIdeas] = useState([]);
 
-  // useEffect(() => {
-  //   if (response != null) {
-  //     setIdeas(response);
-  //   }
-  // }, [response]);
+    // useEffect(() => {
+    //   if (response != null) {
+    //     setIdeas(response);
+    //   }
+    // }, [response]);
 
-  // if (error) throw error;
-  // if (loading) return <LoadingIndicator />;
-  // if (ideas.length === 0) return <PageNotFound />;
+    // if (error) throw error;
+    // if (loading) return <LoadingIndicator />;
+    // if (ideas.length === 0) return <PageNotFound />;
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        m: 1,
-        p: 3,
-        textAlign: "center",
-        alignItems: "center",
-      }}
-    >
-      <h1>Welcome</h1>
-      <img
-        src="images/staff.jpg"
-        style={{
-          height: "50%",
-          width: "50%",
-        }}
-      ></img>
-      {/* <Box id="filters">
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                m: 1,
+                p: 3,
+                textAlign: "center",
+                alignItems: "center",
+            }}
+        >
+            <h1>Welcome</h1>
+            <img
+                src="images/qamanager.jpeg"
+                style={{
+                    height: "50%",
+                    width: "50%",
+                }}
+            ></img>
+            {/* <Box id="filters">
         <label htmlFor="category">Filter by:</label>{" "}
         <select
           id="size"
@@ -63,7 +63,7 @@ const Home = () => {
           <option value="CategoryCreate">CategoryCreate</option>
         </select>
       </Box> */}
-      {/* <Box id="filters">
+            {/* <Box id="filters">
         <label htmlFor="category">CategoryCreate:</label>{" "}
         <select
           id="size"
@@ -77,8 +77,8 @@ const Home = () => {
           <option value="Red">Red</option>
         </select>
       </Box> */}
-    </Box>
-  );
+        </Box>
+    );
 };
 
-export default Home;
+export default QAManagerHome;

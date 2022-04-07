@@ -31,6 +31,77 @@ class ReactionController {
         }
     }
 
+
+    // [POST] /thumbUp/:ideaId/:userId
+    async thumbUp(req, res, next){
+        try {
+            const ideaId = req.params.ideaId
+            const userId = req.params.userId
+
+            // Update total reaction in idea collection
+            const idea = await Idea.findById(ideaId)
+
+            await idea.updateOne( {
+                $pullAll: {
+                    thumbsDown: [{_id: userId}],
+                },
+            })
+
+            await idea.updateOne( {
+                $addToSet: {
+                    thumbsUp: {
+                        $each: [userId]
+                    }
+                }
+            })
+
+            res.status(200).json({
+                message: 'New reaction has been created',
+                updated: 'Total reaction have been updated'
+            })
+
+        } catch (error) {
+            console.log(error);
+            res.status(300).json(error)
+        }
+    }
+
+    // [POST] /thumbDown/:ideaId/:userId
+    async thumbDown(req, res, next){
+        try {
+            const ideaId = req.params.ideaId
+            const userId = req.params.userId
+
+            // Update total reaction in idea collection
+            const idea = await Idea.findById(ideaId)
+
+            await idea.updateOne( {
+                $pullAll: {
+                    thumbsUp: [{_id: userId}],
+                },
+            })
+
+            await idea.updateOne( {
+                $addToSet: {
+                    thumbsDown: {
+                        $each: [userId]
+                    }
+                }
+            })
+
+            res.status(200).json({
+                message: 'New reaction has been created',
+                updated: 'Total reaction have been updated'
+            })
+
+        } catch (error) {
+            console.log(error);
+            res.status(300).json(error)
+        }
+    }
+
+
+
     // [PATCH] /react/:id
     async updateReact(req, res, next){
 

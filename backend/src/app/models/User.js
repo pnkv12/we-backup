@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
         role_id: {type: String, required: true},
         department_id: {type: String, required: true},
         department_name: {type: String, default: "unknown"},
-        role_name: {type: String, default: "Staff"}
+        role_name: {type: String, default: "Staff"},
 
     }, {timestamps: true}
 )

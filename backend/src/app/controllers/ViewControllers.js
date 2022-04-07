@@ -15,26 +15,27 @@ class ViewController {
             const savedView = await newView.save()
 
             // Count total view 
-            const views = await View.find({user_id: userId})
-            const countViews = views.length
+            const viewsOfIdea = await View.find({idea_id: ideaId})
+            const countViews = viewsOfIdea.length
 
             // Update total_view in idea collection 
             const idea = await Idea.findById(ideaId)
             await idea.updateOne({ $set: {total_view: countViews}})
 
             res.status(200).json({
-
                 message: 'New view has been created',
                 view: savedView,
-                updated: 'Total views have been updated' 
-
+                updated: 'Total views have been updated'
             })
 
         } catch (error) {
             res.status(500).json(error)
         }
     }
-    
+
+
+
+
 }
 
 module.exports = new ViewController

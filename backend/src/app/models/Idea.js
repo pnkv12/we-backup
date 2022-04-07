@@ -16,7 +16,19 @@ const IdeaSchema = new mongoose.Schema({
             }
         ],
         total_view: {type: String, default: ""},
-        total_reaction: {type: String, default: ""}
+        total_reaction: {type: String, default: ""},
+        thumbsUp: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            }
+        ],
+        thumbsDown: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+            }
+        ],
 
     }, {timestamps: true}
 )

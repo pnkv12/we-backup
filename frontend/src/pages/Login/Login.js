@@ -8,6 +8,7 @@ import useAxios from "../../services/useAxios";
 import LoadingIndicator from "../../components/Loading";
 import Cookies from "universal-cookie";
 import { TrainOutlined } from "@material-ui/icons";
+import { useNavigate } from "react-router-dom";
 
 const baseURL = "http://localhost:8000/v1.0";
 
@@ -17,6 +18,9 @@ function Login(props) {
   const [user, setUser] = useState({ username: "" });
   const [error, setError] = useState("");
   const { setIsAuthenticated } = useAppContext();
+
+  const navigate = useNavigate();
+
 
   const logIn = async (details) => {
     try {
@@ -31,7 +35,7 @@ function Login(props) {
           // headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      // console.log(response.headers);
+      console.log(response.data);
 
       // let cookie = response.headers["set-cookie"];
       // console.log(cookie);
@@ -48,8 +52,24 @@ function Login(props) {
         // window.sessionStorage.setItem("logged", details.logged);
         window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("role", response.data.role);
+        window.sessionStorage.setItem("roleName", response.data.roleName);
+        window.sessionStorage.setItem("departmentName", response.data.departmentName);
         window.sessionStorage.setItem("department", response.data.dept);
         window.sessionStorage.setItem("email", response.data.email);
+
+        if(response.data.roleName === "Staff"){
+          navigate("/");
+        } else if(response.data.roleName === "Administrator"){
+          navigate("/Administrator");
+        } else if(response.data.roleName === "Coordinator"){
+          navigate("/QC");
+        } else if(response.data.roleName === "Manager"){
+          navigate("/QAManager");
+        } else {
+          navigate("/");
+        }
+
+
       }
     } catch (error) {
       console.error(error);
