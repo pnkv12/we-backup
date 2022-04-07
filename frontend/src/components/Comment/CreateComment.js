@@ -27,7 +27,7 @@ const CreateComment = (ideaId) => {
     const comment = { content, idea_id, user_id: "624914af542d2a0c93923545" };
 
     console.log(comment);
-    window.location.reload();
+
     try {
       axios
         .post(`https://be-enterprise.herokuapp.com/v1.0/comment`, comment, {

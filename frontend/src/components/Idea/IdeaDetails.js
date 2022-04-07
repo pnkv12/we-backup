@@ -194,7 +194,7 @@ const IdeaDetails = () => {
         </Box>
       )}
       <Divider sx={{ m: 2 }}>Comments</Divider>
-      {<Comments ideaId={id} />}
+      {<Comments commentsUrl={COMMENT_URL} ideaId={id} currentUserId={uid}/>}
     </Box>
   );
 };

@@ -18,15 +18,13 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import "./styles.css";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const uid = window.sessionStorage.getItem("uid");
 
 const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
-  // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');
   const [comments, setComments] = useState([]);
-  const [content, setContent] = useState();
-  const [activeComment, setActiveComment] = useState(null);
 
   useEffect(() => {
     (async function () {
@@ -35,13 +33,14 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
 
         console.log("comments of this idea:", response.data);
         if (response != null) {
-          const commentList = response.data.map((comment) => {
+          const commentList = response.data.map((comment,id) => {
             return {
-              commentId: comment.comment_id,
+              id: id + 1,
+              commentId: comment._id,
               content: comment.content,
             };
           });
-
+          console.log(response.data);
           setComments(response.data);
         }
       } catch (e) {
@@ -50,24 +49,34 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
     })();
   }, []);
 
-  const updateComment = (text, commentId) => {
-    updateCommentApi(text).then(() => {
-      const updatedComments = comments.map((Comment) => {
-        if (Comment._id === commentId) {
-          return { ...Comment, body: text };
-        }
-        return Comment;
-      });
-      setComments(updatedComments);
-      setActiveComment(null);
-    });
-  };
 
-  const deleteComment = async () => {
-    fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + Comment._id, {
-      method: "DELETE",
-    });
-  };
+
+  // const updateComment = (params) => {
+  //   axios
+  //     .patch(`https://be-enterprise.herokuapp.com/v1.0/comment/${params.commentId}`, data)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       navigate("/idea/" + ideaId);
+  //       window.location.reload(false);
+  //     })
+  //     .catch((err) => console.error(err));
+  //     // setComments();
+  //     setActiveCommentUpdate(null);
+  // };
+
+  // const deleteComment = async (commentId) => {
+  //   fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + commentId, {
+  //     method: "DELETE",
+  //   });
+  // };
+
+  // const handleDelete = () => {
+  //   fetch("https://be-enterprise.herokuapp.com/v1.0/idea/" + id, {
+  //     method: "DELETE",
+  //   }).then(() => {
+  //     navigate("/ideas");
+  //   });
+  // };
 
   return (
     <Box>
@@ -77,56 +86,9 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
       <Box>
         {/* <div>list comment here</div> */}
         {comments.map((comment) => (
-          <Box>
-            <Box className="comment-image-container">
-              <Avatar alt="" src="/static/images/avatar/2.jpg" />
-            </Box>
-            <Box className="comment-right-part">
-              <div className="comment-content">
-                <div className="comment-author">{comment.comment_id}</div>
-              </div>
-              <div className="comment-text">{comment.content}</div>
-              <form>
-                <TextField
-                  className="comment-form-textarea"
-                  value={content}
-                  multiline
-                  rows={2}
-                  onChange={(e) => setContent(e.target.value)}
-                />
-                <Button
-                  variant="text"
-                  // className="comment-form-button"
-                  type="submit"
-                >
-                  Update
-                </Button>
-                <Button type="button" variant="text" color="secondary">
-                  Cancel
-                </Button>
-              </form>
-
-              <div className="comment-actions">
-                <div
-                  className="comment-action"
-                  onClick={() =>
-                    setActiveComment({
-                      id: comment.comment_id,
-                      type: "editing",
-                    })
-                  }
-                >
-                  Edit
-                </div>
-                <div
-                  className="comment-action"
-                  onClick={() => deleteComment(comment.comment_id)}
-                >
-                  Delete
-                </div>
-              </div>
-            </Box>
-          </Box>
+                <Comment key={comment._id}
+                comment={comment}
+                currentUserId={uid}/>
         ))}
       </Box>
       <br />
