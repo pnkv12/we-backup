@@ -1,11 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
-// from .env file
-// const baseUrl = process.env.REACT_APP_API_https://be-enterprise.herokuapp.com/v1.0;
-
-// axios.defaults.baseURL = baseUrl;
-
 axios.defaults.baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 // useFetch with headers, url, method and body.

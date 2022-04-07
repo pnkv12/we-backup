@@ -1,9 +1,8 @@
 const API_URL = "https://be-enterprise.herokuapp.com/v1.0";
-const https://be-enterprise.herokuapp.com/v1.0 = "http://localhost:3000";
 
 describe("Login status", () => {
   before(() => {
-    cy.visit(`${https://be-enterprise.herokuapp.com/v1.0}/login`);
+    cy.visit(`${API_URL}/login`);
     // cy.get('input[name="username"]').type("trong@gmail.com")
     //     .get('input[name="password"]').type("trongvip")
     //     .get('button[type="submit"]').click();
@@ -17,24 +16,3 @@ describe("Login status", () => {
     });
   });
 
-  // it("check status does/not/exist", () => {
-  //     cy.request("POST", `${API_URL}/does/not/exist`, {
-  //         email: "trong@gmail.com",
-  //         password: "trongvip"
-  //     }).should(res => {
-  //         expect(res.status).to.equal(404)
-  //     })
-  // });
-});
-
-// describe('API calls', () => {
-//     before(() => {
-//         cy.visit(`${https://be-enterprise.herokuapp.com/v1.0}/login`);
-//         cy.get('input[name="username"]').type("trong@gmail.com")
-//             .get('input[name="password"]').type("trongvip")
-//             .get('button[type="submit"]').click();
-//     })
-//     it("check status login", () => {
-//         cy.request('')
-//     });
-// })

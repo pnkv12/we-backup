@@ -69,7 +69,7 @@ const IdeaCreate = () => {
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
   const [user_id, setUserId] = useState(uid);
-  const [submission_id, setSubmissionId] = useState("");
+  const [submission_id, setSubmissionId] = useState("6249e1bdabe8dbf2e9786874");
   const [documents, setSelectedFile] = useState([]);
   const [document, setDocument] = useState({});
   const [isFilePicked, setIsFilePicked] = useState(false);
@@ -77,7 +77,6 @@ const IdeaCreate = () => {
   const [updatedAt, setUpdateDate] = useState(date);
   const [closedDate, setCloseDate] = useState();
   const [category, setSelectedTag] = useState([]);
-  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState([]);
   const [__v, setV] = useState();
   const [isPending, setIsPending] = useState(false);
@@ -126,7 +125,7 @@ const IdeaCreate = () => {
       content,
       user_id,
       submission_id,
-      category_id,
+      categories,
     };
 
     // setIsPending(true);
@@ -168,6 +167,7 @@ const IdeaCreate = () => {
         value: category._id,
         label: category.name,
       }));
+
       console.log(result);
 
       setOptions(result);
@@ -370,7 +370,7 @@ const IdeaCreate = () => {
                 setSelectedTag(
                   Array.isArray(e)
                     ? e.map((x) => {
-                        return { categories: x.label };
+                        return { category: x.label };
                       })
                     : []
                 );

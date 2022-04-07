@@ -1,13 +1,13 @@
 /// <reference types="cypress" />
-const https://be-enterprise.herokuapp.com/v1.0 = "http://localhost:3000";
-const token = Cypress.env('authToken');
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
+const token = Cypress.env("authToken");
 
-context('Local Storage', () => {
+context("Session Storage", () => {
   beforeEach(() => {
-    cy.visit(`${https://be-enterprise.herokuapp.com/v1.0}/login`);
-  })
+    cy.visit(`${baseURL}/login`);
+  });
 
-  it('cy.clearLocalStorage() - clear all data in local storage', () => {
+  it("Clear all data in session storage", () => {
     // log in
     cy.get('input[name="username"]')
       .should("be.visible")
@@ -19,18 +19,18 @@ context('Local Storage', () => {
       .should("be.visible")
       .click()
       .should(() => {
-        assert.isDefined(localStorage.getItem('authToken'), token)
-        expect(localStorage.getItem('firstName')).to.eq('Trong')
-        expect(localStorage.getItem('email')).to.eq('trong@gmail.com')
+        // assert.isDefined(sessionStorage.getItem("uid"), token);
+        expect(sessionStorage.getItem("fullname")).to.eq("Huy");
+        expect(sessionStorage.getItem("email")).to.eq("trong@gmail.com");
       });
 
     // log out
     cy.get('[data-testid="PersonIcon"]').click();
-    cy.xpath('//p[text()=" Logout"]/parent::li').click()
+    cy.xpath('//p[text()=" Logout"]/parent::li')
+      .click()
       .should(() => {
-        assert.isNull(localStorage.getItem('authToken'));
-        assert.isNull(localStorage.getItem('firstName'))
-        assert.isNull(localStorage.getItem('email'))
+        assert.isNull(localStorage.getItem("fullname"));
+        assert.isNull(localStorage.getItem("email"));
       });
-  })
-})
+  });
+});

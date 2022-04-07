@@ -34,8 +34,8 @@ const CategoryCreate = () => {
   const [updated_at, setUpdateDate] = useState();
   const [isPending, setIsPending] = useState(false);
 
-  const cateListUrl = "https://be-enterprise.herokuapp.com/v1.0/categories";
-  const getCateURL = "https://be-enterprise.herokuapp.com/v1.0/category";
+  const cateListUrl = "http://localhost:8000/v1.0/categories";
+  const getCateURL = "http://localhost:8000/v1.0/category";
   const [CategoryList, setCategory] = useState([]);
 
   useEffect(() => {

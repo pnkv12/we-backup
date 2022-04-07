@@ -21,7 +21,8 @@ import axios from "axios";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const uid = window.sessionStorage.getItem("uid");
-const Comments = ({ ideaId }) => {
+
+const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState();

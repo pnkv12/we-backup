@@ -36,7 +36,8 @@ class SubmissionController {
             })
 
         } catch (error) {
-            res.status(500).json(error)
+            console.log(error)
+            res.status(300).json(error)
         }
     }
 
