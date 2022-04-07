@@ -13,8 +13,8 @@ import { ReturnLink } from "./IdeaButtons";
 import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
 
-const COMMENT_URL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments";
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const COMMENT_URL = "https://be-enterprise.herokuapp.com/v1.0/comments";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const uid = window.sessionStorage.getItem("uid");
 
@@ -36,7 +36,7 @@ const IdeaDetails = () => {
     activeUpdate.id === idea.id;
   useEffect(() => {
     setTimeout(() => {
-      fetch("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
+      fetch("https://be-enterprise.herokuapp.com/v1.0/idea/" + id)
         .then((res) => {
           if (!res.ok) {
             throw Error("could not fetch");
@@ -86,7 +86,7 @@ const IdeaDetails = () => {
 
   useEffect(() => {
     axios
-      .get("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id)
+      .get("https://be-enterprise.herokuapp.com/v1.0/idea/" + id)
       .then((res) => {
         // console.log(res.data.results.content);
         setNewIdea(res.data.results);
@@ -97,7 +97,7 @@ const IdeaDetails = () => {
   function submit(e) {
     e.preventDefault();
     axios
-      .patch(`https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea/${id}`, data)
+      .patch(`https://be-enterprise.herokuapp.com/v1.0/idea/${id}`, data)
       .then((res) => {
         console.log(res.data);
         navigate("/ideas/" + id);
@@ -113,7 +113,7 @@ const IdeaDetails = () => {
   }
 
   const handleDelete = () => {
-    fetch("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea/" + id, {
+    fetch("https://be-enterprise.herokuapp.com/v1.0/idea/" + id, {
       method: "DELETE",
     }).then(() => {
       navigate("/ideas");

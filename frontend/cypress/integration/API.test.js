@@ -1,9 +1,9 @@
-const API_URL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
-const https://1d65-14-226-238-211.ap.ngrok.io/v1.0 = "http://localhost:3000";
+const API_URL = "https://be-enterprise.herokuapp.com/v1.0";
+const https://be-enterprise.herokuapp.com/v1.0 = "http://localhost:3000";
 
 describe("Login status", () => {
   before(() => {
-    cy.visit(`${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/login`);
+    cy.visit(`${https://be-enterprise.herokuapp.com/v1.0}/login`);
     // cy.get('input[name="username"]').type("trong@gmail.com")
     //     .get('input[name="password"]').type("trongvip")
     //     .get('button[type="submit"]').click();
@@ -29,7 +29,7 @@ describe("Login status", () => {
 
 // describe('API calls', () => {
 //     before(() => {
-//         cy.visit(`${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/login`);
+//         cy.visit(`${https://be-enterprise.herokuapp.com/v1.0}/login`);
 //         cy.get('input[name="username"]').type("trong@gmail.com")
 //             .get('input[name="password"]').type("trongvip")
 //             .get('button[type="submit"]').click();

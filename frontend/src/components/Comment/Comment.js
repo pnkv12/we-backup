@@ -10,7 +10,7 @@
 // import TextField from "@mui/material/TextField";
 // import { replyBox } from "../../styles/boxStyles";
 
-// const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+// const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 // const Comment = ({ currentUserId }) => {
 //   const { id } = useParams();
 //   const [comment, setComment] = useState();
@@ -35,7 +35,7 @@
 
 //   // useEffect(() => {
 //   //   setTimeout(() => {
-//   //     fetch("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment/" + id)
+//   //     fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + id)
 //   //       .then((res) => {
 //   //         if (!res.ok) {
 //   //           throw Error("could not fetch");
@@ -68,7 +68,7 @@
 
 //   const deleteComment = async () => {
 //     fetch(
-//       "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments/" + comment._id,
+//       "https://be-enterprise.herokuapp.com/v1.0/comments/" + comment._id,
 //       {
 //         method: "DELETE",
 //       }

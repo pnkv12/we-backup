@@ -24,7 +24,7 @@ import FormControl from "@mui/material/FormControl";
 import NativeSelect from "@mui/material/NativeSelect";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],

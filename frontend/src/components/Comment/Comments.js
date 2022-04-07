@@ -19,7 +19,7 @@ import TextField from "@mui/material/TextField";
 import "./styles.css";
 import axios from "axios";
 
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const uid = window.sessionStorage.getItem("uid");
 const Comments = ({ ideaId }) => {
   // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');
@@ -64,7 +64,7 @@ const Comments = ({ ideaId }) => {
 
   const deleteComment = async () => {
     fetch(
-      "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment/" + Comment._id,
+      "https://be-enterprise.herokuapp.com/v1.0/comment/" + Comment._id,
       {
         method: "DELETE",
       }

@@ -26,7 +26,7 @@ import Grid from "@mui/material/Grid";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -184,7 +184,7 @@ const Idea = () => {
             const requestUrl = `${baseURL}/comments?ideaId=${idea._id}`;
             const response = await axios.get(requestUrl);
             // setCommentsCounter(response.data.length);
-            // const comments = await axios.get(`https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments?ideaId=${ideaId}`);
+            // const comments = await axios.get(`https://be-enterprise.herokuapp.com/v1.0/comments?ideaId=${ideaId}`);
 
             //resonse.data.ideaId
           })();

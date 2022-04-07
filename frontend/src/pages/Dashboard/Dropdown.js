@@ -3,7 +3,7 @@ import useAxios from "../../services/useAxios";
 import axios from "axios";
 
 // This function get the Department list and show under dropdown
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 /////////Lọc ra tổng ideas của mỗi department (theo department_id của user)//////////
 

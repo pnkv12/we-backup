@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const baseUrl = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseUrl = "https://be-enterprise.herokuapp.com/v1.0";
 
 export default function useFetch(url) {
   const [data, setData] = useState(null);

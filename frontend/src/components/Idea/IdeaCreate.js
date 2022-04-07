@@ -51,7 +51,7 @@ const LabelStyle = styled("label")({
 });
 
 // const getAllCategories = async () => {
-//     const response = await axios.get(`https://1d65-14-226-238-211.ap.ngrok.io/v1.0/categories`, {
+//     const response = await axios.get(`https://be-enterprise.herokuapp.com/v1.0/categories`, {
 //             headers: {
 //                 'Content-Type': 'application/json',
 //                 'Accept': 'application/json'
@@ -133,7 +133,7 @@ const IdeaCreate = () => {
 
     try {
       await axios
-        .post("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea", idea, {
+        .post("https://be-enterprise.herokuapp.com/v1.0/idea", idea, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -160,7 +160,7 @@ const IdeaCreate = () => {
   useEffect(() => {
     (async function () {
       const categories = await axios.get(
-        `https://1d65-14-226-238-211.ap.ngrok.io/v1.0/categories`
+        `https://be-enterprise.herokuapp.com/v1.0/categories`
       );
       //setCategories(categories.data);
 
@@ -183,7 +183,7 @@ const IdeaCreate = () => {
 
     try {
       const response = await axios.post(
-        `https://1d65-14-226-238-211.ap.ngrok.io/v1.0/submission`,
+        `https://be-enterprise.herokuapp.com/v1.0/submission`,
         document
       );
 

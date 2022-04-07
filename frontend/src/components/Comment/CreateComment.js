@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 const uid = window.sessionStorage.getItem("uid");
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const CreateComment = (ideaId) => {
   var date = new Date();
   const [content, setContent] = useState(null);
@@ -27,7 +27,7 @@ const CreateComment = (ideaId) => {
 
     try {
       axios
-        .post(`https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment`, comment, {
+        .post(`https://be-enterprise.herokuapp.com/v1.0/comment`, comment, {
           validateStatus: (status) => {
             return true;
           },

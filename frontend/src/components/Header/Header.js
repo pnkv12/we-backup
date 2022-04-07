@@ -18,7 +18,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
 
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const pages = ["Ideas", "Employees", "Dashboard"];
 
 const settings = ["Category"];
