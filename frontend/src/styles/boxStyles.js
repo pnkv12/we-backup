@@ -48,3 +48,24 @@ export const replyBox = {
   display: "flex",
   width: "50%",
 };
+
+export const dataBox = {
+  boxShadow: "4",
+  borderRadius: "25px",
+  maxWidth: "60%",
+  width: "60%",
+  margin: "3rem",
+  padding: "2rem",
+  bgcolor: "lightBlue",
+};
+
+export const chartBox = {
+  alignSelf: "center",
+          position: "relative",
+          margin: "auto",
+          padding: "2rem 2rem 2rem 2rem",
+          width: "25rem",
+          height: "28rem",
+          boxShadow: 4,
+          borderRadius: "25px",
+}

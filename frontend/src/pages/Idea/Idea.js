@@ -106,14 +106,14 @@ const Idea = () => {
     });
   };
 
-  const handleFiltersChange = (newFilters) => {
-    console.log(newFilters);
-    setFilters({
-      ...filters,
-      page: 1,
-      search: newFilters.searchTerm,
-    });
-  };
+  // const handleFiltersChange = (newFilters) => {
+  //   console.log(newFilters);
+  //   setFilters({
+  //     ...filters,
+  //     page: 1,
+  //     search: newFilters.searchTerm,
+  //   });
+  // };
 
   // const { data: ideas, loading, error } = useFetch(
   //   "idea?category=" + category
@@ -158,7 +158,7 @@ const Idea = () => {
             justifyContent: "right",
           }}
         >
-          <SearchFunction onSubmit={handleFiltersChange} />
+          {/* <SearchFunction onSubmit={handleFiltersChange} /> */}
 
           <NewIdeaBtn />
         </Box>
@@ -220,7 +220,7 @@ const Idea = () => {
                         variant="body2"
                         color="text.primary"
                       >
-                        Views: {idea.views}
+                        Views: {idea.total_view}
                         <br />
                         Content: {idea.content}
                       </Typography>
@@ -233,7 +233,9 @@ const Idea = () => {
                           >
                             <ThumbUpOffAltIcon />
                           </IconButton>
-                          <Typography>(1)</Typography>
+                          {/* <Typography>(1)Typography>
+t */}
+                          i
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton

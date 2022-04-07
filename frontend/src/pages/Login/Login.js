@@ -42,17 +42,17 @@ function Login(props) {
           username: details.username,
           password: details.password,
         });
+        window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("username", details.username);
+        window.sessionStorage.setItem("email", response.data.email);
         window.sessionStorage.setItem("fullname", response.data.fullname);
         window.sessionStorage.setItem("isAuthenticated", true);
-        window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("role", response.data.role);
         window.sessionStorage.setItem("department", response.data.dept);
-        window.sessionStorage.setItem("email", response.data.email);
       }
     } catch (error) {
       console.error(error);
-      setError(error);
+      setError("Wrong username or password");
     }
   };
 

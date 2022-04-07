@@ -17,17 +17,17 @@
 //   // const [isPending, setIsPending] = useState(true);
 //   // const [error, setError] = useState(null);
 
-const isEditing =
-  activeComment &&
-  activeComment.type === "editing" &&
-  activeComment.id === comment._id;
-const navigate = useNavigate();
-const [content, setContent] = useState();
-const deleteComment = async () => {
-  fetch("https://be-enterprise.herokuapp.com/v1.0/comments/" + comment._id, {
-    method: "DELETE",
-  });
-};
+// const isEditing =
+//   activeComment &&
+//   activeComment.type === "editing" &&
+//   activeComment.id === comment._id;
+// const navigate = useNavigate();
+// const [content, setContent] = useState();
+// const deleteComment = async () => {
+//   fetch("https://be-enterprise.herokuapp.com/v1.0/comments/" + comment._id, {
+//     method: "DELETE",
+//   });
+// };
 
 //   const navigate = useNavigate();
 //   const [content, setContent] = useState();

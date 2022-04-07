@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import PieChart from "../../components/PieChart";
-import DeptDropDown from "./Dropdown";
 import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
 import { lightBlue } from "@mui/material/colors";
 import { Box, Divider } from "@mui/material";
 import axios from "axios";
-import useAxios from "../../services/useAxios";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
-  // textAlign: "left",
   fontSize: 30,
   fontWeight: "bold",
   marginBottom: "1rem",
@@ -18,14 +19,46 @@ const TitleFrame = styled("div")({
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
-const Department = () => {
+function DeptDropDown({ departmentList }) {
+  const [department, setDepartment] = useState();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert(department);
+  };
+  const handleChange = (e) => {
+    setDepartment(e.target.value);
+  };
+
+  return (
+    <FormControl
+      onSubmit={handleSubmit}
+      sx={{ width: "10rem", display: "inline-flex" }}
+    >
+      <InputLabel id="demo-simple-select-label">View By</InputLabel>
+      <Select
+        value={department}
+        id="demo-simple-select"
+        labelId="demo-simple-select-label"
+        label="View By"
+        onChange={handleChange}
+      >
+        {departmentList.map((department) => (
+          <MenuItem key={department._id} value={department.name}>
+            {department.name}
+          </MenuItem>
+        ))}
+      </Select>
+      {/* <Button variant="outlined" type="submit">
+        View
+      </Button> */}
+    </FormControl>
+  );
+}
+
+function DepartmentD() {
   const [ideas, setIdeas] = useState({});
   const [departmentList, setDepartmentList] = useState([]);
-
-  const { response, loading, error } = useAxios({
-    url: "ideas",
-    method: "get",
-  });
 
   useEffect(() => {
     (async function () {
@@ -37,19 +70,16 @@ const Department = () => {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   if (response != null) {
-  //     console.log(response);
-  //     const ideaList = response.map((idea) => {
-  //       return {
-  //         ideaId: idea._id,
-  //         view: idea.total_view,
-  //         reaction: idea.total_reaction,
-  //       };
-  //     });
-  //     setIdeas(ideaList);
-  //   }
-  // }, [response]);
+  useEffect(() => {
+    (async function () {
+      const res = await axios({
+        url: `${baseURL}/ideas`,
+        method: "get",
+      });
+      setIdeas(res.data);
+      console.log(res);
+    })();
+  }, []);
 
   return (
     <Box
@@ -59,8 +89,6 @@ const Department = () => {
         justifyContent: "center",
       }}
     >
-      <p>Lấy tổng ideas của mỗi department (theo department_id của user)</p>
-
       <Box
         sx={{
           width: "50%",
@@ -89,12 +117,10 @@ const Department = () => {
           }}
         >
           {/* Number of ideas by employees who belongs in a department */}
-          <span>
-            Ideas:
-            {ideas.length}
-          </span>
+          <span>Ideas:</span>
+          <br />
           {/* Idea with most thumbs and comments in the department*/}
-          <span>Most likes: N/A</span>
+          <span>Most popular: N/A</span>
           <br />
           {
             //ideas.filter()
@@ -111,9 +137,6 @@ const Department = () => {
           {/* Newest comment in an idea of this department */}
           <span>Latest comment: N/A</span>
         </Box>
-        <Box>
-          Closure Date: {} <button>Download (.csv)</button>
-        </Box>
       </Box>
 
       <Box
@@ -128,14 +151,14 @@ const Department = () => {
           borderRadius: "25px",
         }}
       >
+        {/* <p>Total ideas: {ideas.length} </p> */}
         <PieChart
           data={{
-            // take the name in department table
-            labels: departmentList.map((department) => department.name),
+            labels: departmentList.map((departmentList) => departmentList.name),
             datasets: [
               {
-                //number of ideas belong to that department
-                data: [6, 7],
+                //number of ideas belong to that dept
+                data: [6, 3],
                 backgroundColor: ["red", "blue", "green", "yellow"],
               },
             ],
@@ -144,6 +167,5 @@ const Department = () => {
       </Box>
     </Box>
   );
-};
-
-export default Department;
+}
+export default DepartmentD;

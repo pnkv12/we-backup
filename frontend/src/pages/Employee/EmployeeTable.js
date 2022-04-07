@@ -40,10 +40,11 @@ const EmployeeTable = (props) => {
           email: user.email,
           fullname: user.fullname,
           roleId: user.role_id,
-          rolename: user.role_name,
+          // rolename: user.role_name,
           departId: user.department_id,
         };
       });
+      console.log(userList);
 
       setUsers(userList);
     }
