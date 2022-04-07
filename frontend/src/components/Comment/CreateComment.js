@@ -23,8 +23,11 @@ const CreateComment = (ideaId) => {
 
     console.log(user_id);
     console.log(idea_id);
-    const comment = { content, idea_id, user_id };
+    // console.log(userId);
+    const comment = { content, idea_id, user_id: "624914af542d2a0c93923545" };
 
+    console.log(comment);
+    window.location.reload();
     try {
       axios
         .post(`https://be-enterprise.herokuapp.com/v1.0/comment`, comment, {
@@ -32,10 +35,11 @@ const CreateComment = (ideaId) => {
             return true;
           },
         })
-        .then((res) => console.log(res.data));
+        .then((res) => console.log("data" + res.data));
     } catch (error) {
       console.log(error.message);
     }
+
   };
   return (
     <form onSubmit={onSubmitComment}>

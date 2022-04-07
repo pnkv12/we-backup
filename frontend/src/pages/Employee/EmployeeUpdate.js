@@ -40,7 +40,7 @@ export default function EmployeeUpdate(props) {
 
   let fullname = searchParams.get("fullname");
   let email = searchParams.get("email");
-  // let password = searchParams.get("password");
+  let password = searchParams.get("password");
   let role = searchParams.get("role");
   let dept = searchParams.get("dept");
   let navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function EmployeeUpdate(props) {
   const [user, setUser] = useState({
     fullname,
     email,
-    // password,
+    password,
     role,
     dept,
   });
@@ -78,11 +78,11 @@ export default function EmployeeUpdate(props) {
     setUser({
       fullname,
       email,
-      // password,
+      password,
       role,
       dept,
     });
-  }, [fullname, email, role, dept]);
+  }, [fullname, email, password, role, dept]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -92,10 +92,6 @@ export default function EmployeeUpdate(props) {
         url: `${baseURL}/user/${userId}`,
         data: user,
       }).then((response) => {
-        sessionStorage.setItem("fullname", JSON.stringify(fullname));
-        sessionStorage.setItem("email", JSON.stringify(email));
-        sessionStorage.setItem("role", JSON.stringify(role));
-        sessionStorage.setItem("dept", JSON.stringify(dept));
         navigate("/employees");
         window.location.reload();
       });
@@ -132,6 +128,17 @@ export default function EmployeeUpdate(props) {
             name="email"
             placeholder="Email"
             onChange={(e) => setUser({ ...user, email: e.target.value })}
+            size="small"
+          />
+          <br />
+          <TextField
+            id="outlined-basic"
+            type="password"
+            value={user?.password}
+            variant="outlined"
+            name="password"
+            placeholder="Password"
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
             size="small"
           />
           <br />

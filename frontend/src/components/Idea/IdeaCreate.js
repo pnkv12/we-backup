@@ -11,9 +11,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { lightBlue, grey } from "@mui/material/colors";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Typography } from "@material-ui/core";
-import Switch from "@mui/material/Switch";
 import axios from "axios";
 import useAxios from "../../services/useAxios";
 
@@ -23,15 +21,6 @@ import { ReturnLink, CancelBtn } from "./IdeaButtons";
 const Input = styled("input")({
   display: "none",
 });
-
-// const Terms = styled("div")({
-//     textAlign: "justify",
-//     fontSize: 15,
-//     padding: "0rem 1rem 0rem 1rem",
-//     overflow: "scroll",
-//     display: "block",
-//     maxHeight: "50%",
-// });
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -128,11 +117,13 @@ const IdeaCreate = () => {
       categories,
     };
 
+    console.log(idea);
+
     // setIsPending(true);
 
     try {
       await axios
-        .post("https://be-enterprise.herokuapp.com/v1.0/idea", idea, {
+        .post("https://1c5e-171-232-148-95.ap.ngrok.io/v1.0/idea", idea, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -164,12 +155,9 @@ const IdeaCreate = () => {
       //setCategories(categories.data);
 
       const result = categories.data.map((category) => ({
-        value: category._id,
+        value: category.category_id,
         label: category.name,
       }));
-
-      console.log(result);
-
       setOptions(result);
 
       setBusy(false);
@@ -177,8 +165,8 @@ const IdeaCreate = () => {
   }, []);
 
   const sendDocument = async (ideaId, fileName) => {
-    // const data = new FormData();
-    // data.append("document", document);
+    const data = new FormData();
+    data.append("document", document);
     console.log(document);
 
     try {
@@ -253,7 +241,6 @@ const IdeaCreate = () => {
             />
           </Box>
           <br />
-
           <Box>
             <TextField
               id="outlined-basic"
@@ -269,15 +256,13 @@ const IdeaCreate = () => {
             />
           </Box>
           <br />
-
           {/* Content input */}
           <div>
             <TextField
               id="outlined-multiline-static"
               label="Your Idea"
               multiline
-              rows={4}
-              // defaultValue={content}
+              rows={8}
               onChange={(e) => setContent(e.target.value)}
               sx={{
                 width: "100%",
@@ -291,8 +276,6 @@ const IdeaCreate = () => {
                     <input type="textarea" name="thumbs" placeholder={thumbs_down} rows ="4" onChange={e => setThumbsDown(e.target.value)} />
                 </div>
                 <br/> */}
-
-          {/* Upload Photos and Files are put in Box and flexed */}
           <Box
             sx={{
               margin: "1rem",
@@ -318,7 +301,7 @@ const IdeaCreate = () => {
                 Upload Photo
               </Button>
             </InputLabel>
-            <InputLabel id="attach-label">
+            {/* <InputLabel id="attach-label">
               <Button color={"primary"} variant="text" component="span">
                 <Input
                   type="file"
@@ -333,9 +316,8 @@ const IdeaCreate = () => {
                 />
                 <AttachFileIcon /> Attachments
               </Button>
-            </InputLabel>
+            </InputLabel> */}
           </Box>
-
           {isFilePicked ? (
             <div>
               <p>Filename: {documents.name}</p>
@@ -349,17 +331,12 @@ const IdeaCreate = () => {
           ) : (
             <p>Select a file to show details</p>
           )}
-          {/* <div>
-        </div>
-        <br />
-
-
           {/* Tag/CategoryCreate section with customed Label */}
           <div>
             <InputLabel id="tag-label">Select or create new tags</InputLabel>
             <Select
               labelId="tag-label"
-              name="tag"
+              name="category_id"
               closeMenuOnSelect={false}
               placeholder={category}
               isClearable
@@ -382,7 +359,6 @@ const IdeaCreate = () => {
             console.log(category);
             return <div>{category.name}</div>;
           })}
-
           {/* Terms and Conditions with overflow content not yet finished */}
           <div className="term-conditions">
             <Typography align="center" fontWeight="bold">
@@ -410,7 +386,6 @@ const IdeaCreate = () => {
             </Typography>
           </div>
           <br />
-
           {/* Checkbox for Terms and Submit button, should change Submitting... button by using LoadingButton */}
           <Typography align="center">
             <div>

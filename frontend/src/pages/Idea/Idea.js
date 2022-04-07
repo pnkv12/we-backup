@@ -233,9 +233,7 @@ const Idea = () => {
                           >
                             <ThumbUpOffAltIcon />
                           </IconButton>
-                          {/* <Typography>(1)Typography>
-t */}
-                          i
+                          <Typography>(1)</Typography>
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton

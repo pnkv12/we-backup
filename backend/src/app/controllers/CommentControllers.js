@@ -32,7 +32,8 @@ class CommentController {
       }
       res.status(200).json(savedComment);
     } catch (error) {
-      res.status(500).json(error);
+      console.log(error);
+      res.status(300).json(error);
     }
   }
 

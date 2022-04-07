@@ -29,15 +29,8 @@ const TitleFrame = styled("div")({
 
 export default function EmployeeCreate(props) {
   let navigate = useNavigate();
-  // const token = window.localStorage.getItem('authToken');
   // const [result, setResult] = useState(null);
   const [user, setUser] = useState({});
-  // const { response, loading, error } = useAxios({
-  //     url: "users",
-  //     method: "post",
-  //     body: user,
-  //     // headers: { token: token }
-  // });
 
   // router.get("/roles", roleController.getAllRole); //? Get all roles
   // const [role, setRole] = useState();
@@ -61,7 +54,6 @@ export default function EmployeeCreate(props) {
       });
       setDepartmentData(response.data);
     })();
-
   }, []);
 
   // useEffect(() => {

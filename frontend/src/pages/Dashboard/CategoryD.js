@@ -169,7 +169,7 @@ function CategoryD() {
             datasets: [
               {
                 //number of ideas belong to that category
-                data: [1, 2, 3],
+                data: [1, 2, 3, 2],
                 backgroundColor: ["red", "blue", "green", "yellow"],
               },
             ],

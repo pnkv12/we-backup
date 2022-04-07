@@ -62,11 +62,11 @@ function DepartmentD() {
 
   useEffect(() => {
     (async function () {
-      const response = await axios({
+      const deptData = await axios({
         url: `${baseURL}/departments`,
         method: "get",
       });
-      setDepartmentList(response.data);
+      setDepartmentList(deptData.data);
     })();
   }, []);
 
@@ -76,8 +76,7 @@ function DepartmentD() {
         url: `${baseURL}/ideas`,
         method: "get",
       });
-      setIdeas(res.data);
-      console.log(res);
+      setIdeas(res.data); // return res.data.length;
     })();
   }, []);
 
@@ -117,7 +116,7 @@ function DepartmentD() {
           }}
         >
           {/* Number of ideas by employees who belongs in a department */}
-          <span>Ideas:</span>
+          <span>Ideas:{ideas.length}</span>
           <br />
           {/* Idea with most thumbs and comments in the department*/}
           <span>Most popular: N/A</span>
@@ -158,7 +157,7 @@ function DepartmentD() {
             datasets: [
               {
                 //number of ideas belong to that dept
-                data: [6, 3],
+                data: [6, 3, 9],
                 backgroundColor: ["red", "blue", "green", "yellow"],
               },
             ],

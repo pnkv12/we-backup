@@ -64,12 +64,9 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   };
 
   const deleteComment = async () => {
-    fetch(
-      "https://be-enterprise.herokuapp.com/v1.0/comment/" + Comment._id,
-      {
-        method: "DELETE",
-      }
-    );
+    fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + Comment._id, {
+      method: "DELETE",
+    });
   };
 
   return (
@@ -78,13 +75,13 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
       <CreateComment ideaId={ideaId} />
       <Divider />
       <Box>
-        <div>list comment here</div>
+        {/* <div>list comment here</div> */}
         {comments.map((comment) => (
           <Box>
-            <div className="comment-image-container">
+            <Box className="comment-image-container">
               <Avatar alt="" src="/static/images/avatar/2.jpg" />
-            </div>
-            <div className="comment-right-part">
+            </Box>
+            <Box className="comment-right-part">
               <div className="comment-content">
                 <div className="comment-author">{comment.comment_id}</div>
               </div>
@@ -128,7 +125,7 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
                   Delete
                 </div>
               </div>
-            </div>
+            </Box>
           </Box>
         ))}
       </Box>

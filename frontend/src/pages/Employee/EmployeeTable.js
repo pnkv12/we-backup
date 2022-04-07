@@ -8,14 +8,9 @@ import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
 import useAxios from "../../services/useAxios";
-// import Search from "@mui/icons-material/Search";
 import SearchFunction from "../../components/Search/SearchFunction";
-// import { DataGridPro, useGridApiRef } from "@mui/x-data-grid-pro";
-// import Snackbar from "@mui/material/Snackbar";
-import Alert from "@mui/material/Alert";
 
 import { useNavigate } from "react-router-dom";
-import { textAlign } from "@mui/system";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const pageSize = 5;
@@ -24,11 +19,32 @@ const rowsPerPageOptions = [5];
 const EmployeeTable = (props) => {
   const navigate = useNavigate();
   const [users, setUsers] = useState({});
+  const [roleData, setRoleData] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
 
   const { response, loading, error } = useAxios({
     url: "users",
     method: "get",
   });
+
+  useEffect(() => {
+    (async function () {
+      const roleRes = await axios({
+        url: `${baseURL}/roles`,
+        method: "get",
+      });
+      setRoleData(roleRes.data);
+      console.log(roleRes.data.length);
+    })();
+
+    (async function () {
+      const depRes = await axios({
+        url: `${baseURL}/departments`,
+        method: "get",
+      });
+      setDepartmentData(depRes.data);
+    })();
+  }, []);
 
   useEffect(() => {
     if (response != null) {
@@ -44,16 +60,12 @@ const EmployeeTable = (props) => {
           departId: user.department_id,
         };
       });
-      console.log(userList);
-
       setUsers(userList);
     }
   }, [response]);
 
   const handleUpdate = async (params) => {
-    //     navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
-    // `);
-    navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
+    navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}&password=${params.password}
   `);
   };
 
