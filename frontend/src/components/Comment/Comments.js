@@ -13,36 +13,41 @@ import LoadingIndicator from "../../components/Loading";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
-
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import "./styles.css";
 import axios from "axios";
 
 const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
-
-const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
+const uid = window.sessionStorage.getItem("uid");
+const Comments = ({ ideaId }) => {
   // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');
   const [comments, setComments] = useState([]);
+  const [content, setContent] = useState();
   const [activeComment, setActiveComment] = useState(null);
-  const [rootComments, setRootComments] = useState([]);
 
   useEffect(() => {
     (async function () {
       try {
-        const response = await axios.get(
-          `${baseURL}/comments?ideaId=${ideaId}`
-        );
+        const response = await axios.get(`${baseURL}/comments`);
 
         console.log("comments of this idea:", response.data);
         if (response != null) {
-          setRootComments(response.data);
+          const commentList = response.data.map((comment) => {
+            return {
+              commentId: comment.comment_id,
+              content: comment.content,
+            };
+          });
+
+          setComments(response.data);
         }
       } catch (e) {
         throw e;
-      } finally {
-        return <LoadingIndicator />;
       }
     })();
-  }, [ideaId]);
+  }, []);
 
   const updateComment = (text, commentId) => {
     updateCommentApi(text).then(() => {
@@ -57,14 +62,73 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
     });
   };
 
+  const deleteComment = async () => {
+    fetch(
+      "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment/" + Comment._id,
+      {
+        method: "DELETE",
+      }
+    );
+  };
+
   return (
     <Box>
       <Typography variant="h6">Write comment</Typography>
       <CreateComment ideaId={ideaId} />
       <Divider />
       <Box>
-        {rootComments.map((rootComment) => (
-          <Comment currentUserId={currentUserId} />
+        <div>list comment here</div>
+        {comments.map((comment) => (
+          <Box>
+            <div className="comment-image-container">
+              <Avatar alt="" src="/static/images/avatar/2.jpg" />
+            </div>
+            <div className="comment-right-part">
+              <div className="comment-content">
+                <div className="comment-author">{comment.comment_id}</div>
+              </div>
+              <div className="comment-text">{comment.content}</div>
+              <form>
+                <TextField
+                  className="comment-form-textarea"
+                  value={content}
+                  multiline
+                  rows={2}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+                <Button
+                  variant="text"
+                  // className="comment-form-button"
+                  type="submit"
+                >
+                  Update
+                </Button>
+                <Button type="button" variant="text" color="secondary">
+                  Cancel
+                </Button>
+              </form>
+
+              <div className="comment-actions">
+                <div
+                  className="comment-action"
+                  onClick={() =>
+                    setActiveComment({
+                      id: comment.comment_id,
+                      type: "editing",
+                    })
+                  }
+                >
+                  Edit
+                </div>
+                <div
+                  className="comment-action"
+                  onClick={() => deleteComment(comment.comment_id)}
+                >
+                  Delete
+                </div>
+              </div>
+            </div>
+          </Box>
         ))}
       </Box>
       <br />

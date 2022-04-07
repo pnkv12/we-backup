@@ -71,7 +71,7 @@ const IdeaCreate = () => {
   const [user_id, setUserId] = useState(uid);
   const [submission_id, setSubmissionId] = useState("");
   const [documents, setSelectedFile] = useState([]);
-  const [document, setDocument] = useState("");
+  const [document, setDocument] = useState({});
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
   const [updatedAt, setUpdateDate] = useState(date);
@@ -124,7 +124,6 @@ const IdeaCreate = () => {
       title,
       description,
       content,
-      anonymousMode,
       user_id,
       submission_id,
       category_id,
@@ -132,23 +131,30 @@ const IdeaCreate = () => {
 
     // setIsPending(true);
 
-    await axios
-      .post("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea", idea, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(async (response) => {
-        console.log(`${JSON.stringify(response.data._id)}`);
-        if (document != null) {
-          console.log(document);
-          const url = await sendDocument(response.data._id, document.name);
-          console.log(`Document URL: ${url}`);
-        }
+    try {
+      await axios
+        .post("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea", idea, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          validateStatus: (status) => {
+            return true; // I'm always returning true, you may want to do it depending on the status received
+          },
+        })
+        .then(async (response) => {
+          // console.log(`${JSON.stringify(response.data._id)}`);
+          if (document != null) {
+            console.log(document);
+            const url = await sendDocument(response.data._id, document.name);
+            console.log(`Document URL: ${url}`);
+          }
 
-        console.log("Idea added");
-        setIsPending(false);
-      });
+          console.log("Idea added");
+          setIsPending(false);
+        });
+    } catch (e) {
+      console.log(e.message);
+    }
   };
 
   useEffect(() => {
@@ -171,21 +177,21 @@ const IdeaCreate = () => {
   }, []);
 
   const sendDocument = async (ideaId, fileName) => {
-    const data = new FormData();
-    data.append("document", document);
+    // const data = new FormData();
+    // data.append("document", document);
     console.log(document);
 
     try {
       const response = await axios.post(
         `https://1d65-14-226-238-211.ap.ngrok.io/v1.0/submission`,
-        data
+        document
       );
 
       if (response.status >= 200 && response.status <= 300) {
         return response.data;
       }
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
     }
   };
 

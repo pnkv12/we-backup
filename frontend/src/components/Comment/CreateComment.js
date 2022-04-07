@@ -14,27 +14,27 @@ const CreateComment = (ideaId) => {
   const [content, setContent] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [user_id, setUserId] = useState(uid);
-  const [idea_id, setIdeaId] = useState(ideaId);
+  const [idea_id, setIdeaId] = useState(ideaId.ideaId);
 
-//   setUserId(uid);
-//   setIdeaId(ideaId);
+  //   setUserId(uid);
+  //   setIdeaId(ideaId);
   const onSubmitComment = (event) => {
     event.preventDefault();
 
     console.log(user_id);
     console.log(idea_id);
-    const comment = { content, user_id, idea_id };
+    const comment = { content, idea_id, user_id };
 
     try {
       axios
-        .post(`${baseURL}/comment`, comment, {
-          headers: {
-            "Content-Type": "application/json",
+        .post(`https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment`, comment, {
+          validateStatus: (status) => {
+            return true;
           },
         })
         .then((res) => console.log(res.data));
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
   return (
