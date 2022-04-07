@@ -2,11 +2,11 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
 // from .env file
-// const baseUrl = process.env.REACT_APP_API_https://1d65-14-226-238-211.ap.ngrok.io/v1.0;
+// const baseUrl = process.env.REACT_APP_API_http://localhost:8000/v1.0;
 
 // axios.defaults.baseURL = baseUrl;
 
-axios.defaults.baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+axios.defaults.baseURL = "http://localhost:8000/v1.0";
 
 // useFetch with headers, url, method and body.
 // url is the part after the baseURL

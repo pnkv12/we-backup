@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
-const https://1d65-14-226-238-211.ap.ngrok.io/v1.0 = "http://localhost:3000";
+const http://localhost:8000/v1.0 = "http://localhost:3000";
 const token = Cypress.env('authToken');
 
 context('Local Storage', () => {
   beforeEach(() => {
-    cy.visit(`${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/login`);
+    cy.visit(`${http://localhost:8000/v1.0}/login`);
   })
 
   it('cy.clearLocalStorage() - clear all data in local storage', () => {

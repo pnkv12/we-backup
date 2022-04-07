@@ -51,7 +51,7 @@ const LabelStyle = styled("label")({
 });
 
 // const getAllCategories = async () => {
-//     const response = await axios.get(`https://1d65-14-226-238-211.ap.ngrok.io/v1.0/categories`, {
+//     const response = await axios.get(`http://localhost:8000/v1.0/categories`, {
 //             headers: {
 //                 'Content-Type': 'application/json',
 //                 'Accept': 'application/json'
@@ -69,7 +69,7 @@ const IdeaCreate = () => {
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
   const [user_id, setUserId] = useState(uid);
-  const [submission_id, setSubmissionId] = useState("");
+  const [submission_id, setSubmissionId] = useState("6249e1bdabe8dbf2e9786874");
   const [documents, setSelectedFile] = useState([]);
   const [document, setDocument] = useState("");
   const [isFilePicked, setIsFilePicked] = useState(false);
@@ -77,7 +77,6 @@ const IdeaCreate = () => {
   const [updatedAt, setUpdateDate] = useState(date);
   const [closedDate, setCloseDate] = useState();
   const [category, setSelectedTag] = useState([]);
-  const [category_id, setCategoryId] = useState([]);
   const [categories, setCategories] = useState([]);
   const [__v, setV] = useState();
   const [isPending, setIsPending] = useState(false);
@@ -127,13 +126,13 @@ const IdeaCreate = () => {
       anonymousMode,
       user_id,
       submission_id,
-      category_id,
+      categories,
     };
 
     // setIsPending(true);
 
     await axios
-      .post("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/idea", idea, {
+      .post("http://localhost:8000/v1.0/idea", idea, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -154,7 +153,7 @@ const IdeaCreate = () => {
   useEffect(() => {
     (async function () {
       const categories = await axios.get(
-        `https://1d65-14-226-238-211.ap.ngrok.io/v1.0/categories`
+        `http://localhost:8000/v1.0/categories`
       );
       //setCategories(categories.data);
 
@@ -162,6 +161,7 @@ const IdeaCreate = () => {
         value: category._id,
         label: category.name,
       }));
+
       console.log(result);
 
       setOptions(result);
@@ -177,7 +177,7 @@ const IdeaCreate = () => {
 
     try {
       const response = await axios.post(
-        `https://1d65-14-226-238-211.ap.ngrok.io/v1.0/submission`,
+        `http://localhost:8000/v1.0/submission`,
         data
       );
 
@@ -361,14 +361,11 @@ const IdeaCreate = () => {
               isMulti
               options={options}
               onChange={(e) => {
-                setSelectedTag(
-                  Array.isArray(e)
-                    ? e.map((x) => {
-                        return { categories: x.label };
-                      })
-                    : []
-                );
-              }}
+                setSelectedTag(Array.isArray(e) ? e.map((x) => {
+                  return { category: x.label }
+                }) : [])
+              }
+              }
             />
           </div>
           <br />

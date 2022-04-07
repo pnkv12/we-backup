@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-const https://1d65-14-226-238-211.ap.ngrok.io/v1.0 = "http://localhost:3000";
+const http://localhost:8000/v1.0 = "http://localhost:3000";
 const FilterBtn =
   "/html/body/div[1]/div/main/div/div[1]/div[1]/div/div/div[2]/div/div/div";
 const ideaLink1 =
@@ -15,7 +15,7 @@ const titleName2 = "Nga vô địch";
 
 describe("Test existed elements", () => {
   beforeEach(() => {
-    cy.visit(`${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/ideas`);
+    cy.visit(`${http://localhost:8000/v1.0}/ideas`);
     cy.get('input[name="username"]').should("be.visible").type(username);
     cy.get('input[name="password"]').should("be.visible").type(password);
     cy.get('button[type="submit"]').click();
@@ -36,23 +36,23 @@ describe("Test existed elements", () => {
     cy.xpath("//h4").should("have.text", titleName1);
     cy.wait(2000);
     cy.xpath("//a[text()=' Back']").should("be.visible").click();
-    cy.url().should("eq", `${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/ideas`);
+    cy.url().should("eq", `${http://localhost:8000/v1.0}/ideas`);
     cy.get(ideaLink2).should("be.visible");
     cy.get(ideaLink2).click();
     cy.wait(2000);
     cy.xpath("//h4").should("have.text", titleName2);
     cy.wait(2000);
     cy.xpath("//a[text()=' Back']").should("be.visible").click();
-    cy.url().should("eq", `${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/ideas`);
+    cy.url().should("eq", `${http://localhost:8000/v1.0}/ideas`);
   });
 
   it("should test the + New Button and back", () => {
     cy.wait(2000);
     cy.xpath("//a[text()='New']").should("be.visible").click();
-    cy.url().should("eq", `${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/ideas/ideacreate`);
+    cy.url().should("eq", `${http://localhost:8000/v1.0}/ideas/ideacreate`);
     cy.wait(2000);
     cy.xpath("//a[text()=' Back']").should("be.visible").click();
-    cy.url().should("eq", `${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/ideas`);
+    cy.url().should("eq", `${http://localhost:8000/v1.0}/ideas`);
   });
 });
 
@@ -60,7 +60,7 @@ describe("Test idea dynamically", () => {
   let ideaId1;
   let ideaId2;
   beforeEach(() => {
-    cy.visit(`${https://1d65-14-226-238-211.ap.ngrok.io/v1.0}/ideas`);
+    cy.visit(`${http://localhost:8000/v1.0}/ideas`);
     cy.get('input[name="username"]').should("be.visible").type(username);
     cy.get('input[name="password"]').should("be.visible").type(password);
     cy.get('button[type="submit"]').click();

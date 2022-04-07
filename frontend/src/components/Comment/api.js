@@ -6,7 +6,7 @@
 //   return data.comment;
 // };
 // const token = window.localStorage.getItem('authToken');
-// const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+// const baseURL = "http://localhost:8000/v1.0";
 
 // export const useCreateComment = async (text, parentId = null, ideaId,) => {
 //   const [newComment, setNewComment] = useState({})
@@ -63,7 +63,7 @@
 // };
 
 //   // export const deleteComment = async () => {
-//   //   fetch('https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comment/' + comment.id, {
+//   //   fetch('http://localhost:8000/v1.0/comment/' + comment.id, {
 //   //     method: 'DELETE'
 //   //   }).then(() => {
 //   //     navigate.push('/');

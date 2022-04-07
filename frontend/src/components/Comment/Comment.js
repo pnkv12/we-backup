@@ -29,7 +29,7 @@ const Comment = ({
   const [content, setContent] = useState();
   const deleteComment = async () => {
     fetch(
-      "https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments/" + comment._id,
+      "http://localhost:8000/v1.0/comments/" + comment._id,
       {
         method: "DELETE",
       }

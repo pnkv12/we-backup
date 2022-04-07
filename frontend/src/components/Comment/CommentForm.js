@@ -7,7 +7,7 @@ import { cmtBox } from "../../styles/boxStyles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-const baseURL = "https://1d65-14-226-238-211.ap.ngrok.io/v1.0";
+const baseURL = "http://localhost:8000/v1.0";
 
 const CommentForm = ({
   ideaId,
@@ -49,7 +49,7 @@ const CommentForm = ({
     event.preventDefault();
     // const comment = { content, ideaId, parentId, owner, closedDate };
     setIsPending(true);
-    // fetch("https://1d65-14-226-238-211.ap.ngrok.io/v1.0/comments", {
+    // fetch("http://localhost:8000/v1.0/comments", {
     //   method: "POST",
     //   headers: { Authorization: `Bearer ${token}` },
     //   body: JSON.stringify(comment),
