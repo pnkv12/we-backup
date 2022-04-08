@@ -24,7 +24,7 @@ const Input = styled("input")({
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
-  fontSize: 30,
+  fontSize: 25,
   fontWeight: "bold",
   marginBottom: "1rem",
 });
@@ -190,118 +190,141 @@ const IdeaCreate = () => {
     return (
       // The whole form is put in the Box with border
       <Box
-        className="ideacreate"
         sx={{
-          border: 1,
-          borderColor: "white",
-          boxShadow: 4,
-          borderRadius: "25px",
-          margin: "2rem 3rem",
-          padding: "2rem",
-          maxWidth: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Box
+          className="ideacreate"
           sx={{
-            display: "flex",
-            justifyContent: "space-between",
+            border: 1,
+            borderColor: "white",
+            boxShadow: 4,
+            borderRadius: "25px",
+            margin: "2rem 3rem",
+            padding: "2rem",
+            maxWidth: "60%",
           }}
         >
-          <ReturnLink />
-          <TitleFrame>Create idea</TitleFrame>
-          <Box sx={{ alignSelf: "center" }}>
-            {/* Label section for displaying datetime data */}
-            <LabelStyle>
-              Closure date:
-              {closedDate != null ? " " + { closedDate } : " No data"}
-            </LabelStyle>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <ReturnLink />
+            <TitleFrame>New Idea</TitleFrame>
+            <Box sx={{ alignSelf: "center" }}>
+              {/* Label section for displaying datetime data */}
+              <LabelStyle>
+                Closure date:
+                {closedDate != null ? " " + { closedDate } : " No data"}
+              </LabelStyle>
+            </Box>
           </Box>
-        </Box>
 
-        <Divider
-          sx={{
-            marginBottom: "1.5rem",
-          }}
-        />
+          <Divider
+            sx={{
+              marginBottom: "1.5rem",
+            }}
+          />
 
-        <form onSubmit={handleSubmit}>
-          {/* From here is title input */}
-          <Box>
-            <TextField
-              id="outlined-basic"
-              type="text"
-              label="Title"
-              variant="outlined"
-              name="title"
-              placeholder={title}
-              onChange={(e) => setTitle(e.target.value)}
-              sx={{
-                width: "100%",
-              }}
-            />
-          </Box>
-          <br />
-          <Box>
-            <TextField
-              id="outlined-basic"
-              type="text"
-              label="Description"
-              variant="outlined"
-              name="description"
-              placeholder={description}
-              onChange={(e) => setDescription(e.target.value)}
-              sx={{
-                width: "100%",
-              }}
-            />
-          </Box>
-          <br />
-          {/* Content input */}
-          <div>
-            <TextField
-              id="outlined-multiline-static"
-              label="Your Idea"
-              multiline
-              rows={8}
-              onChange={(e) => setContent(e.target.value)}
-              sx={{
-                width: "100%",
-              }}
-            />
-          </div>
-          <br />
-          {/* <div>
+          <form onSubmit={handleSubmit}>
+            {/* From here is title input */}
+            <Box>
+              <TextField
+                id="outlined-basic"
+                type="text"
+                label="Title"
+                variant="outlined"
+                name="title"
+                placeholder={title}
+                onChange={(e) => setTitle(e.target.value)}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            </Box>
+            <br />
+            <Box>
+              <TextField
+                id="outlined-basic"
+                type="text"
+                label="Description"
+                variant="outlined"
+                name="description"
+                placeholder={description}
+                onChange={(e) => setDescription(e.target.value)}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            </Box>
+            <br />
+            {/* Content input */}
+            <Box>
+              <TextField
+                id="outlined-multiline-static"
+                label="Your Idea"
+                multiline
+                rows={8}
+                onChange={(e) => setContent(e.target.value)}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            </Box>
+            <br />
+            {/* <div>
                     <label>Thumbs</label>
                     <input type="textarea" name="thumbs" placeholder={thumbs_up} rows ="4" onChange={e => setThumbsUp(e.target.value)} />
                     <input type="textarea" name="thumbs" placeholder={thumbs_down} rows ="4" onChange={e => setThumbsDown(e.target.value)} />
                 </div>
                 <br/> */}
-          <Box
-            sx={{
-              margin: "1rem",
-              display: "flex",
-              p: 1,
-              m: 1,
-              justifyContent: "space-evenly",
-            }}
-          >
-            <InputLabel htmlFor="icon-button-file">
-              <Input
-                accept="image/*"
-                id="icon-button-file"
-                type="file"
-                onChange={(event) => {
-                  const file = event.target.files[0];
-                  setDocument(file);
-                  changeHandler(event);
-                }}
-              />
-              <Button color={"primary"} variant="text" component="span">
-                <PhotoCamera />
-                Upload Photo
-              </Button>
-            </InputLabel>
-            {/* <InputLabel id="attach-label">
+            <Box
+              sx={{
+                margin: "1rem",
+                p: 1,
+                m: 1,
+                display: "flex",
+              }}
+            >
+              <InputLabel htmlFor="icon-button-file">
+                <Input
+                  accept="image/*"
+                  id="icon-button-file"
+                  type="file"
+                  onChange={(event) => {
+                    const file = event.target.files[0];
+                    setDocument(file);
+                    changeHandler(event);
+                  }}
+                />
+                <Button color={"primary"} variant="text" component="span">
+                  <PhotoCamera />
+                  Upload
+                </Button>
+              </InputLabel>
+              {isFilePicked ? (
+                <Box sx={{ marginLeft: "5rem" }}>
+                  <Typography variant="subtitle2">
+                    Filename: {documents.name} <br />
+                    Filetype: {documents.type} <br />
+                    Size in bytes: {documents.size} <br />
+                    lastModifiedDate:
+                    {documents.lastModifiedDate.toLocaleDateString()}
+                  </Typography>
+                </Box>
+              ) : (
+                <Box sx={{ marginLeft: "5rem", alignSelf: "center" }}>
+                  <Typography variant="subtitle2">
+                    Select a file to show detail
+                  </Typography>
+                </Box>
+              )}
+              {/* <InputLabel id="attach-label">
               <Button color={"primary"} variant="text" component="span">
                 <Input
                   type="file"
@@ -317,112 +340,101 @@ const IdeaCreate = () => {
                 <AttachFileIcon /> Attachments
               </Button>
             </InputLabel> */}
-          </Box>
-          {isFilePicked ? (
-            <div>
-              <p>Filename: {documents.name}</p>
-              <p>Filetype: {documents.type}</p>
-              <p>Size in bytes: {documents.size}</p>
-              <p>
-                lastModifiedDate:{" "}
-                {documents.lastModifiedDate.toLocaleDateString()}
-              </p>
-            </div>
-          ) : (
-            <p>Select a file to show details</p>
-          )}
-          {/* Tag/CategoryCreate section with customed Label */}
-          <div>
-            <InputLabel id="tag-label">Select or create new tags</InputLabel>
-            <Select
-              labelId="tag-label"
-              name="category_id"
-              closeMenuOnSelect={false}
-              placeholder={category}
-              isClearable
-              components={animatedComponents}
-              isMulti
-              options={options}
-              onChange={(e) => {
-                setSelectedTag(
-                  Array.isArray(e)
-                    ? e.map((x) => {
-                        return { category: x.label };
-                      })
-                    : []
-                );
-              }}
-            />
-          </div>
-          <br />
-          {categories.map((category) => {
-            console.log(category);
-            return <div>{category.name}</div>;
-          })}
-          {/* Terms and Conditions with overflow content not yet finished */}
-          <div className="term-conditions">
-            <Typography align="center" fontWeight="bold">
-              Terms and Conditions
-            </Typography>
-            <Typography
-              align="justify"
-              sx={{
-                fontSize: 15,
-                padding: "0rem 1rem 0rem 1rem",
-                overflow: "scroll",
-                display: "block",
-                maxHeight: "50%",
-              }}
-            >
-              <p>
-                Et natus molestias et doloribus. Quis quae enim dolores dolores
-                aperiam ullam eaque. Eveniet aut et qui alias consequuntur
-                expedita consequatur aspernatur.
-              </p>
-              <p>
-                Qui est ut modi aut ut. Non est dolor ipsum numquam doloribus
-                deserunt molestiae et animi. Voluptatem sint fuga est eum.
-              </p>
-            </Typography>
-          </div>
-          <br />
-          {/* Checkbox for Terms and Submit button, should change Submitting... button by using LoadingButton */}
-          <Typography align="center">
-            <div>
-              <FormControlLabel
-                control={<Checkbox />}
-                label="I Agree to Terms & Conditions"
-                name="agreement"
-                onChange={handleChange}
-                sx={{
-                  marginBottom: "1rem",
+            </Box>
+
+            {/* Tag/CategoryCreate section with customed Label */}
+            <Box>
+              <InputLabel id="tag-label">Select or create new tags</InputLabel>
+              <Select
+                labelId="tag-label"
+                name="category_id"
+                closeMenuOnSelect={false}
+                placeholder={category}
+                isClearable
+                components={animatedComponents}
+                isMulti
+                options={options}
+                onChange={(e) => {
+                  setSelectedTag(
+                    Array.isArray(e)
+                      ? e.map((x) => {
+                          return { category: x.label };
+                        })
+                      : []
+                  );
                 }}
               />
+            </Box>
+            <br />
+            {categories.map((category) => {
+              console.log(category);
+              return <div>{category.name}</div>;
+            })}
+            {/* Terms and Conditions with overflow content not yet finished */}
+            <div className="term-conditions">
+              <Typography align="center" fontWeight="bold">
+                Terms and Conditions
+              </Typography>
+              <Typography
+                align="justify"
+                sx={{
+                  fontSize: 15,
+                  padding: "0rem 1rem 0rem 1rem",
+                  overflow: "scroll",
+                  display: "block",
+                  maxHeight: "50%",
+                }}
+              >
+                <p>
+                  Et natus molestias et doloribus. Quis quae enim dolores
+                  dolores aperiam ullam eaque. Eveniet aut et qui alias
+                  consequuntur expedita consequatur aspernatur.
+                </p>
+                <p>
+                  Qui est ut modi aut ut. Non est dolor ipsum numquam doloribus
+                  deserunt molestiae et animi. Voluptatem sint fuga est eum.
+                </p>
+              </Typography>
             </div>
-            {!isPending && (
-              <Button
-                variant="contained"
-                disabled={isDisabled()}
-                startIcon={<SendIcon />}
-                fullWidth
-                type="submit"
-              >
-                Submit
-              </Button>
-            )}
-            {isPending && (
-              <Button
-                disabled
-                startIcon={<SendIcon />}
-                variant="outlined"
-                fullWidth
-              >
-                Submitting...
-              </Button>
-            )}
-          </Typography>
-          <CancelBtn />
-        </form>
+            <br />
+            {/* Checkbox for Terms and Submit button, should change Submitting... button by using LoadingButton */}
+            <Typography align="center">
+              <div>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label="I Agree to Terms & Conditions"
+                  name="agreement"
+                  onChange={handleChange}
+                  sx={{
+                    marginBottom: "1rem",
+                  }}
+                />
+              </div>
+              {!isPending && (
+                <Button
+                  variant="contained"
+                  disabled={isDisabled()}
+                  startIcon={<SendIcon />}
+                  fullWidth
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              )}
+              {isPending && (
+                <Button
+                  disabled
+                  startIcon={<SendIcon />}
+                  variant="outlined"
+                  fullWidth
+                >
+                  Submitting...
+                </Button>
+              )}
+            </Typography>
+            <CancelBtn />
+          </form>
+        </Box>
       </Box>
     );
   }

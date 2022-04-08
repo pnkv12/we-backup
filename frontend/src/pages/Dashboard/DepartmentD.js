@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PieChart from "../../components/PieChart";
-import Button from "@mui/material/Button";
 import styled from "@emotion/styled";
 import { lightBlue } from "@mui/material/colors";
 import { Box, Divider } from "@mui/material";
