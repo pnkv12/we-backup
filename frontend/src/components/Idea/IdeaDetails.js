@@ -35,6 +35,7 @@ const IdeaDetails = () => {
     activeUpdate &&
     activeUpdate.type === "editing" &&
     activeUpdate.id === idea.id;
+
   useEffect(() => {
     setTimeout(() => {
       fetch("https://be-enterprise.herokuapp.com/v1.0/idea/" + id)
@@ -87,7 +88,7 @@ const IdeaDetails = () => {
 
   useEffect(() => {
     axios
-      .get("https://be-enterprise.herokuapp.com/v1.0/idea/" + id)
+      .get(`${baseURL}/idea/` + id)
       .then((res) => {
         // console.log(res.data.results.content);
         setNewIdea(res.data.results);
@@ -98,7 +99,7 @@ const IdeaDetails = () => {
   function submit(e) {
     e.preventDefault();
     axios
-      .patch(`https://be-enterprise.herokuapp.com/v1.0/idea/${id}`, data)
+      .patch(`${baseURL}/idea/${id}`, data)
       .then((res) => {
         console.log(res.data);
         navigate("/ideas/" + id);
@@ -114,7 +115,7 @@ const IdeaDetails = () => {
   }
 
   const handleDelete = () => {
-    fetch("https://be-enterprise.herokuapp.com/v1.0/idea/" + id, {
+    fetch(`${baseURL}/idea/` + id, {
       method: "DELETE",
     }).then(() => {
       navigate("/ideas");

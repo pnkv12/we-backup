@@ -12,6 +12,7 @@ import SendIcon from "@mui/icons-material/Send";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { lightBlue, grey } from "@mui/material/colors";
 import { Typography } from "@material-ui/core";
+import Switch from "@mui/material/Switch";
 import axios from "axios";
 
 import useAxios from "../../services/useAxios";
@@ -52,6 +53,7 @@ const LabelStyle = styled("label")({
 // };
 const IdeaCreate = () => {
   const uid = window.sessionStorage.getItem("uid");
+  const fullname = window.sessionStorage.getItem("fullname");
 
   var date = new Date();
   const [idea, setIdea] = useState(null);
@@ -59,6 +61,7 @@ const IdeaCreate = () => {
   const [description, setDescription] = useState(null);
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
+  const [anon, setAnon] = useState();
   const [user_id, setUserId] = useState(uid);
   const [submission_id, setSubmissionId] = useState("624fa5fe94814c446e5a6911");
   const [documents, setSelectedFile] = useState([]);
@@ -74,13 +77,25 @@ const IdeaCreate = () => {
   const [isPending, setIsPending] = useState(false);
   const [isBusy, setBusy] = useState(true);
   const [options, setOptions] = useState([]);
+  const [postImage, setPostImage] = useState();
 
   const animatedComponents = makeAnimated();
+
+  const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
   const changeHandler = (event) => {
     setSelectedFile(event.target.files[0]);
     setIsFilePicked(true);
   };
+
+  const changeAnon = (event) => {
+    setAnon(event.target.value);
+    setAnonymous(true);
+  };
+
+  useEffect(() => {
+    return () => postImage && URL.revokeObjectURL(postImage.preview);
+  });
 
   const [boxes, setBoxes] = useState({});
 
@@ -110,7 +125,7 @@ const IdeaCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(uid);
+    console.log(anonymousMode);
     const idea = {
       title,
       description,
@@ -123,44 +138,43 @@ const IdeaCreate = () => {
     };
 
     if (document != null) {
-      const file = JSON.parse(await sendDocument(submission_id, document.name));
-      setDocumentURL(file["file_path"]);
-      console.log(`Document URL: ${documentURL}`);
-    }
+      sendDocument(submission_id, document.name).then(async (response) => {
+        const file = JSON.parse(response);
+        idea.documentURL = file["file_path"];
+        //setDocumentURL(file['file_path']);
+        console.log(`Document URL: ${idea.documentURL}`);
 
-    // setIsPending(true);
+        //show imag
+        file.preview = URL.createObjectURL(file);
 
-    try {
+        await axios
+          .post(`${baseURL}/idea`, idea, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(async (response) => {
+            console.log("Idea added");
+            setIsPending(false);
+          });
+      });
+    } else {
       await axios
-        .post("https://1c5e-171-232-148-95.ap.ngrok.io/v1.0/idea", idea, {
+        .post(`${baseURL}/idea`, idea, {
           headers: {
             "Content-Type": "application/json",
           },
-          validateStatus: (status) => {
-            return true; // I'm always returning true, you may want to do it depending on the status received
-          },
         })
         .then(async (response) => {
-          // console.log(`${JSON.stringify(response.data._id)}`);
-          if (document != null) {
-            console.log(document);
-            const url = await sendDocument(response.data._id, document.name);
-            console.log(`Document URL: ${url}`);
-          }
-
           console.log("Idea added");
           setIsPending(false);
         });
-    } catch (e) {
-      console.log(e.message);
     }
   };
 
   useEffect(() => {
     (async function () {
-      const categories = await axios.get(
-        `https://be-enterprise.herokuapp.com/v1.0/categories`
-      );
+      const categories = await axios.get(`${baseURL}/categories`);
       //setCategories(categories.data);
 
       const result = categories.data.map((category) => ({
@@ -180,7 +194,7 @@ const IdeaCreate = () => {
 
     try {
       const response = await axios.post(
-        `https://be-enterprise.herokuapp.com/v1.0/file/${submissionId}`,
+        `${baseURL}/file/${submissionId}`,
         document
       );
 
@@ -419,6 +433,14 @@ const IdeaCreate = () => {
                   }}
                 />
               </div>
+              <Box>
+                <Switch
+                  value={anonymousMode}
+                  onChange={changeAnon}
+                  inputProps={{ "aria-label": "controlled" }}
+                />
+                Currently show: {fullname}
+              </Box>
               {!isPending && (
                 <Button
                   variant="contained"

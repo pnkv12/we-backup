@@ -37,10 +37,10 @@ export default function EmployeeUpdate(props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   let { userId } = useParams();
-
+  // const password = password.current.value("password");
   let fullname = searchParams.get("fullname");
   let email = searchParams.get("email");
-  let password = searchParams.get("password");
+  // let password = searchParams.get("password");
   let role = searchParams.get("role");
   let dept = searchParams.get("dept");
   let navigate = useNavigate();
@@ -69,7 +69,7 @@ export default function EmployeeUpdate(props) {
   const [user, setUser] = useState({
     fullname,
     email,
-    password,
+    // password,
     role,
     dept,
   });
@@ -78,11 +78,11 @@ export default function EmployeeUpdate(props) {
     setUser({
       fullname,
       email,
-      password,
+      // password,
       role,
       dept,
     });
-  }, [fullname, email, password, role, dept]);
+  }, [fullname, email, role, dept]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -131,7 +131,7 @@ export default function EmployeeUpdate(props) {
             size="small"
           />
           <br />
-          <TextField
+          {/* <TextField
             id="outlined-basic"
             type="password"
             value={user?.password}
@@ -141,7 +141,7 @@ export default function EmployeeUpdate(props) {
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             size="small"
           />
-          <br />
+          <br /> */}
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
 

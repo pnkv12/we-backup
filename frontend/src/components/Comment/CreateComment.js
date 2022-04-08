@@ -23,26 +23,21 @@ const CreateComment = (ideaId) => {
   //   setIdeaId(ideaId);
   const onSubmitComment = (event) => {
     event.preventDefault();
-
-    console.log(user_id);
-    console.log(idea_id);
-    // console.log(userId);
-    const comment = { content, idea_id, user_id: "624914af542d2a0c93923545" };
-
-    console.log(comment);
-
-    try {
-      axios
-        .post(`https://be-enterprise.herokuapp.com/v1.0/comment`, comment, {
-          validateStatus: (status) => {
-            return true;
-          },
-        })
-        .then((res) => console.log("data" + res.data));
-      // window.location.reload();
-    } catch (error) {
-      console.log(error.message);
-    }
+    (async function () {
+      const comment = { content, idea_id, user_id };
+      try {
+        await axios
+          .post(`${baseURL}/comment`, comment, {
+            validateStatus: (status) => {
+              return true;
+            },
+          })
+          .then((res) => console.log("data" + res.data));
+        window.location.reload(false);
+      } catch (error) {
+        console.log(error.message);
+      }
+    })();
   };
   return (
     <form onSubmit={onSubmitComment}>
@@ -59,7 +54,12 @@ const CreateComment = (ideaId) => {
           />
         </Box>
         <Box sx={{ alignSelf: "center" }}>
-          <Button variant="text" text="primary" type="submit">
+          <Button
+            variant="text"
+            text="primary"
+            type="submit"
+            // onClick={() => window.location.reload()}
+          >
             <SendIcon />
           </Button>
           {/* <IconButton

@@ -18,6 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import IconButton from "@mui/material/IconButton";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
@@ -53,7 +54,7 @@ const Idea = () => {
 
   //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
-    limit: 5,
+
     page: 1,
   });
 
@@ -61,7 +62,7 @@ const Idea = () => {
 
   const [filters, setFilters] = useState({
     limit: 5,
-    page: 0,
+    page: 1,
     search: "",
   });
 
@@ -69,9 +70,9 @@ const Idea = () => {
 
   useEffect(() => {
     if (response != null) {
-      setIdeas(response.results);
-
-      response.results.map(async (item) => {
+      setIdeas(response);
+      // console.log(response);
+      response.map(async (item) => {
         const user = await axios.get(`${baseURL}/users/${item.owner}`);
         setOwnerName(user.data.name);
       });
@@ -87,9 +88,9 @@ const Idea = () => {
         const re = await axios.get(`${baseURL}/ideas`);
         const comments = await axios.get(`${baseURL}/comments`);
 
-        setTotalPages(Math.ceil(response.data.results.length / limit));
-        setIdeas(response.data.results);
-        setPagination(response.data.results);
+        setTotalPages(Math.ceil(re.data.length / limit));
+        setIdeas(response.data);
+        setPagination(response.data);
       } catch (error) {
         console.log("failed to fetch post list", error.message);
       }
@@ -101,20 +102,20 @@ const Idea = () => {
     setPage(num);
     setFilters({
       ...filters,
-      page: 1,
+      page: num,
     });
   };
 
   const thumbUp = async (ideaId) => {
     console.log(`${uid} likes ${ideaId}`);
     await axios.post(`${baseURL}/thumbUp/${ideaId}/${uid}`);
-    window.location.reload();
+    window.location.reload(false);
   };
 
   const thumbDown = async (ideaId) => {
     console.log(`${uid} dislikes ${ideaId}`);
     await axios.post(`${baseURL}/thumbDown/${ideaId}/${uid}`);
-    window.location.reload();
+    window.location.reload(false);
   };
 
   // const handleFiltersChange = (newFilters) => {
@@ -290,14 +291,17 @@ const Idea = () => {
                         {idea.documentURL !== "" &&
                         idea.documentURL !== null ? (
                           <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <IconButton
-                              color="secondary"
+                            <Typography
+                              color="grey[400]"
                               aria-label="document"
                               component="span"
+                              size="small"
                             >
-                              <AttachFileIcon />
-                            </IconButton>
-                            <Typography>Document/Image included</Typography>
+                              <AttachFileIcon fontSize="inherit" />
+                            </Typography>
+                            <Typography variant="subtitle2">
+                              Document/Image included
+                            </Typography>
                           </Box>
                         ) : (
                           <></>

@@ -68,3 +68,14 @@ header li {
     transform: rotate(360deg);
   }
 } */
+.image--preview {
+  transition: .5s ease;
+  width: 30vmin;
+  height: 30vmin;
+}
+
+.image--preview--container {
+  position: relative;
+  width: 30vmin;
+  height: 30vmin;
+}

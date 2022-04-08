@@ -26,6 +26,7 @@ const uid = window.sessionStorage.getItem("uid");
 const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
   const [comments, setComments] = useState([]);
 
+
   useEffect(() => {
     (async function () {
       try {
@@ -38,6 +39,7 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
               id: id + 1,
               commentId: comment._id,
               content: comment.content,
+              commentIdeaId: comment.idea_id,
             };
           });
           console.log(response.data);
@@ -82,7 +84,12 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
       <Box>
         {/* <div>list comment here</div> */}
         {comments.map((comment) => (
-          <Comment key={comment._id} comment={comment} currentUserId={uid} />
+          <Comment
+            key={comment._id}
+            comment={comment}
+            currentUserId={uid}
+            commentIdeaId={ideaId}
+          />
         ))}
       </Box>
       <br />

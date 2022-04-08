@@ -19,32 +19,32 @@ const rowsPerPageOptions = [5];
 const EmployeeTable = (props) => {
   const navigate = useNavigate();
   const [users, setUsers] = useState({});
-  const [roleData, setRoleData] = useState([]);
-  const [departmentData, setDepartmentData] = useState([]);
+  // const [roleData, setRoleData] = useState([]);
+  // const [departmentData, setDepartmentData] = useState([]);
 
   const { response, loading, error } = useAxios({
     url: "users",
     method: "get",
   });
 
-  useEffect(() => {
-    (async function () {
-      const roleRes = await axios({
-        url: `${baseURL}/roles`,
-        method: "get",
-      });
-      setRoleData(roleRes.data);
-      console.log(roleRes.data.length);
-    })();
+  // useEffect(() => {
+  //   (async function () {
+  //     const roleRes = await axios({
+  //       url: `${baseURL}/roles`,
+  //       method: "get",
+  //     });
+  //     setRoleData(roleRes.data);
+  //     // console.log(roleRes.data.length);
+  //   })();
 
-    (async function () {
-      const depRes = await axios({
-        url: `${baseURL}/departments`,
-        method: "get",
-      });
-      setDepartmentData(depRes.data);
-    })();
-  }, []);
+  //   (async function () {
+  //     const depRes = await axios({
+  //       url: `${baseURL}/departments`,
+  //       method: "get",
+  //     });
+  //     setDepartmentData(depRes.data);
+  //   })();
+  // }, []);
 
   useEffect(() => {
     if (response != null) {
@@ -53,10 +53,12 @@ const EmployeeTable = (props) => {
           id: id + 1,
           userId: user._id,
           username: user.username,
+          // password: user.password,
           email: user.email,
           fullname: user.fullname,
-          // roleId: user.role_id,
+          roleId: user.role_id,
           rolename: user.role_name,
+          departId: user.department_id,
           departname: user.department_name,
         };
       });
@@ -65,7 +67,9 @@ const EmployeeTable = (props) => {
   }, [response]);
 
   const handleUpdate = async (params) => {
-    navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}&password=${params.password}
+  //   navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}&password=${params.password}
+  // `);
+    navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
   `);
   };
 
