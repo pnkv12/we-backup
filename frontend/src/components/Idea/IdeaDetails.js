@@ -192,6 +192,24 @@ const IdeaDetails = () => {
               <form onSubmit={(e) => submit(e)}>
                 <TextField
                   type="text"
+                  defaultValue={idea.title}
+                  onChange={(e) =>
+                    setNewIdea({ ...data, title: e.target.value })
+                  }
+                  fullWidth
+                />
+                <TextField
+                  type="text"
+                  defaultValue={idea.description}
+                  multiline
+                  rows={1}
+                  onChange={(e) =>
+                    setNewIdea({ ...data, description: e.target.value })
+                  }
+                  fullWidth
+                />
+                <TextField
+                  type="text"
                   defaultValue={idea.content}
                   multiline
                   rows={4}
