@@ -24,6 +24,7 @@ const pages = ["Ideas", "Employees", "Dashboard"];
 const settings = ["Category"];
 
 const getRole = sessionStorage.getItem("role");
+
 function Header(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);

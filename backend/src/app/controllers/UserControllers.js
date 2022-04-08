@@ -70,39 +70,6 @@ class UserController {
 
   }
 
-  // [POST] /login
-  async loginUser(req, res, next) {
-    try {
-      const { username, password } = req.body;
-      const user = await User.findOne({ username: username });
-      if (!user) {
-        return res.status(401).json("Username or password is incorrect");
-      }
-
-      const hashedPassword = user.password;
-      const check = bcrypt.compareSync(password, hashedPassword);
-
-      if (check) {
-        req.session.logged = user["_id"];
-        req.session.userId = user["_id"];
-        req.session.username = user["username"];
-        // req.session.userName = user["fullname"];
-        // req.session.role = user["role_id"];
-        return res.status(200).json({
-          status: "Login Successfully",
-          fullname: user["fullname"],
-          email: user["email"],
-          role: user["role_id"],
-          uid: user["_id"],
-        });
-      } else {
-        return res.status(401).json("Username or password is incorrect");
-      }
-    } catch (error) {
-      res.status(500).json(error);
-
-    }
-  }
 
   // [POST] /logout
   async logout(req, res, next) {
