@@ -53,7 +53,7 @@ router.post("/view", viewController.createNewView); //? Create a new viewer & co
 
 //* File
 router.post(
-  "/file/:id/idea",
+  "/file/:submissionId",
   upload.single("document"),
   fileController.createFile
 ); //? Upload single file to a specific folder in Google Drive

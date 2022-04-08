@@ -8,6 +8,7 @@ const IdeaSchema = new mongoose.Schema({
         anonymousMode: {type: Boolean, default: false},
         user_id: {type: String, required: true},
         submission_id: {type: String, default: "6249e1bdabe8dbf2e9786874"},
+        documentURL: {type: String, default: ""},
         categories: [
             {
                 category: {

@@ -24,7 +24,7 @@ class SubmissionController {
 
             // Save folder info into db
             const newFolder = new Folder({
-                folder_id_drive: folderId,
+                folder_drive_id: folderId,
                 folder_path: publicFolder,
                 submission_id: submissionId
 
@@ -36,6 +36,7 @@ class SubmissionController {
             })
 
         } catch (error) {
+            console.log(error);
             res.status(500).json(error)
         }
     }

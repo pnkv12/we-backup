@@ -5,6 +5,7 @@ async function paginatedResults(p, l, model){
     const limit = parseInt(l)
 
     // Handle
+
     const startIndex = (page - 1) * limit
     const endIndex = page * limit
 

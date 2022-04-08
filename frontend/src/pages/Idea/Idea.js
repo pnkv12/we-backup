@@ -5,6 +5,7 @@ import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
 import SearchFunction from "../../components/Search/SearchFunction";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 // import useFetch from "../../services/useFetch";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
@@ -285,7 +286,22 @@ const Idea = () => {
                           <Typography>{commentsCounter}</Typography>
                         </Box>
                       </Box>
-
+                      <Box sx={{ display: "flex" }} fullWidth>
+                        {
+                          (idea.documentURL !== "" && idea.documentURL !== null) ? (
+                              <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <IconButton
+                                    color="secondary"
+                                    aria-label="document"
+                                    component="span"
+                                >
+                                  <AttachFileIcon/>
+                                </IconButton>
+                                <Typography>Document/Image included</Typography>
+                              </Box>
+                            ):(<></>)
+                        }
+                      </Box>
                     </>
                   }
                 />

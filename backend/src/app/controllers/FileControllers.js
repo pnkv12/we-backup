@@ -6,26 +6,23 @@ const stream = require('stream')
 
 class FileController {
 
-    // [POST] /file/:id/idea
+    // [POST] /file/:submissionId
     async createFile(req, res, next){
 
         try {
             const fileName = req.file.originalname
             const typeFile = req.file.mimetype
             const fileObj = req.file
-            const ideaId = req.params.id
+            const submissionId = req.params.submissionId
 
             // Buffer file
             const bufferStream = await new stream.PassThrough()
             const fileBuffer = await bufferStream.end(fileObj.buffer)
 
-            //Get submission info
-            const user = await Idea.findById(ideaId)
-            const submissionId = user.submission_id
 
             // Get info of folder id Google Drive
             const folder = await Folder.find({submission_id: submissionId})
-            const folderIdDrive = folder[0].folder_id_drive
+            const folderIdDrive = folder[0].folder_drive_id
             const folderId = folder[0]._id
 
             // Upload file to Google Drive
@@ -38,15 +35,15 @@ class FileController {
 
             // Save all info data into db
             const newFile = new File({
-                file_id_drive: fileId,
+                file_drive_id: fileId,
                 file_path: publicPath,
-                idea_id: ideaId,
                 folder_id: folderId
             }) 
             const savedFile = await newFile.save()
             res.status(200).json(savedFile)
 
         } catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     }

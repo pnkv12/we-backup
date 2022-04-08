@@ -13,6 +13,7 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { lightBlue, grey } from "@mui/material/colors";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { Typography } from "@material-ui/core";
+import { v4 as uuidv4 } from 'uuid';
 import Switch from "@mui/material/Switch";
 import axios from "axios";
 import useAxios from "../../services/useAxios";
@@ -60,8 +61,10 @@ const LabelStyle = styled("label")({
 //     );
 //     console.log(response);
 // };
-const uid = window.sessionStorage.getItem("uid");
+
 const IdeaCreate = () => {
+  const uid = window.sessionStorage.getItem("uid");
+
   var date = new Date();
   const [idea, setIdea] = useState(null);
   const [title, setTitle] = useState("Title");
@@ -69,9 +72,10 @@ const IdeaCreate = () => {
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
   const [user_id, setUserId] = useState(uid);
-  const [submission_id, setSubmissionId] = useState("6249e1bdabe8dbf2e9786874");
+  const [submission_id, setSubmissionId] = useState("624fa5fe94814c446e5a6911");
   const [documents, setSelectedFile] = useState([]);
   const [document, setDocument] = useState("");
+  const [documentURL, setDocumentURL] = useState("");
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
   const [updatedAt, setUpdateDate] = useState(date);
@@ -118,36 +122,41 @@ const IdeaCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(uid);
+    setUserId(uid)
+    console.log(user_id);
+
+
     const idea = {
+
       title,
       description,
       content,
       anonymousMode,
       user_id,
       submission_id,
+      documentURL,
       categories,
     };
 
     // setIsPending(true);
 
-    await axios
-      .post("http://localhost:8000/v1.0/idea", idea, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then(async (response) => {
-        console.log(`${JSON.stringify(response.data._id)}`);
-        if (document != null) {
-          console.log(document);
-          const url = await sendDocument(response.data._id, document.name);
-          console.log(`Document URL: ${url}`);
-        }
+    if (document != null) {
+      const file = JSON.parse(await sendDocument(submission_id, document.name));
+      setDocumentURL(file['file_path']);
+      console.log(`Document URL: ${documentURL}`);
+    }
 
-        console.log("Idea added");
-        setIsPending(false);
-      });
+    await axios
+        .post("http://localhost:8000/v1.0/idea", idea, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(async (response) => {
+          console.log("Idea added");
+          setIsPending(false);
+        });
+
   };
 
   useEffect(() => {
@@ -170,19 +179,20 @@ const IdeaCreate = () => {
     })();
   }, []);
 
-  const sendDocument = async (ideaId, fileName) => {
+
+  const sendDocument = async (submissionId, fileName) => {
     const data = new FormData();
     data.append("document", document);
     console.log(document);
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/v1.0/submission`,
+        `http://localhost:8000/v1.0/file/${submissionId}`,
         data
       );
 
       if (response.status >= 200 && response.status <= 300) {
-        return response.data;
+        return JSON.stringify(response.data);
       }
     } catch (e) {
       console.log(e);

@@ -14,6 +14,7 @@ class IdeaController {
 
         try {
             // Create a new idea
+            console.log(req.body)
             const newIdea = new Idea(req.body)
             const savedIdea = await newIdea.save()
 
@@ -25,6 +26,7 @@ class IdeaController {
             const submission = await Submission.findById(req.body.submission_id)
             const nameTopic = submission.name
 
+
             // Send notification mail to coordinator
             for (const element of user) {
                 const fullName = element.fullname
@@ -35,6 +37,7 @@ class IdeaController {
             res.status(200).json(savedIdea)
 
         } catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     }
@@ -97,15 +100,17 @@ class IdeaController {
 
     // [GET] /ideas?page={}&limit={}
     async getAllIdea(req, res, next){
-
         try {
             const p = req.query.page
             const l = req.query.limit
             const idea = await paginatedResults(p, l, Idea)
+
+
             
             res.status(200).json(idea)
 
         } catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     }
