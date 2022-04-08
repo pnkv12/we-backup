@@ -21,7 +21,7 @@ import axios from "axios";
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const pages = ["Ideas", "Employees", "Dashboard"];
 
-const settings = ["Category"];
+const settings = ["Category", "Departments"];
 
 const getRole = sessionStorage.getItem("role");
 function Header(props) {
@@ -217,7 +217,9 @@ function Header(props) {
                     <Button
                       component={Link}
                       to={
-                        setting === "Category" ? "/categories" : `/${setting}`
+                        setting === "Category"
+                          ? "/categories"
+                          : `/${setting.toLowerCase()}`
                       }
                     >
                       {setting}

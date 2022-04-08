@@ -25,6 +25,7 @@ import CategoryCreate from "./components/CategoryCreate";
 import Comments from "./components/Comment/Comments";
 import IdeaDetails from "./components/Idea/IdeaDetails";
 import EmployeeUpdate from "./pages/Employee/EmployeeUpdate";
+import DepartmentCRUD from "./components/DepartmentCRUD";
 
 const theme = createTheme({
   palette: {
@@ -185,7 +186,17 @@ function App() {
                     )
                   }
                 />
-                {/* <Route path="/your-ideas" element={}></Route> */}
+
+                <Route
+                  path="/departments"
+                  element={
+                    isAuthenticated ? (
+                      <DepartmentCRUD />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
                 <Route
                   path="/login"

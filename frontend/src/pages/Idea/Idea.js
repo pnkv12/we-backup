@@ -40,7 +40,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: `${baseURL}/ideas?limit=5&page=1`,
+    url: `${baseURL}/ideas?page=1&limit=5`,
     method: "get",
   });
 
@@ -54,16 +54,15 @@ const Idea = () => {
 
   //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
-
     page: 1,
+    limit: 5,
   });
 
   const [totalPages, setTotalPages] = useState();
 
   const [filters, setFilters] = useState({
-    limit: 5,
     page: 1,
-    search: "",
+    limit: 5,
   });
 
   const [commentsCounter, setCommentsCounter] = useState();
