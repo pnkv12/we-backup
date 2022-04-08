@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
-import SearchFunction from "../../components/Search/SearchFunction";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 // import useFetch from "../../services/useFetch";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
@@ -17,13 +17,15 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import RecommendIcon from "@mui/icons-material/Recommend";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import IconButton from "@mui/material/IconButton";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
+const uid = window.sessionStorage.getItem("uid");
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -101,6 +103,18 @@ const Idea = () => {
       ...filters,
       page: 1,
     });
+  };
+
+  const thumbUp = async (ideaId) => {
+    console.log(`${uid} likes ${ideaId}`);
+    await axios.post(`${baseURL}/thumbUp/${ideaId}/${uid}`);
+    window.location.reload();
+  };
+
+  const thumbDown = async (ideaId) => {
+    console.log(`${uid} dislikes ${ideaId}`);
+    await axios.post(`${baseURL}/thumbDown/${ideaId}/${uid}`);
+    window.location.reload();
   };
 
   // const handleFiltersChange = (newFilters) => {
@@ -227,17 +241,28 @@ const Idea = () => {
                             aria-label="likes"
                             component="span"
                             size="small"
+                            onClick={() => thumbUp(`${idea._id}`)}
                           >
-                            <RecommendIcon fontSize="inherit" />
+                            <ThumbUpOffAltIcon fontSize="inherit" />
                           </IconButton>
-                          <Typography>
-                            ({!idea.total_reaction ? "0" : idea.total_reaction})
-                          </Typography>
+                          <Typography>{idea.thumbsUp.length}</Typography>
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
                             color="secondary"
                             aria-label="dislikes"
+                            component="span"
+                            size="small"
+                            onClick={() => thumbDown(`${idea._id}`)}
+                          >
+                            <ThumbDownOffAltIcon fontSize="inherit" />
+                          </IconButton>
+                          <Typography>{idea.thumbsDown.length}</Typography>
+                        </Box>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <IconButton
+                            color="secondary"
+                            aria-label="views"
                             component="span"
                             size="small"
                           >
@@ -260,6 +285,23 @@ const Idea = () => {
                             ({!commentsCounter ? "0" : commentsCounter})
                           </Typography>
                         </Box>
+                      </Box>
+                      <Box sx={{ display: "flex" }} fullWidth>
+                        {idea.documentURL !== "" &&
+                        idea.documentURL !== null ? (
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <IconButton
+                              color="secondary"
+                              aria-label="document"
+                              component="span"
+                            >
+                              <AttachFileIcon />
+                            </IconButton>
+                            <Typography>Document/Image included</Typography>
+                          </Box>
+                        ) : (
+                          <></>
+                        )}
                       </Box>
                     </>
                   }

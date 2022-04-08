@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 
+const uid = window.sessionStorage.getItem("uid");
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const Comment = ({ comment, currentUserId }) => {
   const [activeComment, setActiveComment] = useState(null);
@@ -21,6 +22,7 @@ const Comment = ({ comment, currentUserId }) => {
   const [error, setError] = useState(null);
   const [data, setNewComment] = useState({
     content: "",
+    user_id: "624914af542d2a0c93923545",
   });
 
   const isEditing =
@@ -31,9 +33,15 @@ const Comment = ({ comment, currentUserId }) => {
   const [content, setContent] = useState();
 
   const deleteComment = async (commentId) => {
-    fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + comment._id, {
-      method: "DELETE",
-    });
+    axios.delete(
+      "https://e734-171-239-139-225.ap.ngrok.io/v1.0/comment/" + comment._id,
+      {
+        method: "DELETE",
+        body: {
+          user_id: "624914af542d2a0c93923545",
+        },
+      }
+    );
   };
 
   const canDelete = currentUserId === comment.user_id;
@@ -43,7 +51,7 @@ const Comment = ({ comment, currentUserId }) => {
     e.preventDefault();
     axios
       .patch(
-        `https://be-enterprise.herokuapp.com/v1.0/comment/${comment._id}`,
+        `https://e734-171-239-139-225.ap.ngrok.io/v1.0/comment/${comment._id}`,
         data
       )
       .then((res) => {
@@ -52,6 +60,7 @@ const Comment = ({ comment, currentUserId }) => {
       .catch((err) => console.error(err));
     //   setComments();
     setActiveComment(null);
+    window.location.reload(false);
   };
 
   return (

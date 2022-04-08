@@ -9,10 +9,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { lightBlue, grey } from "@mui/material/colors";
 import { Typography } from "@material-ui/core";
 import axios from "axios";
+
 import useAxios from "../../services/useAxios";
 
 // Mới tạo IdeaButtons.js trong Idea(components), chứa 3 function một cái là dạng link Back, cái thứ 2 là nút Cancel, 3 là nút Create Idea
@@ -49,8 +50,9 @@ const LabelStyle = styled("label")({
 //     );
 //     console.log(response);
 // };
-const uid = window.sessionStorage.getItem("uid");
 const IdeaCreate = () => {
+  const uid = window.sessionStorage.getItem("uid");
+
   var date = new Date();
   const [idea, setIdea] = useState(null);
   const [title, setTitle] = useState("Title");
@@ -58,9 +60,10 @@ const IdeaCreate = () => {
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
   const [user_id, setUserId] = useState(uid);
-  const [submission_id, setSubmissionId] = useState("6249e1bdabe8dbf2e9786874");
+  const [submission_id, setSubmissionId] = useState("624fa5fe94814c446e5a6911");
   const [documents, setSelectedFile] = useState([]);
-  const [document, setDocument] = useState({});
+  const [document, setDocument] = useState("");
+  const [documentURL, setDocumentURL] = useState("");
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
   const [updatedAt, setUpdateDate] = useState(date);
@@ -112,12 +115,18 @@ const IdeaCreate = () => {
       title,
       description,
       content,
+      anonymousMode,
       user_id,
       submission_id,
+      documentURL,
       categories,
     };
 
-    console.log(idea);
+    if (document != null) {
+      const file = JSON.parse(await sendDocument(submission_id, document.name));
+      setDocumentURL(file["file_path"]);
+      console.log(`Document URL: ${documentURL}`);
+    }
 
     // setIsPending(true);
 
@@ -155,7 +164,7 @@ const IdeaCreate = () => {
       //setCategories(categories.data);
 
       const result = categories.data.map((category) => ({
-        value: category.category_id,
+        value: category._id,
         label: category.name,
       }));
       setOptions(result);
@@ -164,19 +173,19 @@ const IdeaCreate = () => {
     })();
   }, []);
 
-  const sendDocument = async (ideaId, fileName) => {
+  const sendDocument = async (submissionId, fileName) => {
     const data = new FormData();
     data.append("document", document);
     console.log(document);
 
     try {
       const response = await axios.post(
-        `https://be-enterprise.herokuapp.com/v1.0/submission`,
+        `https://be-enterprise.herokuapp.com/v1.0/file/${submissionId}`,
         document
       );
 
       if (response.status >= 200 && response.status <= 300) {
-        return response.data;
+        return JSON.stringify(response.data);
       }
     } catch (e) {
       console.log(e.message);
@@ -291,20 +300,20 @@ const IdeaCreate = () => {
                 display: "flex",
               }}
             >
-              <InputLabel htmlFor="icon-button-file">
-                <Input
-                  accept="image/*"
-                  id="icon-button-file"
-                  type="file"
-                  onChange={(event) => {
-                    const file = event.target.files[0];
-                    setDocument(file);
-                    changeHandler(event);
-                  }}
-                />
+              <InputLabel id="attach-label">
                 <Button color={"primary"} variant="text" component="span">
-                  <PhotoCamera />
-                  Upload
+                  <Input
+                    type="file"
+                    accept="file/*"
+                    id="contained-button-file"
+                    color={"primary"}
+                    onChange={(event) => {
+                      const file = event.target.files[0];
+                      setDocument(file);
+                      changeHandler(event);
+                    }}
+                  />
+                  <AttachFileIcon /> Attachments
                 </Button>
               </InputLabel>
               {isFilePicked ? (

@@ -55,9 +55,9 @@ const EmployeeTable = (props) => {
           username: user.username,
           email: user.email,
           fullname: user.fullname,
-          roleId: user.role_id,
-          // rolename: user.role_name,
-          departId: user.department_id,
+          // roleId: user.role_id,
+          rolename: user.role_name,
+          departname: user.department_name,
         };
       });
       setUsers(userList);
@@ -143,13 +143,13 @@ const EmployeeTable = (props) => {
       editable: true,
     },
     {
-      field: "roleId",
+      field: "rolename",
       headerName: "Role",
       width: 200,
       editable: true,
     },
     {
-      field: "departId",
+      field: "departname",
       headerName: "Department",
       width: 200,
       editable: true,
