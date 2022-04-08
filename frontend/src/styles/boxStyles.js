@@ -45,7 +45,7 @@ export const replyBox = {
   borderColor: "white",
   m: 2,
   p: 3,
-  display: "flex",
+  display: "flex-column",
   width: "50%",
 };
 
@@ -61,11 +61,11 @@ export const dataBox = {
 
 export const chartBox = {
   alignSelf: "center",
-          position: "relative",
-          margin: "auto",
-          padding: "2rem 2rem 2rem 2rem",
-          width: "25rem",
-          height: "28rem",
-          boxShadow: 4,
-          borderRadius: "25px",
-}
+  position: "relative",
+  margin: "auto",
+  padding: "2rem 2rem 2rem 2rem",
+  width: "25rem",
+  height: "28rem",
+  boxShadow: 4,
+  borderRadius: "25px",
+};

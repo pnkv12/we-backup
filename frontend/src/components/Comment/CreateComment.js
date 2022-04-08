@@ -6,6 +6,9 @@ import Typography from "@mui/material/Typography";
 import { cmtBox } from "../../styles/boxStyles";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import ClearIcon from "@mui/icons-material/Clear";
+import IconButton from "@mui/material/IconButton";
 
 const uid = window.sessionStorage.getItem("uid");
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
@@ -36,17 +39,18 @@ const CreateComment = (ideaId) => {
           },
         })
         .then((res) => console.log("data" + res.data));
+      // window.location.reload();
     } catch (error) {
       console.log(error.message);
     }
-
   };
   return (
     <form onSubmit={onSubmitComment}>
       <Box sx={cmtBox}>
         <Box sx={{ flexGrow: 1 }}>
           <TextField
-            sx={{ width: "95%" }}
+            id="comment-box"
+            sx={{ width: "100%" }}
             multiline
             rows={2}
             value={content}
@@ -54,22 +58,17 @@ const CreateComment = (ideaId) => {
             placeholder="Say something..."
           />
         </Box>
-        <Box>
-          <Button
-            variant="contained"
-            className="comment-form-button"
-            type="submit"
-          >
-            Post
+        <Box sx={{ alignSelf: "center" }}>
+          <Button variant="text" text="primary" type="submit">
+            <SendIcon />
           </Button>
-          <Button
-            variant="outlined"
+          {/* <IconButton
+            text="primary"
             type="button"
-            className="comment-form-button comment-form-cancel-button"
-            onClick
+            onClick={() => setContent(() => "")}
           >
-            Cancel
-          </Button>
+            <ClearIcon />
+          </IconButton> */}
         </Box>
       </Box>
     </form>

@@ -16,13 +16,10 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import RecommendIcon from "@mui/icons-material/Recommend";
 import IconButton from "@mui/material/IconButton";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import Grid from "@mui/material/Grid";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
@@ -138,28 +135,25 @@ const Idea = () => {
           display: "flex",
           p: 1,
           m: 2,
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         }}
       >
         <Box
           sx={{
             display: "flex",
             alignSelf: "center",
+            marginRight: "3rem",
           }}
         >
           <FilterIdea />
         </Box>
         {/* {category && <h2>Found {filteredProducts.length} items</h2>} */}
-
-        {/* Search + Create button area */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "right",
           }}
         >
-          {/* <SearchFunction onSubmit={handleFiltersChange} /> */}
-
           <NewIdeaBtn />
         </Box>
       </Box>
@@ -169,7 +163,7 @@ const Idea = () => {
 
       <Box
         sx={{
-          margin: "2rem 0rem 2rem 0rem",
+          margin: "2rem 5rem 2rem 5rem",
           padding: "1rem 2rem 2rem 2rem",
           border: 1,
           borderRadius: "25px",
@@ -220,50 +214,61 @@ const Idea = () => {
                         variant="body2"
                         color="text.primary"
                       >
-                        Views: {idea.total_view}
-                        <br />
-                        Content: {idea.content}
+                        {idea.description}
                       </Typography>
-                      <Box sx={{ display: "flex" }} fullWidth>
+                      <Box
+                        sx={{ display: "flex", justifyContent: "flex-end" }}
+                        fullWidth
+                      >
+                        <Divider orientation="vertical" flexItem></Divider>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
                             color="secondary"
                             aria-label="likes"
                             component="span"
+                            size="small"
                           >
-                            <ThumbUpOffAltIcon />
+                            <RecommendIcon fontSize="inherit" />
                           </IconButton>
-                          <Typography>(1)</Typography>
+                          <Typography>
+                            ({!idea.total_reaction ? "0" : idea.total_reaction})
+                          </Typography>
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
                             color="secondary"
                             aria-label="dislikes"
                             component="span"
+                            size="small"
                           >
-                            <ThumbDownOffAltIcon />
+                            <VisibilityIcon fontSize="inherit" />
                           </IconButton>
-                          <Typography>(3)</Typography>
+                          <Typography>
+                            ({!idea.total_view ? "0" : idea.total_view})
+                          </Typography>
                         </Box>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
                             color="secondary"
                             aria-label="comments"
                             component="span"
+                            size="small"
                           >
-                            <ChatBubbleOutlineOutlinedIcon />
+                            <ChatBubbleOutlineOutlinedIcon fontSize="inherit" />
                           </IconButton>
-                          <Typography>{commentsCounter}</Typography>
+                          <Typography>
+                            ({!commentsCounter ? "0" : commentsCounter})
+                          </Typography>
                         </Box>
                       </Box>
                     </>
                   }
                 />
               </ListItem>
+              <Divider />
             </List>
           );
         })}
-
         {/* Pagination area */}
         <Box
           sx={{

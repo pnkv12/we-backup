@@ -12,6 +12,7 @@ import { Typography } from "@material-ui/core";
 import { ReturnLink } from "./IdeaButtons";
 import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
+import SendIcon from "@mui/icons-material/Send";
 
 const COMMENT_URL = "https://be-enterprise.herokuapp.com/v1.0/comments";
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
@@ -139,32 +140,44 @@ const IdeaDetails = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
+            alignContent: "stretch",
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
-            <ReturnLink />
-          </Box>
-          <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Typography variant="h4" color="primary">
-              {idea.title}
-              <IconButton onClick={handleDelete}>
-                <ClearIcon />
-              </IconButton>
-              <Button
+          <Box sx={{ display: "flex" }}>
+            <Box sx={{ flexGrow: 1 }}>
+              <ReturnLink />
+            </Box>
+            <Box>
+              <IconButton
                 title="edit"
-                variant="text"
                 color="secondary"
-                fontSize="small"
+                size="small"
                 onClick={() =>
                   setActiveUpdate({ id: idea.id, type: "editing" })
                 }
               >
                 <EditIcon />
-              </Button>
+              </IconButton>
+              <IconButton color="secondary" onClick={handleDelete} size="small">
+                <ClearIcon />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Typography variant="h4" color="primary">
+              {idea.title}
             </Typography>
           </Box>
 
-          <Typography variant="subtitle1">ID: {id}</Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              fontStyle: "italic",
+            }}
+          >
+            <Typography variant="subtitle1">{idea.description}</Typography>
+          </Box>
           <Box>
             {!isEditing && (
               <p>
@@ -178,15 +191,24 @@ const IdeaDetails = () => {
             {isEditing && (
               <form onSubmit={(e) => submit(e)}>
                 <TextField
-                  placeholder={idea.content}
+                  type="text"
+                  defaultValue={idea.content}
                   multiline
                   rows={4}
                   onChange={(e) =>
                     setNewIdea({ ...data, content: e.target.value })
                   }
+                  fullWidth
                 />
-                <Button variant="contained" type="submit">
-                  Post
+                <Button variant="text" type="submit">
+                  <SendIcon />
+                </Button>
+                <Button
+                  variant="text"
+                  text="secondary"
+                  onClick={() => setActiveUpdate(() => isEditing)}
+                >
+                  <ClearIcon />
                 </Button>
               </form>
             )}
@@ -194,7 +216,7 @@ const IdeaDetails = () => {
         </Box>
       )}
       <Divider sx={{ m: 2 }}>Comments</Divider>
-      {<Comments commentsUrl={COMMENT_URL} ideaId={id} currentUserId={uid}/>}
+      {<Comments commentsUrl={COMMENT_URL} ideaId={id} currentUserId={uid} />}
     </Box>
   );
 };

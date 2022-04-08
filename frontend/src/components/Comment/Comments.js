@@ -33,7 +33,7 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
 
         console.log("comments of this idea:", response.data);
         if (response != null) {
-          const commentList = response.data.map((comment,id) => {
+          const commentList = response.data.map((comment, id) => {
             return {
               id: id + 1,
               commentId: comment._id,
@@ -48,8 +48,6 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
       }
     })();
   }, []);
-
-
 
   // const updateComment = (params) => {
   //   axios
@@ -80,15 +78,11 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
 
   return (
     <Box>
-      <Typography variant="h6">Write comment</Typography>
       <CreateComment ideaId={ideaId} />
-      <Divider />
       <Box>
         {/* <div>list comment here</div> */}
         {comments.map((comment) => (
-                <Comment key={comment._id}
-                comment={comment}
-                currentUserId={uid}/>
+          <Comment key={comment._id} comment={comment} currentUserId={uid} />
         ))}
       </Box>
       <br />

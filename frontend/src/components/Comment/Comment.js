@@ -10,10 +10,12 @@ import { Box, Divider } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { replyBox } from "../../styles/boxStyles";
 import axios from "axios";
+import EditIcon from "@mui/icons-material/Edit";
+import ClearIcon from "@mui/icons-material/Clear";
+import IconButton from "@mui/material/IconButton";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const Comment = ({ comment, currentUserId }) => {
-
   const [activeComment, setActiveComment] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
@@ -21,15 +23,14 @@ const Comment = ({ comment, currentUserId }) => {
     content: "",
   });
 
-    const isEditing =
+  const isEditing =
     activeComment &&
     activeComment.type === "editing" &&
     activeComment.id === comment._id;
-    const navigate = useNavigate();
-    const [content, setContent] = useState();
+  const navigate = useNavigate();
+  const [content, setContent] = useState();
 
-
-    const deleteComment = async (commentId) => {
+  const deleteComment = async (commentId) => {
     fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + comment._id, {
       method: "DELETE",
     });
@@ -38,80 +39,82 @@ const Comment = ({ comment, currentUserId }) => {
   const canDelete = currentUserId === comment.user_id;
   const canEdit = currentUserId === comment.user_id;
 
-const updateComment = (e) => {
+  const updateComment = (e) => {
     e.preventDefault();
     axios
-      .patch(`https://be-enterprise.herokuapp.com/v1.0/comment/${comment._id}`, data)
+      .patch(
+        `https://be-enterprise.herokuapp.com/v1.0/comment/${comment._id}`,
+        data
+      )
       .then((res) => {
         console.log(res.data);
-        // window.location.reload(false);
       })
       .catch((err) => console.error(err));
     //   setComments();
-      setActiveComment(null);
+    setActiveComment(null);
   };
 
   return (
-
+    <Box>
+      <Box sx={{ display: "flex" }}>
+        <Avatar alt="" src="/static/images/avatar/2.jpg" />
+        <Box sx={{ fontSize: 15, alignSelf: "center" }}>{comment.user_id}</Box>
+      </Box>
+      <Box sx={replyBox}>
+        <Box>
           <Box>
-            <Box className="comment-image-container">
-              <Avatar alt="" src="/static/images/avatar/2.jpg" />
-            </Box>
-            <Box className="comment-right-part">
-              <div className="comment-content">
-                <div className="comment-author">{comment._id}</div>
-              </div>
-              <div className="comment-text">{comment.content}</div>
-              
-              
-              <div className="comment-actions">
-              {!isEditing && (
-                <div
-                className="comment-action"
-                onClick={() =>
-                  setActiveComment({
-                    id: comment._id,
-                    type: "editing",
-                  })
-                }
-              >
-                Edit
-              </div>
-              )}
-              {isEditing && (
+            {!isEditing && (
+              <Box sx={{ display: "flex", width: "100%" }}>
+                <Box sx={{ flexGrow: 1, fontSize: 15, alignSelf: "center" }}>
+                  {comment.content}
+                </Box>
+                <Box>
+                  <IconButton
+                    size="small"
+                    onClick={() =>
+                      setActiveComment({
+                        id: comment._id,
+                        type: "editing",
+                      })
+                    }
+                  >
+                    <EditIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => deleteComment(comment._id)}
+                  >
+                    <ClearIcon fontSize="inherit" />
+                  </IconButton>
+                </Box>
+              </Box>
+            )}
+            {isEditing && (
               <form onSubmit={(e) => updateComment(e)}>
                 <TextField
-                  className="comment-form-textarea"
-                  value={content}
+                  defaultValue={comment.content}
+                  fullWidth
                   multiline
                   rows={2}
                   onChange={(e) =>
                     setNewComment({ ...data, content: e.target.value })
                   }
                 />
-                <Button
-                  variant="text"
-                  // className="comment-form-button"
-                  type="submit"
+                <IconButton type="submit" color="primary">
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  type="button"
+                  onClick={() => setActiveComment(isEditing)}
                 >
-                  Update
-                </Button>
-                <Button type="button" variant="text" color="secondary">
-                  Cancel
-                </Button>
+                  <ClearIcon />
+                </IconButton>
               </form>
-              )}
-                
-                <div
-                  className="comment-action"
-                  onClick={() => deleteComment(comment._id)}
-                >
-                  Delete
-                </div>
-              </div>
-            </Box>
+            )}
           </Box>
-        
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
