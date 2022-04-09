@@ -61,7 +61,8 @@ const IdeaCreate = () => {
   const [description, setDescription] = useState(null);
   const [content, setContent] = useState("Please input your idea");
   const [anonymousMode, setAnonymous] = useState(false);
-  const [anon, setAnon] = useState();
+  const [anon, setAnon] = useState(anonymousMode);
+  const [displayUser, setDisplay] = useState(fullname);
   const [user_id, setUserId] = useState(uid);
   const [submission_id, setSubmissionId] = useState("624fa5fe94814c446e5a6911");
   const [documents, setSelectedFile] = useState([]);
@@ -88,9 +89,10 @@ const IdeaCreate = () => {
     setIsFilePicked(true);
   };
 
-  const changeAnon = (event) => {
-    setAnon(event.target.value);
+  const changeAnon = (e) => {
+    setAnon(e.target.value);
     setAnonymous(true);
+    setDisplay("Anonymous");
   };
 
   useEffect(() => {
@@ -300,12 +302,6 @@ const IdeaCreate = () => {
               />
             </Box>
             <br />
-            {/* <div>
-                    <label>Thumbs</label>
-                    <input type="textarea" name="thumbs" placeholder={thumbs_up} rows ="4" onChange={e => setThumbsUp(e.target.value)} />
-                    <input type="textarea" name="thumbs" placeholder={thumbs_down} rows ="4" onChange={e => setThumbsDown(e.target.value)} />
-                </div>
-                <br/> */}
             <Box
               sx={{
                 margin: "1rem",
@@ -435,11 +431,11 @@ const IdeaCreate = () => {
               </div>
               <Box>
                 <Switch
-                  value={anonymousMode}
-                  onChange={changeAnon}
+                  defaultValue={anonymousMode}
+                  onClick={changeAnon}
                   inputProps={{ "aria-label": "controlled" }}
                 />
-                Currently show: {fullname}
+                {displayUser}
               </Box>
               {!isPending && (
                 <Button

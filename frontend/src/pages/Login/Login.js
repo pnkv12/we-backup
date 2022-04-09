@@ -47,8 +47,12 @@ function Login(props) {
         window.sessionStorage.setItem("email", response.data.email);
         window.sessionStorage.setItem("fullname", response.data.fullname);
         window.sessionStorage.setItem("isAuthenticated", true);
-        window.sessionStorage.setItem("role", response.data.role);
-        window.sessionStorage.setItem("department", response.data.dept);
+        window.sessionStorage.setItem("roleId", response.data.role);
+        window.sessionStorage.setItem("role", response.data.roleName);
+        window.sessionStorage.setItem(
+          "department",
+          response.data.departmentName
+        );
       }
     } catch (error) {
       console.error(error);

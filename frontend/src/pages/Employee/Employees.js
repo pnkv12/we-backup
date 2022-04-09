@@ -9,7 +9,7 @@ import { employeeBoxStyle } from "../../styles/boxStyles";
 function Employees() {
   const getRole = sessionStorage.getItem("role");
 
-  if (getRole !== "6248fd5cb7d420daa06ee42d") {
+  if (getRole !== "Staff") {
     return (
       <Box>
         <Box sx={employeeBoxStyle}>

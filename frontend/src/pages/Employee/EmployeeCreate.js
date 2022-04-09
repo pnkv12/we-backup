@@ -149,7 +149,7 @@ export default function EmployeeCreate(props) {
           <br />
           <TextField
             id="outlined-basic"
-            type="text"
+            type="password"
             label="Password"
             variant="outlined"
             name="password"
@@ -161,7 +161,7 @@ export default function EmployeeCreate(props) {
           <br />
           <TextField
             id="outlined-basic"
-            type="text"
+            type="password"
             label="confirmPassword"
             variant="outlined"
             name="confirmPassword"
@@ -195,7 +195,6 @@ export default function EmployeeCreate(props) {
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Department</InputLabel>
             <Select
-              // value={department}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Department"
@@ -231,9 +230,6 @@ export default function EmployeeCreate(props) {
               <ReplayRoundedIcon />
             </Button>
           </Box>
-          {/* <p>
-                        {result !== null ? result : 'Invalid'}
-                    </p> */}
         </Box>
       </form>
     </Box>
