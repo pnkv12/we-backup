@@ -11,16 +11,24 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 // import useFetch from "../../services/useFetch";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
+import FilterIdea from "../../components/Idea/FilterIdea";
+import NewIdeaBtn from "../../components/Idea/IdeaButtons";
 import axios from "axios";
+import Paging from "../../components/Paging";
 import queryString from "query-string";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import IconButton from "@mui/material/IconButton";
+import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
+import Grid from "@mui/material/Grid";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import Button from "@mui/material/Button";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const uid = window.sessionStorage.getItem("uid");
@@ -80,8 +88,8 @@ const Submissions = () => {
   }
 
   const downloadCSV = async (submissionId) => {
-    window.location.replace(`${baseURL}/zip/download/${submissionId}`);
-    await axios.get(`${baseURL}/zip/download/${submissionId}`);
+    window.location.replace(`${baseURL}/csv/download/${submissionId}`);
+    await axios.get(`${baseURL}/csv/download/${submissionId}`);
   };
 
   return (
@@ -117,18 +125,17 @@ const Submissions = () => {
                       <Typography
                         sx={{ display: "inline" }}
                         component="span"
-                        variant="h4"
+                        variant="h6"
                         color="text.primary"
                         data-testid="idea-title"
                       >
-                        {/* <Link
+                        <Link
                           to={`/submissions/${submission._id}`}
                           underline="hover"
                           key={submission._id}
                         >
                           {submission.name}
-                        </Link> */}
-                        {submission.name}
+                        </Link>
                       </Typography>
                     </>
                   }
@@ -174,8 +181,8 @@ const Submissions = () => {
                       </Box>
                       <Box sx={{ display: "flex" }} fullWidth>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <Button
-                            color="primary"
+                          <IconButton
+                            color="secondary"
                             aria-label="comments"
                             component="span"
                             onClick={async () => {
@@ -183,7 +190,7 @@ const Submissions = () => {
                             }}
                           >
                             <CloudDownloadIcon /> Download CSV
-                          </Button>
+                          </IconButton>
                         </Box>
                       </Box>
                     </>

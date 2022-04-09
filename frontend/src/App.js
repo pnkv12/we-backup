@@ -202,17 +202,16 @@ function App() {
                     )
                   }
                 />
-
-                {/* <Route
-                                    path="/submissions/:id"
-                                    element={
-                                        isAuthenticated ? (
-                                            <IdeaDetails/>
-                                        ) : (
-                                            <Login authenticate={setIsAuthenticated}/>
-                                        )
-                                    }
-                                /> */}
+                <Route
+                  path="/submissions/:id"
+                  element={
+                    isAuthenticated ? (
+                      <IdeaDetails />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
                 <Route path="/ideas/:category" element={<Idea />} />
                 <Route path="/ideas/:filter" element={<Idea />} />
@@ -280,6 +279,18 @@ function App() {
                     )
                   }
                 />
+
+                <Route
+                  path="/academic"
+                  element={
+                    isAuthenticated ? (
+                      <AcademicYear />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+
                 <Route
                   path="/departments"
                   element={
