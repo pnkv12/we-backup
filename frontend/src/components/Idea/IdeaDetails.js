@@ -94,6 +94,7 @@ const IdeaDetails = () => {
 
 
     const downloadZip = async (ideaId) => {
+        window.location.replace(`http://localhost:8000/v1.0/zip/download/${ideaId}`);
         await axios.get(`http://localhost:8000/v1.0/zip/download/${ideaId}`);
     }
 

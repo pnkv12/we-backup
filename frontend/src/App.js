@@ -188,7 +188,7 @@ function App() {
                                     path="/ideas/:id"
                                     element={
                                         isAuthenticated ? (
-                                            <SubmissionDetails/>
+                                            <IdeaDetails/>
                                         ) : (
                                             <Login authenticate={setIsAuthenticated}/>
                                         )
