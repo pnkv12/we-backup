@@ -144,7 +144,6 @@ const IdeaCreate = () => {
     if (document != null) {
 
       sendDocument(submission_id, document.name).then(async (response)=>{
-
         const file = JSON.parse(response)
         idea.documentURL = file['file_path'];
         idea.file_id = file['file_drive_id'];
