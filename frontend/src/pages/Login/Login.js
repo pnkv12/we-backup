@@ -18,6 +18,8 @@ function Login(props) {
   const [error, setError] = useState("");
   const { setIsAuthenticated } = useAppContext();
 
+  const navigate = useNavigate();
+
   const logIn = async (details) => {
     try {
       const response = await axios.post(
@@ -31,14 +33,11 @@ function Login(props) {
           // headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      // console.log(response.headers);
-
-      // let cookie = response.headers["set-cookie"];
-      // console.log(cookie);
+      // console.log(response.data);
 
       if (response.status === 200) {
         setIsAuthenticated(true);
-        setUser({
+        await setUser({
           username: details.username,
           password: details.password,
         });
@@ -47,13 +46,15 @@ function Login(props) {
         window.sessionStorage.setItem("email", response.data.email);
         window.sessionStorage.setItem("fullname", response.data.fullname);
         window.sessionStorage.setItem("isAuthenticated", true);
-        window.sessionStorage.setItem("roleId", response.data.role);
-        window.sessionStorage.setItem("role", response.data.roleName);
+        window.sessionStorage.setItem("role", response.data.role);
+        window.sessionStorage.setItem("roleName", response.data.roleName);
         window.sessionStorage.setItem(
-          "department",
+          "departmentName",
           response.data.departmentName
         );
+        window.sessionStorage.setItem("department", response.data.department);
       }
+      window.location.reload(true);
     } catch (error) {
       console.error(error);
       setError("Wrong username or password");

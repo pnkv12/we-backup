@@ -51,8 +51,10 @@ const LabelStyle = styled("label")({
 //     );
 //     console.log(response);
 // };
+
 const IdeaCreate = () => {
   const uid = window.sessionStorage.getItem("uid");
+  const department_id = window.sessionStorage.getItem("department");
   const fullname = window.sessionStorage.getItem("fullname");
 
   var date = new Date();
@@ -66,7 +68,7 @@ const IdeaCreate = () => {
   const [user_id, setUserId] = useState(uid);
   const [submission_id, setSubmissionId] = useState("624fa5fe94814c446e5a6911");
   const [documents, setSelectedFile] = useState([]);
-  const [document, setDocument] = useState("");
+  const [document, setDocument] = useState(null);
   const [documentURL, setDocumentURL] = useState("");
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
@@ -128,6 +130,10 @@ const IdeaCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(anonymousMode);
+    setUserId(uid)
+    console.log(user_id);
+
+
     const idea = {
       title,
       description,
@@ -139,17 +145,31 @@ const IdeaCreate = () => {
       categories,
     };
 
+    // setIsPending(true);
+
     if (document != null) {
-      sendDocument(submission_id, document.name).then(async (response) => {
-        const file = JSON.parse(response);
-        idea.documentURL = file["file_path"];
-        //setDocumentURL(file['file_path']);
+
+      sendDocument(submission_id, document.name).then(async (response)=>{
+        const file = JSON.parse(response)
+        idea.documentURL = file['file_path'];
+        idea.file_id = file['file_drive_id'];
+        idea.file_name = document.name;
+
         console.log(`Document URL: ${idea.documentURL}`);
 
-        //show imag
-        file.preview = URL.createObjectURL(file);
-
         await axios
+            .post(`${baseURL}/idea`, idea, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+            .then(async (response) => {
+              console.log("Idea added");
+              setIsPending(false);
+            });
+      })
+    } else {
+      await axios
           .post(`${baseURL}/idea`, idea, {
             headers: {
               "Content-Type": "application/json",
@@ -159,18 +179,6 @@ const IdeaCreate = () => {
             console.log("Idea added");
             setIsPending(false);
           });
-      });
-    } else {
-      await axios
-        .post(`${baseURL}/idea`, idea, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then(async (response) => {
-          console.log("Idea added");
-          setIsPending(false);
-        });
     }
   };
 
@@ -197,7 +205,7 @@ const IdeaCreate = () => {
     try {
       const response = await axios.post(
         `${baseURL}/file/${submissionId}`,
-        document
+        data
       );
 
       if (response.status >= 200 && response.status <= 300) {

@@ -16,7 +16,8 @@ const Home = () => {
   //   method: "get",
   // });
 
-  // const [ideas, setIdeas] = useState([]);
+    const roleName = window.sessionStorage.getItem("roleName");
+   
 
   // useEffect(() => {
   //   if (response != null) {
@@ -78,7 +79,53 @@ const Home = () => {
         </select>
       </Box> */}
     </Box>
-  );
+  );else if(roleName === "Coordinator"){
+        return (
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    m: 1,
+                    p: 3,
+                    textAlign: "center",
+                    alignItems: "center",
+                }}
+            >
+                <h1>Welcome</h1>
+                <img
+                    src="images/QC.jpeg"
+                    style={{
+                        height: "50%",
+                        width: "50%",
+                    }}
+                ></img>
+
+            </Box>
+        );
+    } else if(roleName === "Administrator"){
+        return (
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    m: 1,
+                    p: 3,
+                    textAlign: "center",
+                    alignItems: "center",
+                }}
+            >
+                <h1>Welcome</h1>
+                <img
+                    src="images/administrator.jpg"
+                    style={{
+                        height: "50%",
+                        width: "50%",
+                    }}
+                ></img>
+
+            </Box>
+        );
+    }
 };
 
 export default Home;
