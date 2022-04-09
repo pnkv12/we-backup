@@ -133,7 +133,12 @@ const Idea = () => {
   if (error) throw error;
   if (loading) return <LoadingIndicator />;
   if (ideas.length === 0) {
-    return <h1>No idea created yet</h1>;
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", m: 2, p: 2 }}>
+        <NewIdeaBtn />
+        <h1>Be the first to post new idea</h1>
+      </Box>
+    );
   }
 
   return (

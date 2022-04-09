@@ -144,6 +144,25 @@ const IdeaDetails = () => {
       .catch((err) => console.error(err));
   }, []);
 
+  const [users, setUsers] = useState({});
+
+  const { response } = useAxios({
+    url: "users",
+    method: "get",
+  });
+  useEffect(() => {
+    if (response != null) {
+      const userList = response.map((user) => {
+        return {
+          userId: user._id,
+          username: user.username,
+          fullname: user.fullname,
+        };
+      });
+      setUsers(userList);
+    }
+  }, [response]);
+
   return (
     <Box
       sx={{
@@ -176,7 +195,7 @@ const IdeaDetails = () => {
       </Box>
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
-      {idea && (
+      {idea && users && (
         <Box
           sx={{
             display: "flex",
@@ -196,14 +215,22 @@ const IdeaDetails = () => {
               fontStyle: "italic",
             }}
           >
-            <Typography variant="subtitle1">{idea.description}</Typography>
+            <Typography variant="h6">
+              {!idea.anonymousMode === false && idea.user_id === users.userId
+                ? users.fullname
+                : "Anonymous"}
+            </Typography>
           </Box>
           <Box>
             {!isEditing && (
               <p>
-                <Typography variant="h6" color="primary">
-                  Content:
+                <Typography
+                  variant="subtitle1"
+                  sx={{ fontStyle: "italic", fontWeight: "bold" }}
+                >
+                  {idea.description}
                 </Typography>
+
                 <Typography variant="body1">{idea.content}</Typography>
               </p>
             )}

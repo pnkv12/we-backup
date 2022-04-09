@@ -19,7 +19,7 @@ import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
-const pages = ["Ideas", "Employees", "Submissions", "Dashboard","Category"];
+const pages = ["Ideas", "Employees", "Submissions", "Dashboard","Categories"];
 
 const settings = [];
 

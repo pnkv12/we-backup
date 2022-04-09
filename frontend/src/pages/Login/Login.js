@@ -18,7 +18,7 @@ function Login(props) {
   const [error, setError] = useState("");
   const { setIsAuthenticated } = useAppContext();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const logIn = async (details) => {
     try {
@@ -33,7 +33,6 @@ function Login(props) {
           // headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      // console.log(response.data);
 
       if (response.status === 200) {
         setIsAuthenticated(true);

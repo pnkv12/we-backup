@@ -19,8 +19,6 @@ const CreateComment = (ideaId) => {
   const [user_id, setUserId] = useState(uid);
   const [idea_id, setIdeaId] = useState(ideaId.ideaId);
 
-  //   setUserId(uid);
-  //   setIdeaId(ideaId);
   const onSubmitComment = (event) => {
     event.preventDefault();
     (async function () {

@@ -45,7 +45,6 @@ const Dashboard = () => {
           <TabList onChange={handleChange} centered>
             <Tab label="Department" value="department" />
             <Tab label="Category" value="category" />
-            <Tab label="Download" value="download" />
           </TabList>
         </Box>
         <TabPanel value="department">
@@ -53,9 +52,6 @@ const Dashboard = () => {
         </TabPanel>
         <TabPanel value="category">
           <CategoryD />
-        </TabPanel>
-        <TabPanel value="download">
-          Closure Date: 13/12/2023 {} <Button>Download (.csv)</Button>
         </TabPanel>
       </TabContext>
     </Box>

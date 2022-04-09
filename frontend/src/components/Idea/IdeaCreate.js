@@ -14,6 +14,7 @@ import { lightBlue, grey } from "@mui/material/colors";
 import { Typography } from "@material-ui/core";
 import Switch from "@mui/material/Switch";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import useAxios from "../../services/useAxios";
 
@@ -83,6 +84,7 @@ const IdeaCreate = () => {
   const [postImage, setPostImage] = useState();
 
   const animatedComponents = makeAnimated();
+  let navigate = useNavigate();
 
   const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
@@ -130,9 +132,7 @@ const IdeaCreate = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(anonymousMode);
-    setUserId(uid)
-    console.log(user_id);
-
+    setUserId(uid);
 
     const idea = {
       title,
@@ -148,28 +148,15 @@ const IdeaCreate = () => {
     // setIsPending(true);
 
     if (document != null) {
-
-      sendDocument(submission_id, document.name).then(async (response)=>{
-        const file = JSON.parse(response)
-        idea.documentURL = file['file_path'];
-        idea.file_id = file['file_drive_id'];
+      sendDocument(submission_id, document.name).then(async (response) => {
+        const file = JSON.parse(response);
+        idea.documentURL = file["file_path"];
+        idea.file_id = file["file_drive_id"];
         idea.file_name = document.name;
 
         console.log(`Document URL: ${idea.documentURL}`);
 
         await axios
-            .post(`${baseURL}/idea`, idea, {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            })
-            .then(async (response) => {
-              console.log("Idea added");
-              setIsPending(false);
-            });
-      })
-    } else {
-      await axios
           .post(`${baseURL}/idea`, idea, {
             headers: {
               "Content-Type": "application/json",
@@ -179,6 +166,19 @@ const IdeaCreate = () => {
             console.log("Idea added");
             setIsPending(false);
           });
+        window.history.back();
+      });
+    } else {
+      await axios
+        .post(`${baseURL}/idea`, idea, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(async (response) => {
+          console.log("Idea added");
+          setIsPending(false);
+        });
     }
   };
 
@@ -371,7 +371,9 @@ const IdeaCreate = () => {
 
             {/* Tag/CategoryCreate section with customed Label */}
             <Box>
-              <InputLabel id="tag-label">Select or create new tags</InputLabel>
+              <InputLabel id="tag-label">
+                Select or create new category
+              </InputLabel>
               <Select
                 labelId="tag-label"
                 name="category_id"
