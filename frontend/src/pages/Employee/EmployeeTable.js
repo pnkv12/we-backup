@@ -67,8 +67,8 @@ const EmployeeTable = (props) => {
   }, [response]);
 
   const handleUpdate = async (params) => {
-  //   navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}&password=${params.password}
-  // `);
+    //   navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}&password=${params.password}
+    // `);
     navigate(`edit/${params.userId}?email=${params.email}&fullname=${params.fullname}&role=${params.roleId}&dept=${params.departId}
   `);
   };
@@ -90,7 +90,7 @@ const EmployeeTable = (props) => {
 
         const newUsers = users.filter((user) => user.userId !== userId);
         setUsers(newUsers);
-        console.log(response.data);
+        // console.log(response.data);
       } else if (response.status === 404 || 500 || 401 || 403) {
         console.log(response.data);
       }
@@ -173,7 +173,7 @@ const EmployeeTable = (props) => {
     >
       <Box
         sx={{
-          height: "20rem",
+          height: "23rem",
           minWidth: "65rem",
           m: 2,
           display: "flex",

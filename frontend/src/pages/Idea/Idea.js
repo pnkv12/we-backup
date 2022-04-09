@@ -40,7 +40,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: `${baseURL}/ideas?page=1&limit=5`,
+    url: `${baseURL}/ideas?skip=0&limit=5`,
     method: "get",
   });
 
@@ -48,20 +48,21 @@ const Idea = () => {
   const [ownerName, setOwnerName] = useState();
 
   const [page, setPage] = useState(1);
+  const [state, setState] = useState(0);
 
   const limit = 5;
   const startIndex = (page - 1) * limit;
 
   //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
-    page: 1,
+    skip: 0,
     limit: 5,
   });
 
   const [totalPages, setTotalPages] = useState();
 
   const [filters, setFilters] = useState({
-    page: 1,
+    skip: 0,
     limit: 5,
   });
 
@@ -101,7 +102,7 @@ const Idea = () => {
     setPage(num);
     setFilters({
       ...filters,
-      page: num,
+      skip: (num - 1) * limit,
     });
   };
 
@@ -225,8 +226,9 @@ const Idea = () => {
                       <Typography
                         sx={{ display: "inline" }}
                         component="span"
-                        variant="body2"
+                        variant="h6"
                         color="text.primary"
+                        data-testid="idea-title"
                       >
                         {idea.description}
                       </Typography>

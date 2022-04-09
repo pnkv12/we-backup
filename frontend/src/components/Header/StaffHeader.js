@@ -19,13 +19,13 @@ import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
-const pages = ["Ideas", "Employees", "Dashboard"];
+const pages = ["Ideas"];
 
-const settings = ["Category", "Departments"];
+const settings = [];
 
 const getRole = sessionStorage.getItem("role");
 
-function Header(props) {
+function StaffHeader(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const userTitle = `${window.sessionStorage.username}`;
@@ -218,9 +218,7 @@ function Header(props) {
                     <Button
                       component={Link}
                       to={
-                        setting === "Category"
-                          ? "/categories"
-                          : `/${setting.toLowerCase()}`
+                        setting === "Category" ? "/categories" : `/${setting}`
                       }
                     >
                       {setting}
@@ -398,4 +396,4 @@ function Header(props) {
     );
   }
 }
-export default Header;
+export default StaffHeader;
