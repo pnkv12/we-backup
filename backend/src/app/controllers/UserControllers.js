@@ -57,6 +57,7 @@ class UserController {
                     fullname: user["fullname"],
                     email: user["email"],
                     role: user["role_id"],
+                    department : user["department_id"],
                     roleName: user.role_name,
                     departmentName: user.department_name,
                     uid: user["_id"],

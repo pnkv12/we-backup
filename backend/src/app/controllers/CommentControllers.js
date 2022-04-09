@@ -80,7 +80,7 @@ class CommentController {
         try {
             const id = req.params.id
             const comment = await Comment.findById(id)
-            const userId = req.session.userId
+            const userId = req.body.user_id
 
             if (userId === comment.user_id) {
                 await comment.updateOne({
@@ -108,10 +108,10 @@ class CommentController {
         try {
             const id = req.params.id
             const comment = await Comment.findById(id)
-            const userId = req.session.userId
+            const userId = req.body.user_id;
 
             if(userId === comment.user_id) {
-                await comment.updateOne()
+                await comment.deleteOne();
                 return res.status(200).json({
                     message: 'The comment has been deleted.'
                 })

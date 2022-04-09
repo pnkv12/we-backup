@@ -6,7 +6,12 @@ const oauth2Client = new google.auth.OAuth2(
     CLIENT_SECRET,
     REDIRECT_URI
   );
-  
+
+oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    include_granted_scopes: true
+});
+
 oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN_DRIVE });
   
 const drive = google.drive({
@@ -31,7 +36,6 @@ class handleDrive {
                     parents: [folderId]
                 },
                 fields: 'id',
-
             })
 
             return response.data

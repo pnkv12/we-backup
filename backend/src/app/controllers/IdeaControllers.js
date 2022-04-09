@@ -1,4 +1,3 @@
-
 const Idea = require('../models/Idea')
 const View = require('../models/View')
 const React = require('../models/Reaction')
@@ -6,11 +5,12 @@ const User = require('../models/User')
 const Submission = require('../models/Submission')
 const paginatedResults = require('../../util/paginated')
 const notificationMail = require('../../util/mail')
+const Notify = require("../models/Notify");
 
 class IdeaController {
 
     // [POST] /idea
-    async createIdea(req, res, next){
+    async createIdea(req, res, next) {
 
         try {
             // Create a new idea
@@ -19,20 +19,29 @@ class IdeaController {
             const savedIdea = await newIdea.save()
 
             // Get info user
-            const coordinatorRole = '623ec63819af8a0d9cd33b6e'
-            const user = await User.find({role_id: coordinatorRole })
-            
+            const user = await User.findOne({_id: savedIdea.user_id})
+            const departmentId = user.department_id;
+            const coordinators = await User.find({department_id: departmentId, role_id: '62482516ad01d9a46b246089'})
+
+
             // Get a topic
             const submission = await Submission.findById(req.body.submission_id)
             const nameTopic = submission.name
 
 
-            // Send notification mail to coordinator
-            for (const element of user) {
-                const fullName = element.fullname
-                const email = element.email
+            //Send notification mail to coordinator
+            for (const user of coordinators) {
+                const fullName = user.fullname
+                const email = user.email
                 await notificationMail(fullName, email, 'coordinator', nameTopic)
             }
+
+            //Send notification to coordinator
+            for (const user of coordinators) {
+                const newNotify = new Notify({forUser: user._id, message: `New idea added`,detailPage: `/ideas/${savedIdea._id}`  })
+                await newNotify.save()
+            }
+
 
             res.status(200).json(savedIdea)
 
@@ -43,13 +52,13 @@ class IdeaController {
     }
 
     // [PATCH] /idea/:id
-    async updateIdea(req, res, next){
+    async updateIdea(req, res, next) {
 
         try {
-            
+
             const id = req.params.id
             const idea = await Idea.findById(id)
-    
+
             await idea.updateOne({
                 $set: {
                     title: req.body.title,
@@ -72,14 +81,14 @@ class IdeaController {
     }
 
     // [DELETE] /idea/:id
-    async deleteIdea(req, res, next){
+    async deleteIdea(req, res, next) {
 
         try {
 
             // Delete a idea
             const id = req.params.id
             const idea = await Idea.findById(id)
-    
+
             await idea.deleteOne()
 
             // Delete all views of idea
@@ -99,7 +108,7 @@ class IdeaController {
     }
 
     // [GET] /ideas?skip={}&limit={}
-    async getAllIdea(req, res, next){
+    async getAllIdea(req, res, next) {
         try {
 
             let skip;
@@ -117,7 +126,7 @@ class IdeaController {
                 .skip(skip)
 
             console.log(foundIdeas)
-            
+
             res.status(200).json(foundIdeas)
 
         } catch (error) {
@@ -127,7 +136,7 @@ class IdeaController {
     }
 
     // [GET] /idea/:id
-    async getAIdea(req, res, next){
+    async getAIdea(req, res, next) {
 
         try {
             const id = req.params.id

@@ -64,6 +64,7 @@ const LabelStyle = styled("label")({
 
 const IdeaCreate = () => {
   const uid = window.sessionStorage.getItem("uid");
+  const department_id = window.sessionStorage.getItem("department");
 
   var date = new Date();
   const [idea, setIdea] = useState(null);
@@ -161,7 +162,6 @@ const IdeaCreate = () => {
               console.log("Idea added");
               setIsPending(false);
             });
-
       })
     } else {
       await axios

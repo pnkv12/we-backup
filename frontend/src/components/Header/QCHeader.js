@@ -1,6 +1,6 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
-import { Box, Divider } from "@mui/material";
+import {Box, Divider} from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -11,23 +11,30 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import LogoutIcon from "@mui/icons-material/Logout";
 import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
+import {Notifications} from "@material-ui/icons";
+import {useState} from "react";
+import Notification from "../../pages/NotificationComponent";
 
 const baseURL = "http://localhost:8000/v1.0";
-const pages = ["Ideas", "Dashboard"];
+const pages = ["Ideas", "Dashboard", "Notification"];
 
 const settings = [];
 
 const getRole = sessionStorage.getItem("role");
 
+
+
 function QCHeader(props) {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+
     const userTitle = `${window.sessionStorage.username}`;
 
     let navigate = useNavigate();
@@ -62,6 +69,7 @@ function QCHeader(props) {
         }
     };
 
+
     function notificationsLabel(count) {
         if (count === 0) {
             return "no notifications";
@@ -72,11 +80,12 @@ function QCHeader(props) {
         return `${count} notifications`;
     }
 
+
     //Only Coordinator and Admin can create Cate
     if (getRole === "62482516ad01d9a46b246089" || "6248fd50b7d420daa06ee42b") {
         console.log(getRole);
         return (
-            <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
+            <AppBar position="static" sx={{borderRadius: "0px 0px 25px 25px"}}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Link to="/">
@@ -86,56 +95,13 @@ function QCHeader(props) {
                                 style={{
                                     maxHeight: "3rem",
                                     marginRight: "2rem",
-                                    display: { xs: "none", md: "flex" },
+                                    display: {xs: "none", md: "flex"},
                                 }}
-                            ></img>
+                            />
                         </Link>
-                        <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: "bottom",
-                                    horizontal: "left",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "left",
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
-                                sx={{
-                                    display: { xs: "block", md: "none" },
-                                }}
-                            >
-                                {pages.map((page) => (
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Button
-                                            component={Link}
-                                            sx={{ my: 1, color: "primary", display: "block" }}
-                                            to={
-                                                page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`
-                                            }
-                                        >
-                                            {page}
-                                        </Button>
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </Box>
 
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+
+                        <Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
                             {pages.map((page) => (
                                 <Button
                                     component={Link}
@@ -154,24 +120,20 @@ function QCHeader(props) {
                             ))}
                         </Box>
 
-                        <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
-                            <IconButton
-                                color="whiteIcon"
-                                aria-label={notificationsLabel(100)}
-                                sx={{ marginRight: "2rem" }}
-                            >
-                                <Badge badgeContent={0} color="badge">
-                                    <MailIcon />
-                                </Badge>
-                            </IconButton>
+
+                        <Box sx={{flexGrow: 0, marginRight: "1rem"}}>
+                            <Notification/>
+                        </Box>
+
+                        <Box sx={{flexGrow: 0, marginRight: "1rem"}}>
 
                             <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                    <Avatar alt="" src="/static/images/avatar/2.jpg"/>
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: "45px" }}
+                                sx={{mt: "45px"}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -233,18 +195,19 @@ function QCHeader(props) {
                                     }}
                                 >
                                     <Typography color="error">
-                                        <LogoutIcon fontSize="small" /> Logout
+                                        <LogoutIcon fontSize="small"/> Logout
                                     </Typography>
                                 </MenuItem>
                             </Menu>
                         </Box>
+
                     </Toolbar>
                 </Container>
             </AppBar>
         );
     } else {
         return (
-            <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
+            <AppBar position="static" sx={{borderRadius: "0px 0px 25px 25px"}}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Link to="/">
@@ -254,12 +217,12 @@ function QCHeader(props) {
                                 style={{
                                     maxHeight: "3rem",
                                     marginRight: "2rem",
-                                    display: { xs: "none", md: "flex" },
+                                    display: {xs: "none", md: "flex"},
                                 }}
                             ></img>
                         </Link>
 
-                        <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+                        <Box sx={{flexGrow: 1, display: {xs: "flex", md: "none"}}}>
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
@@ -268,7 +231,7 @@ function QCHeader(props) {
                                 onClick={handleOpenNavMenu}
                                 color="inherit"
                             >
-                                <MenuIcon />
+                                <MenuIcon/>
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
@@ -285,7 +248,7 @@ function QCHeader(props) {
                                 open={Boolean(anchorElNav)}
                                 onClose={handleCloseNavMenu}
                                 sx={{
-                                    display: { xs: "block", md: "none" },
+                                    display: {xs: "block", md: "none"},
                                 }}
                             >
                                 {pages.map((page) => (
@@ -293,7 +256,7 @@ function QCHeader(props) {
                                         {/* <Typography textAlign="center">{page}</Typography> */}
                                         <Button
                                             component={Link}
-                                            sx={{ my: 1, color: "primary", display: "block" }}
+                                            sx={{my: 1, color: "primary", display: "block"}}
                                             to={
                                                 page === "Ideas" ? "/ideas" : `/${page.toLowerCase()}`
                                             }
@@ -305,7 +268,7 @@ function QCHeader(props) {
                             </Menu>
                         </Box>
 
-                        <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+                        <Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
                             {pages.map((page) => (
                                 <Button
                                     component={Link}
@@ -324,24 +287,24 @@ function QCHeader(props) {
                             ))}
                         </Box>
 
-                        <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
+                        <Box sx={{flexGrow: 0, marginRight: "1rem"}}>
                             <IconButton
                                 color="whiteIcon"
                                 aria-label={notificationsLabel(100)}
-                                sx={{ marginRight: "2rem" }}
+                                sx={{marginRight: "2rem"}}
                             >
                                 <Badge badgeContent={0} color="badge">
-                                    <MailIcon />
+                                    <MailIcon/>
                                 </Badge>
                             </IconButton>
 
                             <Tooltip title="Open settings">
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                    <Avatar alt="" src="/static/images/avatar/2.jpg"/>
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: "45px" }}
+                                sx={{mt: "45px"}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -385,7 +348,7 @@ function QCHeader(props) {
                                     }}
                                 >
                                     <Typography color="error">
-                                        <LogoutIcon fontSize="small" /> Logout
+                                        <LogoutIcon fontSize="small"/> Logout
                                     </Typography>
                                 </MenuItem>
                             </Menu>
@@ -396,4 +359,5 @@ function QCHeader(props) {
         );
     }
 }
+
 export default QCHeader;

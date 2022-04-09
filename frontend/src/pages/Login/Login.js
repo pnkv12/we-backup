@@ -37,8 +37,6 @@ function Login(props) {
       );
       console.log(response.data);
 
-      // let cookie = response.headers["set-cookie"];
-      // console.log(cookie);
 
       if (response.status === 200) {
         setIsAuthenticated(true);
@@ -49,25 +47,13 @@ function Login(props) {
         window.sessionStorage.setItem("username", details.username);
         window.sessionStorage.setItem("fullname", response.data.fullname);
         window.sessionStorage.setItem("isAuthenticated", true);
-        // window.sessionStorage.setItem("logged", details.logged);
         window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("role", response.data.role);
         window.sessionStorage.setItem("roleName", response.data.roleName);
         window.sessionStorage.setItem("departmentName", response.data.departmentName);
-        window.sessionStorage.setItem("department", response.data.dept);
+        window.sessionStorage.setItem("department", response.data.department);
         window.sessionStorage.setItem("email", response.data.email);
 
-        if(response.data.roleName === "Staff"){
-          navigate("/");
-        } else if(response.data.roleName === "Administrator"){
-          navigate("/Administrator");
-        } else if(response.data.roleName === "Coordinator"){
-          navigate("/QC");
-        } else if(response.data.roleName === "Manager"){
-          navigate("/QAManager");
-        } else {
-          navigate("/");
-        }
 
 
       }

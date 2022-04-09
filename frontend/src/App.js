@@ -16,6 +16,7 @@ import Idea from "./pages/Idea/Idea";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Employees from "./pages/Employee/Employees";
 import EmployeeCreate from "./pages/Employee/EmployeeCreate";
+import Notification from "./pages/NotificationComponent";
 import "./App.css";
 import {Box} from "@mui/material";
 import IdeaCreate from "./components/Idea/IdeaCreate";
@@ -189,6 +190,17 @@ function App() {
                                     element={
                                         isAuthenticated ? (
                                             <IdeaDetails/>
+                                        ) : (
+                                            <Login authenticate={setIsAuthenticated}/>
+                                        )
+                                    }
+                                />
+
+                                <Route
+                                    path="/notifications"
+                                    element={
+                                        isAuthenticated ? (
+                                            <Notification/>
                                         ) : (
                                             <Login authenticate={setIsAuthenticated}/>
                                         )
