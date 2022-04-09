@@ -74,7 +74,7 @@ const IdeaCreate = () => {
   const [user_id, setUserId] = useState(uid);
   const [submission_id, setSubmissionId] = useState("624fa5fe94814c446e5a6911");
   const [documents, setSelectedFile] = useState([]);
-  const [document, setDocument] = useState("");
+  const [document, setDocument] = useState(null);
   const [documentURL, setDocumentURL] = useState("");
   const [isFilePicked, setIsFilePicked] = useState(false);
   const [createdAt, setCreateDate] = useState(date);
@@ -141,21 +141,41 @@ const IdeaCreate = () => {
     // setIsPending(true);
 
     if (document != null) {
-      const file = JSON.parse(await sendDocument(submission_id, document.name));
-      setDocumentURL(file['file_path']);
-      console.log(`Document URL: ${documentURL}`);
+
+      sendDocument(submission_id, document.name).then(async (response)=>{
+
+        const file = JSON.parse(response)
+        idea.documentURL = file['file_path'];
+        idea.file_id = file['file_drive_id'];
+        idea.file_name = document.name;
+
+        console.log(`Document URL: ${idea.documentURL}`);
+
+        await axios
+            .post("http://localhost:8000/v1.0/idea", idea, {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            })
+            .then(async (response) => {
+              console.log("Idea added");
+              setIsPending(false);
+            });
+
+      })
+    } else {
+      await axios
+          .post("http://localhost:8000/v1.0/idea", idea, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(async (response) => {
+            console.log("Idea added");
+            setIsPending(false);
+          });
     }
 
-    await axios
-        .post("http://localhost:8000/v1.0/idea", idea, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then(async (response) => {
-          console.log("Idea added");
-          setIsPending(false);
-        });
 
   };
 
@@ -345,10 +365,6 @@ const IdeaCreate = () => {
               <p>Filename: {documents.name}</p>
               <p>Filetype: {documents.type}</p>
               <p>Size in bytes: {documents.size}</p>
-              <p>
-                lastModifiedDate:{" "}
-                {documents.lastModifiedDate.toLocaleDateString()}
-              </p>
             </div>
           ) : (
             <p>Select a file to show details</p>

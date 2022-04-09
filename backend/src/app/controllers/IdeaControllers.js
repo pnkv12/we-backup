@@ -98,16 +98,27 @@ class IdeaController {
         }
     }
 
-    // [GET] /ideas?page={}&limit={}
+    // [GET] /ideas?skip={}&limit={}
     async getAllIdea(req, res, next){
         try {
-            const p = req.query.page
-            const l = req.query.limit
-            const idea = await paginatedResults(p, l, Idea)
+
+            let skip;
+            let limit;
+            if (req.query.limit) {
+                limit = parseInt(req.query.limit);
+            }
+            if (req.query.skip) {
+                skip = parseInt(req.query.skip);
+            }
 
 
+            const foundIdeas = await Idea.find({})
+                .limit(limit)
+                .skip(skip)
+
+            console.log(foundIdeas)
             
-            res.status(200).json(idea)
+            res.status(200).json(foundIdeas)
 
         } catch (error) {
             console.log(error)

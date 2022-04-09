@@ -19,7 +19,7 @@ import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
 
 const baseURL = "http://localhost:8000/v1.0";
-const pages = ["Ideas", "Employees", "Dashboard","Category"];
+const pages = ["Ideas", "Employees", "Submissions", "Dashboard","Category"];
 
 const settings = [];
 
@@ -61,6 +61,26 @@ function QAManagerHeader(props) {
             throw e;
         }
     };
+
+
+    const downloadCSV = async () => {
+        try {
+            const res = await axios.post(`${baseURL}/logout`, {
+                withCredentials: true,
+            });
+            if (res.data != null || undefined) {
+                window.sessionStorage.clear();
+                navigate("/login");
+                window.location.reload();
+            }
+        } catch (e) {
+            throw e;
+        }
+    };
+
+
+
+
 
     function notificationsLabel(count) {
         if (count === 0) {

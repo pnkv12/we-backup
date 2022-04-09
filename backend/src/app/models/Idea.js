@@ -9,6 +9,8 @@ const IdeaSchema = new mongoose.Schema({
         user_id: {type: String, required: true},
         submission_id: {type: String, default: "6249e1bdabe8dbf2e9786874"},
         documentURL: {type: String, default: ""},
+        file_id: {type: String, required: false},
+        file_name: {type: String, required: false},
         categories: [
             {
                 category: {
@@ -21,12 +23,14 @@ const IdeaSchema = new mongoose.Schema({
         thumbsUp: [
             {
                 type: mongoose.Schema.Types.ObjectId,
+                required: false,
                 ref: 'User',
             }
         ],
         thumbsDown: [
             {
                 type: mongoose.Schema.Types.ObjectId,
+                required: false,
                 ref: 'User',
             }
         ],

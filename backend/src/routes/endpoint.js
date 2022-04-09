@@ -117,6 +117,7 @@ router.get("/icon/:id", iconController.getAIcon); //? Get a icon
 router.get("/icons", iconController.getAllIcon); //? Get all icons
 
 //* Export CSV file
-router.get("/csv/download", downloadController.csvDownload); //? Export csv
+router.get("/csv/download/:submissionId", downloadController.csvDownload); //? Export csv
+router.get("/zip/download/:ideaId", downloadController.zipDownload); //? Export zip
 
 module.exports = router;

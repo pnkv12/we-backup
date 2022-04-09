@@ -12,6 +12,8 @@ import {Typography} from "@material-ui/core";
 import {ReturnLink} from "./IdeaButtons";
 import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import * as React from "react";
 
 const COMMENT_URL = "http://localhost:8000/v1.0/comments";
 const baseURL = "http://localhost:8000/v1.0";
@@ -89,6 +91,11 @@ const IdeaDetails = () => {
     //   //   })
     //   // );
     // };
+
+
+    const downloadZip = async (ideaId) => {
+        await axios.get(`http://localhost:8000/v1.0/zip/download/${ideaId}`);
+    }
 
     useEffect(() => {
         axios
@@ -199,6 +206,21 @@ const IdeaDetails = () => {
                     </Box>
                 </Box>
             )}
+            <Box sx={{display: "flex"}} fullWidth>
+                <Box sx={{display: "flex", alignItems: "center"}}>
+                    <IconButton
+                        color="secondary"
+                        aria-label="document"
+                        component="span"
+                        onClick={async () => {
+                            await downloadZip(id)
+                        }}
+                    >
+                        <CloudDownloadIcon/>
+                    </IconButton>
+                    <Typography>Download document as Zip</Typography>
+                </Box>
+            </Box>
             <Divider sx={{m: 2}}>Comments</Divider>
             {<Comments commentsUrl={COMMENT_URL} ideaId={id} currentUserId="1"/>}
         </Box>

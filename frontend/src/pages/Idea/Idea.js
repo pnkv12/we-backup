@@ -43,7 +43,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: `${baseURL}/ideas?limit=5&page=1`,
+    url: `${baseURL}/ideas`,
     method: "get",
   });
 
@@ -74,10 +74,13 @@ const Idea = () => {
 
   useEffect(() => {
     if (response != null) {
-      setIdeas(response.results);
+      console.log(response)
 
-      response.results.map(async (item) => {
-        const user = await axios.get(`${baseURL}/users/${item.owner}`);
+      setIdeas(response);
+
+      response.map(async (item) => {
+        console.log(item)
+        const user = await axios.get(`${baseURL}/users/${item.user_id}`);
         setOwnerName(user.data.name);
       });
     }
@@ -87,7 +90,7 @@ const Idea = () => {
     const fetchIdeaList = async () => {
       try {
         const paramsString = queryString.stringify(filters);
-        const requestUrl = `${baseURL}/ideas?${paramsString}`;
+        const requestUrl = `${baseURL}/ideas`;
         const response = await axios.get(requestUrl);
         const re = await axios.get(`${baseURL}/ideas`);
         const comments = await axios.get(`${baseURL}/comments`);

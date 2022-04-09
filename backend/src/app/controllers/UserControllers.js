@@ -62,7 +62,7 @@ class UserController {
                     uid: user["_id"],
                 });
             } else {
-                return res.status(401).json("Username or password is incorrect");
+                return res.status(400).json("Username or password is incorrect");
             }
         } catch (error) {
             res.status(500).json(error);

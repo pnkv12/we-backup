@@ -30,6 +30,8 @@ import StaffHeader from "./components/Header/StaffHeader";
 import AdminHeader from "./components/Header/AdminHeader";
 import QAManagerHeader from "./components/Header/QAManager";
 import QCHeader from "./components/Header/QCHeader";
+import Submissions from "./pages/Submission/Submissions";
+import SubmissionDetails from "./components/Submission/SubmissionDetail";
 
 
 const theme = createTheme({
@@ -171,9 +173,30 @@ function App() {
                                     }
                                 />
 
+                                <Route
+                                    path="/submissions"
+                                    element={
+                                        isAuthenticated ? (
+                                            <Submissions/>
+                                        ) : (
+                                            <Login authenticate={setIsAuthenticated}/>
+                                        )
+                                    }
+                                />
 
                                 <Route
                                     path="/ideas/:id"
+                                    element={
+                                        isAuthenticated ? (
+                                            <SubmissionDetails/>
+                                        ) : (
+                                            <Login authenticate={setIsAuthenticated}/>
+                                        )
+                                    }
+                                />
+
+                                <Route
+                                    path="/submissions/:id"
                                     element={
                                         isAuthenticated ? (
                                             <IdeaDetails/>

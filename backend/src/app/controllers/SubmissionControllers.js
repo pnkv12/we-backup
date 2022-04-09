@@ -93,6 +93,7 @@ class SubmissionController {
             res.status(200).json(submission)
 
         } catch (error) {
+            console.log(error)
             res.status(500).json(error)
         }
     }
