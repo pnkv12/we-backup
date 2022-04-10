@@ -16,11 +16,13 @@ const DEFAULT_NOTIFICATION = {
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const Notification = () => {
+  const uid = window.sessionStorage.getItem("uid");
+
   const [data, setData] = useState([]);
   const [message, setMessage] = useState("");
 
   const { response, loading, error } = useAxios({
-    url: `${baseURL}/notify/624c2cc3df719afdc2f69581`,
+    url: `${baseURL}/notify/${uid}`,
     method: "get",
   });
 

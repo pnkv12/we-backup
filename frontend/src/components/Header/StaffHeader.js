@@ -17,6 +17,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import LogoutIcon from "@mui/icons-material/Logout";
 import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
+import Notification from "../../pages/NotificationComponent";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const pages = ["Ideas"];
@@ -74,7 +75,7 @@ function StaffHeader(props) {
 
   //Only Coordinator and Admin can create Cate
   if (getRole === "62482516ad01d9a46b246089" || "6248fd50b7d420daa06ee42b") {
-    // console.log(getRole);
+    console.log(getRole);
     return (
       <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
         <Container maxWidth="xl">
@@ -88,7 +89,7 @@ function StaffHeader(props) {
                   marginRight: "2rem",
                   display: { xs: "none", md: "flex" },
                 }}
-              ></img>
+              />
             </Link>
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
               <IconButton
@@ -155,16 +156,9 @@ function StaffHeader(props) {
             </Box>
 
             <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
-              <IconButton
-                color="whiteIcon"
-                aria-label={notificationsLabel(100)}
-                sx={{ marginRight: "2rem" }}
-              >
-                <Badge badgeContent={0} color="badge">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-
+              <Notification />
+            </Box>
+            <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="" src="/static/images/avatar/2.jpg" />
