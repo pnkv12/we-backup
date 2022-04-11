@@ -32,7 +32,7 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
       try {
         const response = await axios.get(`${baseURL}/comments`);
 
-        console.log("comments of this idea:", response.data);
+        // console.log("comments of this idea:", response.data);
         if (response != null) {
           const commentList = response.data.map((comment, id) => {
             return {
@@ -42,7 +42,7 @@ const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
               commentIdeaId: comment.idea_id,
             };
           });
-          console.log(response.data);
+          // console.log(response.data);
           setComments(response.data);
         }
       } catch (e) {

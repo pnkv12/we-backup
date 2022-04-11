@@ -95,18 +95,10 @@ const IdeaCreate = () => {
 
   const changeAnon = (e) => {
     setAnon(e.target.value);
-    setAnonymous(true);
 
-    const { checked } = e.target.value;
-    // console.log(checked);
-    if (checked) {
-      setAnon(e.target.value);
-      setAnonymous(true);
-    } else {
-      setAnon(e.target.value);
-      setAnonymous(false);
-    }
-    console.log(`Anonymous: ${anonymousMode}`);
+    setAnonymous(anonymousMode !== true);
+
+    // console.log(Anonymous: ${anonymousMode});
     setDisplay("Anonymous");
   };
 
@@ -351,9 +343,6 @@ const IdeaCreate = () => {
                   <Typography variant="subtitle2">
                     Filename: {documents.name} <br />
                     Filetype: {documents.type} <br />
-                    Size in bytes: {documents.size} <br />
-                    lastModifiedDate:
-                    {documents.lastModifiedDate.toLocaleDateString()}
                   </Typography>
                 </Box>
               ) : (

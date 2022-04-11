@@ -27,6 +27,7 @@ const IdeaDetails = () => {
 
   // const { data: idea, error, isPending } = useFetch("ideas/" + id);
   const [idea, setIdea] = useState(null);
+  const [owner, setOwner] = useState(null);
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
   const [activeUpdate, setActiveUpdate] = useState(false);
@@ -48,10 +49,12 @@ const IdeaDetails = () => {
           return res.json();
         })
         .then((idea) => {
-          setIdea(idea);
+          console.log(idea.idea);
+
+          setIdea(idea.idea);
+          setOwner(idea.owner);
           setIsPending(false);
           setError(null);
-          console.log(idea);
         })
         .catch((err) => {
           if (err.name === "Abort Error") {
@@ -143,26 +146,6 @@ const IdeaDetails = () => {
       .catch((err) => console.error(err));
   }, []);
 
-  const [users, setUsers] = useState({});
-
-  const { response } = useAxios({
-    url: "users",
-    method: "get",
-  });
-  useEffect(() => {
-    if (response != null) {
-      const userList = response.map((user) => {
-        return {
-          userId: user._id,
-          username: user.username,
-          fullname: user.fullname,
-        };
-      });
-      setUsers(userList);
-      console.log(userList.data);
-    }
-  }, [response]);
-
   return (
     <Box
       sx={{
@@ -179,7 +162,7 @@ const IdeaDetails = () => {
         <Box sx={{ flexGrow: 1 }}>
           <ReturnLink />
         </Box>
-        {idea && users && (
+        {idea && (
           <Box>
             {/* If current user is a Staff and the idea is theirs. Then they can manage it, else they can't */}
             {/* {idea.user_id === uid && getRole === "Staff" ? (
@@ -251,9 +234,24 @@ const IdeaDetails = () => {
           </Box>
         )}
       </Box>
+      <Box sx={{ display: "flex" }} fullWidth>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <IconButton
+            color="secondary"
+            aria-label="document"
+            component="span"
+            onClick={async () => {
+              await downloadZip(id);
+            }}
+          >
+            <CloudDownloadIcon />
+          </IconButton>
+          <Typography>Download document as Zip</Typography>
+        </Box>
+      </Box>
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
-      {idea && users && (
+      {idea && owner && (
         <Box
           sx={{
             display: "flex",
@@ -275,7 +273,7 @@ const IdeaDetails = () => {
           >
             <Typography variant="h6">
               {idea.anonymousMode === false
-                ? "Author: " + idea.user_id
+                ? "Author: " + owner.fullname
                 : "Anonymous"}
             </Typography>
           </Box>

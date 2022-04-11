@@ -30,7 +30,7 @@ const Notification = () => {
     if (response != null) {
       response.forEach((notify) => {
         data.push(notify);
-        console.log(notify);
+        // console.log(notify);
       });
 
       setData([...data]);

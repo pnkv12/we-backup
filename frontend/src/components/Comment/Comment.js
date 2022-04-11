@@ -27,7 +27,7 @@ const Comment = ({ comment, currentUserId, commentIdeaId }) => {
     content: "",
     user_id: currentUserId,
   });
-  console.log(currentUserId);
+  // console.log(currentUserId);
   const [users, setUsers] = useState({});
 
   const isEditing =
