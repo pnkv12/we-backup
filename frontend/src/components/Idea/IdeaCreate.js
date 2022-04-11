@@ -94,8 +94,20 @@ const IdeaCreate = () => {
   };
 
   const changeAnon = (e) => {
+
     setAnon(e.target.value);
     setAnonymous(true);
+
+    const { checked } = e.target.value;
+    // console.log(checked);
+    if (checked) {
+      setAnon(e.target.value);
+      setAnonymous(true);
+    } else {
+      setAnon(e.target.value);
+      setAnonymous(false);
+    }
+    console.log(`Anonymous: ${anonymousMode}`);
     setDisplay("Anonymous");
   };
 
@@ -384,7 +396,7 @@ const IdeaCreate = () => {
                 isMulti
                 options={options}
                 onChange={(e) => {
-                  setSelectedTag(
+                  setCategories(
                     Array.isArray(e)
                       ? e.map((x) => {
                           return { category: x.label };
