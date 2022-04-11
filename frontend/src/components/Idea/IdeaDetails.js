@@ -159,6 +159,7 @@ const IdeaDetails = () => {
         };
       });
       setUsers(userList);
+      console.log(userList.data);
     }
   }, [response]);
 
@@ -273,8 +274,8 @@ const IdeaDetails = () => {
             }}
           >
             <Typography variant="h6">
-              {idea.anonymousMode === false && idea.user_id === users.userId
-                ? users.fullname
+              {idea.anonymousMode === false
+                ? "Author: " + idea.user_id
                 : "Anonymous"}
             </Typography>
           </Box>
