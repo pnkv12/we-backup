@@ -20,7 +20,14 @@ import axios from "axios";
 import Notification from "../../pages/NotificationComponent";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
-const pages = ["Ideas", "Employees", "Submissions", "Dashboard", "Categories"];
+const pages = [
+  "Ideas",
+  "Employees",
+  "Submissions",
+  "Dashboard",
+  "Categories",
+  "Departments",
+];
 
 const settings = [];
 

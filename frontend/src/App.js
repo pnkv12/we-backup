@@ -33,6 +33,7 @@ import QCHeader from "./components/Header/QCHeader";
 import Submissions from "./pages/Submission/Submissions";
 import SubmissionDetails from "./components/Submission/SubmissionDetail";
 import NotificationComponent from "./pages/NotificationComponent";
+import AcademicYear from "./components/AcademicYear";
 
 const theme = createTheme({
   palette: {
