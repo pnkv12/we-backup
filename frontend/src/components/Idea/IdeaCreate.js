@@ -94,7 +94,6 @@ const IdeaCreate = () => {
   };
 
   const changeAnon = (e) => {
-
     setAnon(e.target.value);
     setAnonymous(true);
 
@@ -178,7 +177,8 @@ const IdeaCreate = () => {
             console.log("Idea added");
             setIsPending(false);
           });
-        window.history.back();
+        navigate("/ideas");
+        window.location.reload(false);
       });
     } else {
       await axios

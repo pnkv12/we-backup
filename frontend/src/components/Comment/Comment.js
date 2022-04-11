@@ -13,6 +13,7 @@ import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
+import { useGridState } from "@mui/x-data-grid";
 
 const uid = window.sessionStorage.getItem("uid");
 const fullname = window.sessionStorage.getItem("fullname");
@@ -27,6 +28,7 @@ const Comment = ({ comment, currentUserId, commentIdeaId }) => {
     user_id: currentUserId,
   });
   console.log(currentUserId);
+  const [users, setUsers] = useState({});
 
   const isEditing =
     activeComment &&
@@ -62,13 +64,30 @@ const Comment = ({ comment, currentUserId, commentIdeaId }) => {
     })();
   };
 
+  const { response } = useAxios({
+    url: "users",
+    method: "get",
+  });
+  useEffect(() => {
+    if (response != null) {
+      const userList = response.map((user) => {
+        return {
+          userId: user._id,
+          username: user.username,
+          fullname: user.fullname,
+        };
+      });
+      setUsers(userList);
+    }
+  }, [response]);
+
   return (
     <div>
-      {isCommentOfIdea && (
+      {users && isCommentOfIdea && (
         <Box>
           <Box sx={{ display: "flex" }}>
             <Avatar alt="" src="/static/images/avatar/2.jpg" />
-            {comment.user_id === uid ? (
+            {uid === comment.user_id ? (
               <Box sx={{ fontSize: 15, alignSelf: "center" }}>{fullname}</Box>
             ) : (
               <Box sx={{ fontSize: 15, alignSelf: "center" }}>

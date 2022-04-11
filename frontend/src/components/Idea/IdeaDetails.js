@@ -19,7 +19,8 @@ const COMMENT_URL = "https://be-enterprise.herokuapp.com/v1.0/comments";
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const uid = window.sessionStorage.getItem("uid");
-
+const getRole = window.sessionStorage.getItem("roleName");
+console.log(getRole);
 let viewUpdated = false;
 const IdeaDetails = () => {
   const { id } = useParams();
@@ -91,7 +92,6 @@ const IdeaDetails = () => {
     axios
       .get(`${baseURL}/idea/` + id)
       .then((res) => {
-        // console.log(res.data.results.content);
         setNewIdea(res.data.results);
       })
       .catch((err) => console.error(err));
@@ -138,7 +138,6 @@ const IdeaDetails = () => {
     axios
       .get(`${baseURL}/idea/` + id)
       .then((res) => {
-        console.log(res.data.results.content);
         setNewIdea(res.data.results);
       })
       .catch((err) => console.error(err));
@@ -179,19 +178,77 @@ const IdeaDetails = () => {
         <Box sx={{ flexGrow: 1 }}>
           <ReturnLink />
         </Box>
-        <Box>
-          <IconButton
-            title="edit"
-            color="secondary"
-            size="small"
-            onClick={() => setActiveUpdate({ id: idea.id, type: "editing" })}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton color="secondary" onClick={handleDelete} size="small">
-            <ClearIcon />
-          </IconButton>
-        </Box>
+        {idea && users && (
+          <Box>
+            {/* If current user is a Staff and the idea is theirs. Then they can manage it, else they can't */}
+            {/* {idea.user_id === uid && getRole === "Staff" ? (
+              <Box>
+                <IconButton
+                  title="edit"
+                  color="secondary"
+                  size="small"
+                  onClick={() =>
+                    setActiveUpdate({ id: idea.id, type: "editing" })
+                  }
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  color="secondary"
+                  onClick={handleDelete}
+                  size="small"
+                >
+                  <ClearIcon />
+                </IconButton>
+              </Box>
+            ) : null} */}
+
+            {/* Other roles can manage ideas regardless of uid */}
+            {getRole === "Administrator" ||
+            getRole === "Manager" ||
+            getRole === "Coordinator" ? (
+              <Box>
+                <IconButton
+                  title="edit"
+                  color="secondary"
+                  size="small"
+                  onClick={() =>
+                    setActiveUpdate({ id: idea.id, type: "editing" })
+                  }
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  color="secondary"
+                  onClick={handleDelete}
+                  size="small"
+                >
+                  <ClearIcon />
+                </IconButton>
+              </Box>
+            ) : idea.user_id !== uid && getRole === "Staff" ? null : (
+              <Box>
+                <IconButton
+                  title="edit"
+                  color="secondary"
+                  size="small"
+                  onClick={() =>
+                    setActiveUpdate({ id: idea.id, type: "editing" })
+                  }
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton
+                  color="secondary"
+                  onClick={handleDelete}
+                  size="small"
+                >
+                  <ClearIcon />
+                </IconButton>
+              </Box>
+            )}
+          </Box>
+        )}
       </Box>
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
@@ -216,7 +273,7 @@ const IdeaDetails = () => {
             }}
           >
             <Typography variant="h6">
-              {!idea.anonymousMode === false && idea.user_id === users.userId
+              {idea.anonymousMode === false && idea.user_id === users.userId
                 ? users.fullname
                 : "Anonymous"}
             </Typography>

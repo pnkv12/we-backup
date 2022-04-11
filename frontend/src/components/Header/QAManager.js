@@ -162,9 +162,15 @@ function QAManagerHeader(props) {
               ))}
             </Box>
 
-            <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
-              <Notification />
+            <Box sx={{ flexGrow: 0, marginRight: "3rem" }}>
+              <Badge badgeContent={0} color="badge">
+                <Notification
+                  aria-label={notificationsLabel(100)}
+                  color="grey[400]"
+                />
+              </Badge>
             </Box>
+            <Divider orientation="vertical" />
 
             <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
               <Tooltip title="Open settings">

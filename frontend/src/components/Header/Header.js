@@ -153,7 +153,7 @@ function Header(props) {
               ))}
             </Box>
 
-            <Box sx={{ flexGrow: 0, marginRight: "1rem" }}>
+            <Box sx={{ marginRight: "1rem" }}>
               <IconButton
                 color="whiteIcon"
                 aria-label={notificationsLabel(100)}
