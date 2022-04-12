@@ -5,7 +5,6 @@ import useAxios from "../../services/useAxios";
 import "./styles.css";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-import Button from "@mui/material/Button";
 import { Box, Divider } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { replyBox } from "../../styles/boxStyles";
@@ -13,7 +12,6 @@ import axios from "axios";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
-import { useGridState } from "@mui/x-data-grid";
 
 const uid = window.sessionStorage.getItem("uid");
 const fullname = window.sessionStorage.getItem("fullname");
@@ -88,11 +86,9 @@ const Comment = ({ comment, currentUserId, commentIdeaId }) => {
           <Box sx={{ display: "flex" }}>
             <Avatar alt="" src="/static/images/avatar/2.jpg" />
             {uid === comment.user_id ? (
-              <Box sx={{ fontSize: 15, alignSelf: "center" }}>{fullname}</Box>
+              <Box sx={{ fontSize: 15, alignSelf: "center" }}> {fullname}</Box>
             ) : (
-              <Box sx={{ fontSize: 15, alignSelf: "center" }}>
-                {comment.user_id}
-              </Box>
+              <Box sx={{ fontSize: 15, alignSelf: "center" }}> Anon</Box>
             )}
           </Box>
           <Box sx={replyBox}>

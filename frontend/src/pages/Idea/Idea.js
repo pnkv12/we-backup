@@ -147,7 +147,6 @@ const Idea = () => {
         maxWidth: "100%",
       }}
     >
-      {/* Filter area */}
       <Box
         sx={{
           display: "flex",
@@ -156,24 +155,7 @@ const Idea = () => {
           justifyContent: "flex-end",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignSelf: "center",
-            marginRight: "3rem",
-          }}
-        >
-          <FilterIdea />
-        </Box>
-        {/* {category && <h2>Found {filteredProducts.length} items</h2>} */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "right",
-          }}
-        >
-          <NewIdeaBtn />
-        </Box>
+        <NewIdeaBtn />
       </Box>
       <Divider />
 

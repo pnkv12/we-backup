@@ -45,7 +45,7 @@ const IdeaDetails = () => {
       fetch(`${baseURL}/idea/` + id)
         .then((res) => {
           if (!res.ok) {
-            throw Error("could not fetch");
+            throw Error("Idea has been deleted");
           }
           return res.json();
         })
@@ -178,7 +178,7 @@ const IdeaDetails = () => {
               </IconButton>
             </Tooltip>
 
-            {getRole === "Administrator" || getRole === "Manager" ? (
+            {getRole === "Manager" ? (
               <Box>
                 <IconButton
                   title="edit"
@@ -194,7 +194,7 @@ const IdeaDetails = () => {
                   <ClearIcon />
                 </IconButton>
               </Box>
-            ) : idea.user_id !== uid && getRole === "Staff" ? null : (
+            ) : idea.user_id !== uid ? null : (
               <Box>
                 <IconButton
                   title="edit"
