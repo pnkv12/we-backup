@@ -99,7 +99,7 @@ const IdeaCreate = () => {
     setAnonymous(anonymousMode !== true);
 
     // console.log(Anonymous: ${anonymousMode});
-    setDisplay("Anonymous");
+    setDisplay(!anonymousMode ? "Anonymous" : fullname);
   };
 
   useEffect(() => {
@@ -168,9 +168,9 @@ const IdeaCreate = () => {
           .then(async (response) => {
             console.log("Idea added");
             setIsPending(false);
+            navigate("/ideas");
+            window.location.reload(false);
           });
-        navigate("/ideas");
-        window.location.reload(false);
       });
     } else {
       await axios
@@ -182,6 +182,8 @@ const IdeaCreate = () => {
         .then(async (response) => {
           console.log("Idea added");
           setIsPending(false);
+          navigate("/ideas");
+          window.location.reload(false);
         });
     }
   };
@@ -234,7 +236,6 @@ const IdeaCreate = () => {
         }}
       >
         <Box
-          className="ideacreate"
           sx={{
             border: 1,
             borderColor: "white",
@@ -440,7 +441,7 @@ const IdeaCreate = () => {
                   }}
                 />
               </div>
-              <Box>
+              <Box sx={{ paddingBottom: "1rem" }}>
                 <Switch
                   defaultValue={anonymousMode}
                   onClick={changeAnon}
