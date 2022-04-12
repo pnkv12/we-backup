@@ -125,17 +125,18 @@ const Submissions = () => {
                       <Typography
                         sx={{ display: "inline" }}
                         component="span"
-                        variant="h6"
+                        variant="h5"
                         color="text.primary"
                         data-testid="idea-title"
                       >
-                        <Link
+                        {/* <Link
                           to={`/submissions/${submission._id}`}
                           underline="hover"
                           key={submission._id}
                         >
                           {submission.name}
-                        </Link>
+                        </Link> */}
+                        {submission.name}
                       </Typography>
                     </>
                   }
