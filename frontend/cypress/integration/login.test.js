@@ -14,7 +14,7 @@ describe("User can log in", () => {
     cy.get('button[type="submit"]').click();
     cy.url().should("eq", `${baseURL}`);
     cy.get('svg[data-testid="PersonIcon"]').click();
-    cy.xpath('//li//a[text()="Huy"]').should("have.text", "Huy");
+    cy.xpath('//li//a[text()="manager"]').should("have.text", "manager");
   });
 
   it("User logs out successfully", () => {
