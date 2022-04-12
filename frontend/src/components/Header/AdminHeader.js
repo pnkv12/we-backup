@@ -140,7 +140,7 @@ function AdminHeader(props) {
           <Box sx={{ flexGrow: 0, marginRight: "3rem" }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="" src="/static/images/QAM.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
