@@ -11,11 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import Badge from "@mui/material/Badge";
-import MailIcon from "@mui/icons-material/Mail";
+import { Link, useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
-import loggedInUser from "../../data/login-user.json";
 import axios from "axios";
 import { Notifications } from "@material-ui/icons";
 import { useState } from "react";
@@ -64,15 +61,6 @@ function QCHeader(props) {
     }
   };
 
-  function notificationsLabel(count) {
-    if (count === 0) {
-      return "no notifications";
-    }
-    if (count > 99) {
-      return "more than 99 notifications";
-    }
-    return `${count} notifications`;
-  }
   return (
     <AppBar position="static" sx={{ borderRadius: "0px 0px 25px 25px" }}>
       <Container maxWidth="xl">
@@ -155,21 +143,6 @@ function QCHeader(props) {
                   {userTitle}
                 </Button>
               </MenuItem>
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={handleCloseUserMenu}
-                  divider={true}
-                >
-                  <Button
-                    component={Link}
-                    to={setting === "Category" ? "/categories" : `/${setting}`}
-                  >
-                    {setting}
-                  </Button>
-                </MenuItem>
-              ))}
-
               <MenuItem
                 onClick={() => {
                   handleLogout();

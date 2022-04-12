@@ -20,7 +20,6 @@ import { Box } from "@mui/material";
 import IdeaCreate from "./components/Idea/IdeaCreate";
 import Search from "./components/Search/SearchFunction";
 import Home from "./pages/Home";
-import Header from "./components/Header/Header";
 import CategoryCreate from "./components/CategoryCreate";
 import Comments from "./components/Comment/Comments";
 import IdeaDetails from "./components/Idea/IdeaDetails";
@@ -30,6 +29,7 @@ import StaffHeader from "./components/Header/StaffHeader";
 import AdminHeader from "./components/Header/AdminHeader";
 import QAManagerHeader from "./components/Header/QAManager";
 import QCHeader from "./components/Header/QCHeader";
+import StaffStatus from "./components/Staff/StaffStatus";
 import Submissions from "./pages/Submission/Submissions";
 import SubmissionDetails from "./components/Submission/SubmissionDetail";
 import NotificationComponent from "./pages/NotificationComponent";
@@ -297,6 +297,17 @@ function App() {
                   element={
                     isAuthenticated ? (
                       <DepartmentCRUD />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+
+                <Route
+                  path="/staffstatus"
+                  element={
+                    isAuthenticated ? (
+                      <StaffStatus />
                     ) : (
                       <Login authenticate={setIsAuthenticated} />
                     )

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Box, Divider } from "@mui/material";
-import useAxios from "../services/useAxios";
+import useAxios from "../../services/useAxios";
 import axios from "axios";
-import LoadingIndicator from "./Loading";
-import PageNotFound from "./errorHandling/PageNotFound";
+import LoadingIndicator from "../Loading";
+import PageNotFound from "../errorHandling/PageNotFound";
 import { DataGrid } from "@mui/x-data-grid";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const pageSize = 5;
 const rowsPerPageOptions = [5];
 
-function Employees() {
+function StaffStatus() {
   const getRole = sessionStorage.getItem("role");
   const QCDepartment = sessionStorage.getItem("department");
 
@@ -145,4 +145,4 @@ function Employees() {
   );
 }
 
-export default Employees;
+export default StaffStatus;

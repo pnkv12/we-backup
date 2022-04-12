@@ -4,7 +4,6 @@ import { Link, useParams } from "react-router-dom";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
-// import useFetch from "../../services/useFetch";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
 import FilterIdea from "../../components/Idea/FilterIdea";
@@ -230,7 +229,7 @@ const Idea = () => {
                       <Typography
                         sx={{ display: "inline" }}
                         component="span"
-                        variant="h6"
+                        variant="subtitle1"
                         color="text.primary"
                         data-testid="idea-title"
                       >

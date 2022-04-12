@@ -147,7 +147,6 @@ const Submissions = () => {
                         component="span"
                         variant="h6"
                         color="text.primary"
-                        data-testid="idea-title"
                       >
                         <br />
                         Desc: {submission.description}
@@ -183,9 +182,10 @@ const Submissions = () => {
                       <Box sx={{ display: "flex" }} fullWidth>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <IconButton
-                            color="secondary"
+                            color="primary"
                             aria-label="comments"
                             component="span"
+                            edge="false"
                             onClick={async () => {
                               await downloadCSV(submission._id);
                             }}

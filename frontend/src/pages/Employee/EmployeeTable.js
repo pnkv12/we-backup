@@ -3,12 +3,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
 import LoadingIndicator from "../../components/Loading";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import { Box } from "@mui/material";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import EditIcon from "@mui/icons-material/Edit";
 import useAxios from "../../services/useAxios";
-import SearchFunction from "../../components/Search/SearchFunction";
+import CreateStaffBtn from "../../components/Staff/StaffButtons";
 
 import { useNavigate } from "react-router-dom";
 
@@ -104,37 +104,29 @@ const EmployeeTable = (props) => {
   const columns = [
     {
       field: "action",
-      headerName: "",
-      width: 150,
+      headerName: <CreateStaffBtn />,
+      width: 100,
+      sortable: false,
+      disableColumnMenu: true,
       renderCell: (params) => {
-        if (sessionStorage.getItem("role") !== "6248fd5cb7d420daa06ee42d") {
-          return (
-            <Box sx={{ display: "flex" }}>
-              <Button
-                title="edit"
-                variant="text"
-                color="secondary"
-                onClick={() => handleUpdate(params.row)}
-                fontSize="small"
-                size="small"
-              >
-                <EditIcon />
-              </Button>
-              <Button
-                title="delete"
-                variant="text"
-                color="error"
-                onClick={() => handleDelete(params.row.userId)}
-                fontSize="small"
-                size="small"
-              >
-                <HighlightOffIcon />
-              </Button>
-            </Box>
-          );
-        } else {
-          return null;
-        }
+        return (
+          <Box sx={{ display: "flex" }}>
+            <IconButton
+              title="edit"
+              color="secondary"
+              onClick={() => handleUpdate(params.row)}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              title="delete"
+              color="error"
+              onClick={() => handleDelete(params.row.userId)}
+            >
+              <HighlightOffIcon />
+            </IconButton>
+          </Box>
+        );
       },
     },
     { field: "id", headerName: "ID", width: 70 },
@@ -149,7 +141,7 @@ const EmployeeTable = (props) => {
     {
       field: "rolename",
       headerName: "Role",
-      width: 200,
+      width: 150,
       editable: true,
     },
     {
@@ -184,7 +176,6 @@ const EmployeeTable = (props) => {
           columns={columns}
           pageSize={pageSize}
           rowsPerPageOptions={rowsPerPageOptions}
-          editMode="row"
         />
       </Box>
     </Box>

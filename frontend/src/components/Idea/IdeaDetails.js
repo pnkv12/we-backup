@@ -14,6 +14,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { Tooltip } from "@mui/material";
 
 const COMMENT_URL = "https://be-enterprise.herokuapp.com/v1.0/comments";
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
@@ -163,38 +164,25 @@ const IdeaDetails = () => {
           <ReturnLink />
         </Box>
         {idea && (
-          <Box>
-            {/* If current user is a Staff and the idea is theirs. Then they can manage it, else they can't */}
-            {/* {idea.user_id === uid && getRole === "Staff" ? (
-              <Box>
-                <IconButton
-                  title="edit"
-                  color="secondary"
-                  size="small"
-                  onClick={() =>
-                    setActiveUpdate({ id: idea.id, type: "editing" })
-                  }
-                >
-                  <EditIcon />
-                </IconButton>
-                <IconButton
-                  color="secondary"
-                  onClick={handleDelete}
-                  size="small"
-                >
-                  <ClearIcon />
-                </IconButton>
-              </Box>
-            ) : null} */}
+          <Box sx={{ display: "flex" }}>
+            <Tooltip title="Download document as Zip">
+              <IconButton
+                color="default"
+                aria-label="document"
+                component="span"
+                onClick={async () => {
+                  await downloadZip(id);
+                }}
+              >
+                <CloudDownloadIcon />
+              </IconButton>
+            </Tooltip>
 
-            {/* Other roles can manage ideas regardless of uid */}
-            {getRole === "Administrator" ||
-            getRole === "Manager" ||
-            getRole === "Coordinator" ? (
+            {getRole === "Administrator" || getRole === "Manager" ? (
               <Box>
                 <IconButton
                   title="edit"
-                  color="secondary"
+                  color="primary"
                   size="small"
                   onClick={() =>
                     setActiveUpdate({ id: idea.id, type: "editing" })
@@ -202,11 +190,7 @@ const IdeaDetails = () => {
                 >
                   <EditIcon />
                 </IconButton>
-                <IconButton
-                  color="secondary"
-                  onClick={handleDelete}
-                  size="small"
-                >
+                <IconButton color="error" onClick={handleDelete} size="small">
                   <ClearIcon />
                 </IconButton>
               </Box>
@@ -214,7 +198,7 @@ const IdeaDetails = () => {
               <Box>
                 <IconButton
                   title="edit"
-                  color="secondary"
+                  color="primary"
                   size="small"
                   onClick={() =>
                     setActiveUpdate({ id: idea.id, type: "editing" })
@@ -222,11 +206,7 @@ const IdeaDetails = () => {
                 >
                   <EditIcon />
                 </IconButton>
-                <IconButton
-                  color="secondary"
-                  onClick={handleDelete}
-                  size="small"
-                >
+                <IconButton color="error" onClick={handleDelete} size="small">
                   <ClearIcon />
                 </IconButton>
               </Box>
@@ -234,21 +214,7 @@ const IdeaDetails = () => {
           </Box>
         )}
       </Box>
-      <Box sx={{ display: "flex" }} fullWidth>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <IconButton
-            color="secondary"
-            aria-label="document"
-            component="span"
-            onClick={async () => {
-              await downloadZip(id);
-            }}
-          >
-            <CloudDownloadIcon />
-          </IconButton>
-          <Typography>Download document as Zip</Typography>
-        </Box>
-      </Box>
+
       {isPending && <div>Loading...</div>}
       {error && <div>{error}</div>}
       {idea && owner && (
@@ -259,7 +225,7 @@ const IdeaDetails = () => {
           }}
         >
           <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
-            <Typography variant="h4" color="primary">
+            <Typography variant="h5" color="primary">
               {idea.title}
             </Typography>
           </Box>
@@ -279,58 +245,78 @@ const IdeaDetails = () => {
           </Box>
           <Box>
             {!isEditing && (
-              <p>
-                <Typography
-                  variant="subtitle1"
-                  sx={{ fontStyle: "italic", fontWeight: "bold" }}
+              <Box sx={{ m: "3rem" }}>
+                <Box
+                  sx={{
+                    fontStyle: "oblique",
+                    fontSize: 14,
+                    m: "2rem",
+                    fontFamily: "Monospace",
+                  }}
                 >
                   {idea.description}
-                </Typography>
-
-                <Typography variant="body1">{idea.content}</Typography>
-              </p>
+                </Box>
+                <Box sx={{ m: "2rem", fontSize: 18, whiteSpace: "pre-line" }}>
+                  {idea.content}
+                </Box>
+              </Box>
             )}
 
             {isEditing && (
               <form onSubmit={(e) => submit(e)}>
-                <TextField
-                  type="text"
-                  defaultValue={idea.title}
-                  onChange={(e) =>
-                    setNewIdea({ ...data, title: e.target.value })
-                  }
-                  fullWidth
-                />
-                <TextField
-                  type="text"
-                  defaultValue={idea.description}
-                  multiline
-                  rows={1}
-                  onChange={(e) =>
-                    setNewIdea({ ...data, description: e.target.value })
-                  }
-                  fullWidth
-                />
-                <TextField
-                  type="text"
-                  defaultValue={idea.content}
-                  multiline
-                  rows={4}
-                  onChange={(e) =>
-                    setNewIdea({ ...data, content: e.target.value })
-                  }
-                  fullWidth
-                />
-                <Button variant="text" type="submit">
-                  <SendIcon />
-                </Button>
-                <Button
-                  variant="text"
-                  text="secondary"
-                  onClick={() => setActiveUpdate(() => isEditing)}
-                >
-                  <ClearIcon />
-                </Button>
+                <Box>
+                  <Box sx={{ m: 2 }}>
+                    <TextField
+                      type="text"
+                      defaultValue={idea.title}
+                      onChange={(e) =>
+                        setNewIdea({ ...data, title: e.target.value })
+                      }
+                      fullWidth
+                    />
+                  </Box>
+                  <Box sx={{ m: 2 }}>
+                    <TextField
+                      type="text"
+                      defaultValue={idea.description}
+                      multiline
+                      rows={1}
+                      onChange={(e) =>
+                        setNewIdea({ ...data, description: e.target.value })
+                      }
+                      fullWidth
+                    />
+                  </Box>
+                  <Box sx={{ m: 2 }}>
+                    <TextField
+                      type="text"
+                      defaultValue={idea.content}
+                      multiline
+                      rows={15}
+                      onChange={(e) =>
+                        setNewIdea({ ...data, content: e.target.value })
+                      }
+                      fullWidth
+                    />
+                  </Box>
+                  <Box sx={{ display: "flex", justifyContent: "space-evenly" }}>
+                    <Button
+                      variant="outlined"
+                      type="submit"
+                      startIcon={<SendIcon />}
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => setActiveUpdate(() => isEditing)}
+                      startIcon={<ClearIcon />}
+                    >
+                      Cancel
+                    </Button>
+                  </Box>
+                </Box>
               </form>
             )}
           </Box>

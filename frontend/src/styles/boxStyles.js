@@ -16,8 +16,7 @@ export const loginBoxStyle = {
 export const employeeBoxStyle = {
   display: "flex",
   justifyContent: "center",
-  m: 3,
-  paddingRight: "3rem",
+  marginTop: "5rem",
 };
 
 export const boxCreate = {
@@ -68,4 +67,17 @@ export const chartBox = {
   height: "28rem",
   boxShadow: 4,
   borderRadius: "25px",
+};
+
+export const dashboardFlex = {
+  boxShadow: "4",
+  borderRadius: "25px",
+  maxWidth: "60%",
+  width: "60%",
+  margin: "3rem",
+  padding: "2rem",
+  bgcolor: "lightBlue",
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "wrap",
 };

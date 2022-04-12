@@ -8,7 +8,8 @@ import axios from "axios";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
+import { dashboardFlex } from "../../styles/boxStyles";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -114,39 +115,18 @@ function CategoryD() {
           <CateDD categoryList={categoryList} />
         </Box>
         {/* Dynamic detail panel */}
-        <Box
-          sx={{
-            boxShadow: "4",
-            borderRadius: "25px",
-            maxWidth: "60%",
-            width: "60%",
-            margin: "3rem",
-            padding: "2rem",
-            bgcolor: "lightBlue",
-          }}
-        >
-          {/* Number of ideas by employees who belongs in a department */}
-          {/* <span>
-            Ideas:
-            {ideas.length}
-          </span> */}
+        <Box sx={dashboardFlex}>
           {/* Idea with most thumbs and comments in the department*/}
-          <span>Most popular: N/A</span>
-          <br />
-          {
-            //ideas.filter()
-          }
+          <Box>Most popular: N/A</Box>
 
           {/* Idea with most views within department*/}
-          <span>Most views: N/A</span>
-          <br />
+          <Box>Most views: N/A</Box>
 
           {/* Newest idea posted by user in this department */}
-          <span>Latest idea: N/A</span>
-          <br />
+          <Box>Latest idea: N/A</Box>
 
           {/* Newest comment in an idea of this department */}
-          <span>Latest comment: N/A</span>
+          <Box>Latest comment: N/A</Box>
         </Box>
       </Box>
 
@@ -156,8 +136,8 @@ function CategoryD() {
           position: "relative",
           margin: "auto",
           padding: "2rem 2rem 2rem 2rem",
-          width: "25rem",
-          height: "28rem",
+          width: "20rem",
+          height: "23rem",
           boxShadow: 4,
           borderRadius: "25px",
         }}

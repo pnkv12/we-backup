@@ -10,9 +10,6 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-// import useAxios from "../../services/useAxios";
-// import LoadingIndicator from "../../components/Loading";
-// import PageNotFound from "../../components/errorHandling/PageNotFound";
 import axios from "axios";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { lightBlue } from "@mui/material/colors";
@@ -21,8 +18,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import NativeSelect from "@mui/material/NativeSelect";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
