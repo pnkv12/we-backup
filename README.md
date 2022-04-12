@@ -1,34 +1,57 @@
-### FRONTEND
+# we-backup (Please regard branch develop for actual work)
 
-In the project directory, you can run:
+COMP1640 - Spring 2022
+Deadline: 27th April
 
-### npm start
+Group 13:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Tran Thien Trong
+- Nghiem Minh Khang
+- Nguyen Mai Kieu Thy
+- Pham Ngoc Khanh Vy
+- Chung Gia Huy
+- Tran Ha Hoang Khanh
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. Google Account:
 
-### npm i
+- Email: webackup2022@gmail.com
+- Password: Wenotbackup2022
 
-Automatically installs all dependencies
+2. MongoDB Atlas
 
-### Mock API
+- Using google account to sign in MongoDB Atlas
+- Access [here](https://www.mongodb.com/atlas/database).
 
-#### `json-server --watch ~/enterprise/frontend/src/data/ideas.json --port=8080`
+3. Credentials (username - password)
 
-Runs local json server with port 8080
+QA Manager: manager - 123456789
+Admin: admin - 123456789
+Coordinator: coor - 123456
+Staff: staff || staff2 - 123456
 
-### BACKEND
+4. Setup
 
-in the Backend directory, run:
+- Backend: https://github.com/TranHaHoangKhanh/Enterprise_Server
+- Frontend: https://github.com/pnkv12/we-backup
+  1. Open we-backup
+  2. In terminal: cd frontend
+  3. npm i (if packages not yet installed. If already -> step 5)
+  4. If failed to install react-notifications-menu: npm i react-notifications-menu --force
+  5. npm start
 
-### npm run dev or npm start ( with nodemon debug)
+5. Automation test using Cypress
 
-Server user **PORT 8000**
+//Installation: npm install cypress --save-dev//
 
-### Admin Login
+- cd frontend
+- npx cypress open
 
-username: huy
-password: 123456789
+---
+
+**Notice**
+
+- We using Google API (Gmail API, Drive API) to send mail notification feature and store files feature in requirement.
+- Go to this file: src/config/variables.js to follow the variables
+- The backend has been deployed to Heroku server: https://be-enterprise.herokuapp.com
+
+**_The note was updated on 12th April 2022_**
