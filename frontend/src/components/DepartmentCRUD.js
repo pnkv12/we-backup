@@ -15,6 +15,7 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+// import useAxios from "../../services/useAxios";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -26,17 +27,44 @@ const TitleFrame = styled("div")({
 const DepartmentCRUD = () => {
   var date = new Date();
 
-  const [name, setDeptName] = useState("Unknown");
-  const [user, setUser] = useState();
-  const [created_at, setCreateDate] = useState(date);
-  const [updated_at, setUpdateDate] = useState();
-  const [isPending, setIsPending] = useState(false);
+  // const [name, setDeptName] = useState("Unknown");
+  const [user, setUser] = useState([]);
+  // const [created_at, setCreateDate] = useState(date);
+  // const [updated_at, setUpdateDate] = useState();
+  // const [isPending, setIsPending] = useState(false);
 
   const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
   const deptListUrl = `${baseURL}/departments`;
   const getDeptURL = `${baseURL}/department`;
 
   const [DepartmentList, setDepartmentList] = useState([]);
+  //  const [Deptuser, setDeptUser] = useState({ });
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const Department = await axios(`${baseURL}/departments`);
+  //     const User = await axios(`${baseURL}/users`);
+
+  //     setDeptUser({ department: Department.data, users: User.data });
+  //     console.log(Department.data, User.data);
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // const display = Deptuser.map((item) => (
+  //   <TableRow
+  //     key={item._id}
+  //     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+  //   >
+  //     <TableCell scope="row">{item.name}</TableCell>
+  //     <TableCell>
+  //       {item.fullname}
+  //       {/* <IconButton size="small">
+  //           <EditIcon fontSize="inherit" />
+  //         </IconButton> */}
+  //     </TableCell>
+  //   </TableRow>
+  // ));
 
   useEffect(() => {
     (async function () {
@@ -65,14 +93,31 @@ const DepartmentCRUD = () => {
       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
     >
       <TableCell scope="row">{item.name}</TableCell>
+
       <TableCell>
-        Fullname
-        <IconButton size="small">
+        {/* {user.fullname} */}
+        {/* <IconButton size="small">
           <EditIcon fontSize="inherit" />
-        </IconButton>
+        </IconButton> */}
       </TableCell>
     </TableRow>
   ));
+
+  // const displays = UserList.map((user) => (
+  //   <TableRow
+  //     key={user._id}
+  //     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+  //   >
+  //     <TableCell scope="row">{user.fullname}</TableCell>
+  //     console.log(user.fullname);
+  //     {/* <TableCell>
+  //       Fullname
+  //       <IconButton size="small">
+  //         <EditIcon fontSize="inherit" />
+  //       </IconButton>
+  //     </TableCell> */}
+  //   </TableRow>
+  // ));
 
   // function remove(id) {
   //   // console.log(id);

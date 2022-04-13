@@ -59,7 +59,8 @@ const CategoryCreate = () => {
       setIdeas(ideas.data.results);
     })();
   }, []);
-
+  
+ 
   const display = CategoryList.map((item) => (
     <Box>
       <tr key={item._id}>
@@ -113,7 +114,9 @@ const CategoryCreate = () => {
     } catch (error) {
       console.log(`ERROR: ${error}`);
     }
+    window.location.reload(false);
   };
+  
 
   return (
     <Box>

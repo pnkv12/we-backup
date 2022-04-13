@@ -49,12 +49,12 @@ const Submissions = () => {
 
   useEffect(() => {
     if (response != null) {
-      console.log(response);
+      // console.log(response);
 
       setSubmissions(response);
 
       response.map(async (item) => {
-        console.log(item);
+        // console.log(item);
         // const user = await axios.get(`${baseURL}/users/${item.user_id}`);
         // setOwnerName(user.data.name);
       });

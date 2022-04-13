@@ -21,7 +21,7 @@ function PieChart({ data }) {
           // textAlign="center"
           fontWeight="bold"
         >
-          Number of ideas per department
+          Number of ideas per section
         </Typography>
         <Pie data={data} />
       </Box>
