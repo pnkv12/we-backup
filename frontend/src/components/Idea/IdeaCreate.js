@@ -253,13 +253,8 @@ const IdeaCreate = () => {
             }}
           >
             <ReturnLink />
-            <TitleFrame>New Idea</TitleFrame>
-            <Box sx={{ alignSelf: "center" }}>
-              {/* Label section for displaying datetime data */}
-              <LabelStyle>
-                Closure date:
-                {closedDate != null ? " " + { closedDate } : " No data"}
-              </LabelStyle>
+            <Box>
+              <TitleFrame>Create new idea</TitleFrame>
             </Box>
           </Box>
 
@@ -270,6 +265,14 @@ const IdeaCreate = () => {
           />
 
           <form onSubmit={handleSubmit}>
+            <Box sx={{ paddingBottom: "1rem" }}>
+              <Switch
+                defaultValue={anonymousMode}
+                onClick={changeAnon}
+                inputProps={{ "aria-label": "controlled" }}
+              />
+              Display as: {displayUser}
+            </Box>
             {/* From here is title input */}
             <Box>
               <TextField
@@ -402,15 +405,15 @@ const IdeaCreate = () => {
               return <div>{category.name}</div>;
             })}
             {/* Terms and Conditions with overflow content not yet finished */}
-            <div className="term-conditions">
-              <Typography align="center" fontWeight="bold">
+            <Box>
+              <Typography align="center" variant="h5">
                 Terms and Conditions
               </Typography>
               <Typography
                 align="justify"
                 sx={{
                   fontSize: 15,
-                  padding: "0rem 1rem 0rem 1rem",
+                  padding: "2rem",
                   overflow: "scroll",
                   display: "block",
                   maxHeight: "50%",
@@ -426,11 +429,11 @@ const IdeaCreate = () => {
                   deserunt molestiae et animi. Voluptatem sint fuga est eum.
                 </p>
               </Typography>
-            </div>
+            </Box>
             <br />
             {/* Checkbox for Terms and Submit button, should change Submitting... button by using LoadingButton */}
             <Typography align="center">
-              <div>
+              <Box>
                 <FormControlLabel
                   control={<Checkbox />}
                   label="I Agree to Terms & Conditions"
@@ -440,15 +443,8 @@ const IdeaCreate = () => {
                     marginBottom: "1rem",
                   }}
                 />
-              </div>
-              <Box sx={{ paddingBottom: "1rem" }}>
-                <Switch
-                  defaultValue={anonymousMode}
-                  onClick={changeAnon}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-                {displayUser}
               </Box>
+
               {!isPending && (
                 <Button
                   variant="contained"

@@ -81,3 +81,19 @@ export const dashboardFlex = {
   flexDirection: "column",
   flexWrap: "wrap",
 };
+
+export const hoverStyle = {
+  "&:hover": {
+    borderColor: "#2196f3",
+  },
+  display: "grid",
+  margin: "2rem 8rem 2rem 8rem",
+  padding: "2rem",
+  border: 1,
+  borderRadius: "25px",
+  borderColor: "white",
+  boxShadow: 4,
+
+  listStyle: "none",
+  maxHeight: "100%",
+};

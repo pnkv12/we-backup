@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { hoverStyle } from "../../styles/boxStyles";
 import LoadingIndicator from "../../components/Loading";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import useAxios from "../../services/useAxios";
@@ -97,6 +98,11 @@ const Idea = () => {
       skip: (num - 1) * limit,
     });
   };
+  let navigate = useNavigate();
+
+  const toDetail = (ideaId) => {
+    navigate(`/ideas/${ideaId}`);
+  };
 
   const thumbUp = async (ideaId) => {
     console.log(`${uid} likes ${ideaId}`);
@@ -154,36 +160,21 @@ const Idea = () => {
           })();
 
           return (
-            <Box>
+            <Box sx={hoverStyle}>
               <Box
-                sx={{
-                  display: "grid",
-                  margin: "2rem 8rem 2rem 8rem",
-                  padding: "2rem",
-                  border: 1,
-                  borderRadius: "25px",
-                  borderColor: "white",
-                  listStyle: "none",
-                  boxShadow: 4,
-                  maxHeight: "100%",
-                }}
+                onClick={() => toDetail(`${idea._id}`)}
                 key={idea._id}
+                sx={{ cursor: "pointer" }}
               >
                 <Typography
-                  sx={{ display: "inline" }}
-                  component={Link}
                   variant="h6"
-                  color="text.primary"
+                  color="primary"
                   data-testid="idea-title"
-                  to={`/ideas/${idea._id}`}
-                  key={idea._id}
-                  underline="hover"
                 >
                   {idea.title}
                 </Typography>
 
                 <Typography
-                  sx={{ display: "inline" }}
                   component="span"
                   variant="subtitle1"
                   color="text.primary"
@@ -191,61 +182,62 @@ const Idea = () => {
                 >
                   {idea.description}
                 </Typography>
-                <Box
-                  sx={{ display: "flex", justifyContent: "flex-end" }}
-                  fullWidth
-                >
-                  {idea.documentURL !== "" && idea.documentURL !== null ? (
-                    <Tooltip title="Documents/Images included">
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <AttachFileIcon color="secondary" fontSize="small" />
-                      </Box>
-                    </Tooltip>
-                  ) : (
-                    <></>
-                  )}
-                  <Divider orientation="vertical" flexItem></Divider>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <IconButton
-                      color="secondary"
-                      aria-label="likes"
-                      component="span"
-                      size="small"
-                      onClick={() => thumbUp(`${idea._id}`)}
-                    >
-                      <ThumbUpOffAltIcon fontSize="inherit" />
-                    </IconButton>
-                    <Typography fontSize="small">
-                      {idea.thumbsUp.length}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <IconButton
-                      color="secondary"
-                      aria-label="dislikes"
-                      component="span"
-                      size="small"
-                      onClick={() => thumbDown(`${idea._id}`)}
-                    >
-                      <ThumbDownOffAltIcon fontSize="inherit" />
-                    </IconButton>
-                    <Typography>{idea.thumbsDown.length}</Typography>
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <IconButton
-                      color="secondary"
-                      aria-label="views"
-                      component="span"
-                      size="small"
-                    >
-                      <VisibilityIcon fontSize="inherit" />
-                    </IconButton>
-                    <Typography>
-                      ({!idea.total_view ? "0" : idea.total_view})
-                    </Typography>
-                  </Box>
+              </Box>
+              <Box
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+                fullWidth
+              >
+                {idea.documentURL !== "" && idea.documentURL !== null ? (
+                  <Tooltip title="Documents/Images included">
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <AttachFileIcon color="secondary" fontSize="small" />
+                    </Box>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+                <Divider orientation="vertical" flexItem></Divider>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="likes"
+                    component="span"
+                    size="small"
+                    onClick={() => thumbUp(`${idea._id}`)}
+                  >
+                    <ThumbUpOffAltIcon fontSize="inherit" />
+                  </IconButton>
+                  <Typography fontSize="small">
+                    {idea.thumbsUp.length}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="dislikes"
+                    component="span"
+                    size="small"
+                    onClick={() => thumbDown(`${idea._id}`)}
+                  >
+                    <ThumbDownOffAltIcon fontSize="inherit" />
+                  </IconButton>
+                  <Typography>{idea.thumbsDown.length}</Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="views"
+                    component="span"
+                    size="small"
+                  >
+                    <VisibilityIcon fontSize="inherit" />
+                  </IconButton>
+                  <Typography>
+                    ({!idea.total_view ? "0" : idea.total_view})
+                  </Typography>
+                </Box>
 
-                  {/* <Box sx={{ display: "flex", alignItems: "center" }}>
+                {/* <Box sx={{ display: "flex", alignItems: "center" }}>
                     <IconButton
                       color="secondary"
                       aria-label="comments"
@@ -255,7 +247,6 @@ const Idea = () => {
                       <ChatBubbleOutlineOutlinedIcon fontSize="inherit" />
                     </IconButton>
                   </Box> */}
-                </Box>
               </Box>
             </Box>
           );
