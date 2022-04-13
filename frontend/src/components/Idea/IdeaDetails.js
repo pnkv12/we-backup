@@ -15,6 +15,7 @@ import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Tooltip } from "@mui/material";
+import LoadingIndicator from "../Loading";
 
 const COMMENT_URL = "https://be-enterprise.herokuapp.com/v1.0/comments";
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
@@ -165,18 +166,22 @@ const IdeaDetails = () => {
         </Box>
         {idea && (
           <Box sx={{ display: "flex" }}>
-            <Tooltip title="Download document as Zip">
-              <IconButton
-                color="default"
-                aria-label="document"
-                component="span"
-                onClick={async () => {
-                  await downloadZip(id);
-                }}
-              >
-                <CloudDownloadIcon />
-              </IconButton>
-            </Tooltip>
+            {idea.documentURL !== "" && idea.documentURL !== null ? (
+              <Tooltip title="Download document as Zip">
+                <IconButton
+                  color="default"
+                  aria-label="document"
+                  component="span"
+                  onClick={async () => {
+                    await downloadZip(id);
+                  }}
+                >
+                  <CloudDownloadIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <></>
+            )}
 
             {getRole === "Manager" ? (
               <Box>
@@ -215,7 +220,7 @@ const IdeaDetails = () => {
         )}
       </Box>
 
-      {isPending && <div>Loading...</div>}
+      {isPending && <LoadingIndicator />}
       {error && <div>{error}</div>}
       {idea && owner && (
         <Box

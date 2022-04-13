@@ -1,28 +1,23 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
-import FilterIdea from "../../components/Idea/FilterIdea";
 import NewIdeaBtn from "../../components/Idea/IdeaButtons";
 import axios from "axios";
 import Paging from "../../components/Paging";
 import queryString from "query-string";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 import IconButton from "@mui/material/IconButton";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import { Tooltip } from "@mui/material";
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const uid = window.sessionStorage.getItem("uid");
@@ -51,7 +46,6 @@ const Idea = () => {
   const limit = 5;
   const startIndex = (page - 1) * limit;
 
-  //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
     skip: 0,
     limit: 5,
@@ -64,7 +58,7 @@ const Idea = () => {
     limit: 5,
   });
 
-  const [commentsCounter, setCommentsCounter] = useState();
+  // const [commentsCounter, setCommentsCounter] = useState();
 
   useEffect(() => {
     if (response != null) {
@@ -116,19 +110,6 @@ const Idea = () => {
     window.location.reload(false);
   };
 
-  // const handleFiltersChange = (newFilters) => {
-  //   console.log(newFilters);
-  //   setFilters({
-  //     ...filters,
-  //     page: 1,
-  //     search: newFilters.searchTerm,
-  //   });
-  // };
-
-  // const { data: ideas, loading, error } = useFetch(
-  //   "idea?category=" + category
-  // );
-
   if (error) throw error;
   if (loading) return <LoadingIndicator />;
   if (ideas.length === 0) {
@@ -161,18 +142,7 @@ const Idea = () => {
 
       {/* Idea list */}
 
-      <Box
-        sx={{
-          margin: "2rem 5rem 2rem 5rem",
-          padding: "1rem 2rem 2rem 2rem",
-          border: 1,
-          borderRadius: "25px",
-          borderColor: "white",
-          listStyle: "none",
-          boxShadow: 4,
-          maxHeight: "100%",
-        }}
-      >
+      <Box>
         {ideas.map((idea) => {
           (async function () {
             const requestUrl = `${baseURL}/comments?ideaId=${idea._id}`;
@@ -184,121 +154,110 @@ const Idea = () => {
           })();
 
           return (
-            <List>
-              <ListItem alignItems="flex-start" key={idea._id}>
-                <ListItemText
-                  primary={
-                    <>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="h6"
-                        color="text.primary"
-                        data-testid="idea-title"
-                      >
-                        <Link
-                          to={`/ideas/${idea._id}`}
-                          underline="hover"
-                          key={idea._id}
-                        >
-                          {idea.title}
-                        </Link>
-                      </Typography>
-                    </>
-                  }
-                  secondary={
-                    <>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="subtitle1"
-                        color="text.primary"
-                        data-testid="idea-title"
-                      >
-                        {idea.description}
-                      </Typography>
-                      <Box
-                        sx={{ display: "flex", justifyContent: "flex-end" }}
-                        fullWidth
-                      >
-                        <Divider orientation="vertical" flexItem></Divider>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="likes"
-                            component="span"
-                            size="small"
-                            onClick={() => thumbUp(`${idea._id}`)}
-                          >
-                            <ThumbUpOffAltIcon fontSize="inherit" />
-                          </IconButton>
-                          <Typography>{idea.thumbsUp.length}</Typography>
-                        </Box>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="dislikes"
-                            component="span"
-                            size="small"
-                            onClick={() => thumbDown(`${idea._id}`)}
-                          >
-                            <ThumbDownOffAltIcon fontSize="inherit" />
-                          </IconButton>
-                          <Typography>{idea.thumbsDown.length}</Typography>
-                        </Box>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="views"
-                            component="span"
-                            size="small"
-                          >
-                            <VisibilityIcon fontSize="inherit" />
-                          </IconButton>
-                          <Typography>
-                            ({!idea.total_view ? "0" : idea.total_view})
-                          </Typography>
-                        </Box>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="comments"
-                            component="span"
-                            size="small"
-                          >
-                            <ChatBubbleOutlineOutlinedIcon fontSize="inherit" />
-                          </IconButton>
-                          <Typography>
-                            ({!commentsCounter ? "0" : commentsCounter})
-                          </Typography>
-                        </Box>
+            <Box>
+              <Box
+                sx={{
+                  display: "grid",
+                  margin: "2rem 8rem 2rem 8rem",
+                  padding: "2rem",
+                  border: 1,
+                  borderRadius: "25px",
+                  borderColor: "white",
+                  listStyle: "none",
+                  boxShadow: 4,
+                  maxHeight: "100%",
+                }}
+                key={idea._id}
+              >
+                <Typography
+                  sx={{ display: "inline" }}
+                  component={Link}
+                  variant="h6"
+                  color="text.primary"
+                  data-testid="idea-title"
+                  to={`/ideas/${idea._id}`}
+                  key={idea._id}
+                  underline="hover"
+                >
+                  {idea.title}
+                </Typography>
+
+                <Typography
+                  sx={{ display: "inline" }}
+                  component="span"
+                  variant="subtitle1"
+                  color="text.primary"
+                  data-testid="idea-desc"
+                >
+                  {idea.description}
+                </Typography>
+                <Box
+                  sx={{ display: "flex", justifyContent: "flex-end" }}
+                  fullWidth
+                >
+                  {idea.documentURL !== "" && idea.documentURL !== null ? (
+                    <Tooltip title="Documents/Images included">
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <AttachFileIcon color="secondary" fontSize="small" />
                       </Box>
-                      <Box sx={{ display: "flex" }} fullWidth>
-                        {idea.documentURL !== "" &&
-                        idea.documentURL !== null ? (
-                          <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Typography
-                              color="grey[400]"
-                              aria-label="document"
-                              component="span"
-                              size="small"
-                            >
-                              <AttachFileIcon fontSize="inherit" />
-                            </Typography>
-                            <Typography variant="subtitle2">
-                              Document/Image included
-                            </Typography>
-                          </Box>
-                        ) : (
-                          <></>
-                        )}
-                      </Box>
-                    </>
-                  }
-                />
-              </ListItem>
-              <Divider />
-            </List>
+                    </Tooltip>
+                  ) : (
+                    <></>
+                  )}
+                  <Divider orientation="vertical" flexItem></Divider>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                      color="secondary"
+                      aria-label="likes"
+                      component="span"
+                      size="small"
+                      onClick={() => thumbUp(`${idea._id}`)}
+                    >
+                      <ThumbUpOffAltIcon fontSize="inherit" />
+                    </IconButton>
+                    <Typography fontSize="small">
+                      {idea.thumbsUp.length}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                      color="secondary"
+                      aria-label="dislikes"
+                      component="span"
+                      size="small"
+                      onClick={() => thumbDown(`${idea._id}`)}
+                    >
+                      <ThumbDownOffAltIcon fontSize="inherit" />
+                    </IconButton>
+                    <Typography>{idea.thumbsDown.length}</Typography>
+                  </Box>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                      color="secondary"
+                      aria-label="views"
+                      component="span"
+                      size="small"
+                    >
+                      <VisibilityIcon fontSize="inherit" />
+                    </IconButton>
+                    <Typography>
+                      ({!idea.total_view ? "0" : idea.total_view})
+                    </Typography>
+                  </Box>
+
+                  {/* <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                      color="secondary"
+                      aria-label="comments"
+                      component="span"
+                      size="small"
+                    >
+                      <ChatBubbleOutlineOutlinedIcon fontSize="inherit" />
+                    </IconButton>
+                  </Box> */}
+                </Box>
+              </Box>
+            </Box>
           );
         })}
         {/* Pagination area */}

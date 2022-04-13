@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 
 const uid = window.sessionStorage.getItem("uid");
 const fullname = window.sessionStorage.getItem("fullname");
+const getRole = window.sessionStorage.getItem("roleName");
 
 const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 const Comment = ({ comment, currentUserId, commentIdeaId }) => {
@@ -116,14 +117,14 @@ const Comment = ({ comment, currentUserId, commentIdeaId }) => {
                         </IconButton>
                       )}
 
-                      {canDelete && (
+                      {canDelete || getRole === "Manager" ? (
                         <IconButton
                           size="small"
                           onClick={() => deleteComment(comment._id)}
                         >
                           <ClearIcon fontSize="inherit" />
                         </IconButton>
-                      )}
+                      ) : null}
                     </Box>
                   </Box>
                 )}

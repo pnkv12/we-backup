@@ -24,7 +24,7 @@ export const boxCreate = {
   borderRadius: "25px",
   boxShadow: 4,
   borderColor: "white",
-  m: 2,
+  m: "2rem 10rem 2rem 10rem",
   p: 3,
   display: "flex",
   justifyContent: "center",

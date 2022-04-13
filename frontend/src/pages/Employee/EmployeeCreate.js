@@ -56,21 +56,6 @@ export default function EmployeeCreate(props) {
     })();
   }, []);
 
-  // useEffect(() => {
-  //   (async function () {
-  //     const response = await axios({
-  //       url: `${baseURL}/departments`,
-  //       method: "get",
-  //     });
-  //     setDepartmentData(response.data);
-  //   })();
-  // }, []);
-
-  // const handleChange = (e) => {
-  //   setRole(e.target.value);
-  //   // setDepartment(e.target.value);
-  // };
-
   const createUser = () => {
     if (user != null) {
       axios({
@@ -91,8 +76,6 @@ export default function EmployeeCreate(props) {
   };
 
   // if (error) throw error;
-  // if (loading) return <LoadingIndicator />;
-  // if (result.length === 0) return <PageNotFound />;
 
   const handleSubmit = (e) => {
     e.preventDefault();

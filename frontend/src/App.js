@@ -18,7 +18,6 @@ import EmployeeCreate from "./pages/Employee/EmployeeCreate";
 import "./App.css";
 import { Box } from "@mui/material";
 import IdeaCreate from "./components/Idea/IdeaCreate";
-import Search from "./components/Search/SearchFunction";
 import Home from "./pages/Home";
 import CategoryCreate from "./components/CategoryCreate";
 import Comments from "./components/Comment/Comments";
@@ -324,8 +323,6 @@ function App() {
                     )
                   }
                 />
-
-                <Route path="/search" element={<Search />} />
                 <Route path="/comments" element={<Comments />} />
               </Routes>
             </AppContext.Provider>
