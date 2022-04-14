@@ -72,9 +72,9 @@ export const chartBox = {
 export const dashboardFlex = {
   boxShadow: "4",
   borderRadius: "25px",
-  maxWidth: "60%",
-  width: "60%",
-  margin: "3rem",
+  maxWidth: "100%",
+  width: "35rem",
+  margin: "2rem 0rem 2rem 0rem",
   padding: "2rem",
   bgcolor: "lightBlue",
   display: "flex",

@@ -44,15 +44,15 @@ const Dashboard = () => {
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} centered>
             <Tab label="Department" value="department" />
-            <Tab label="Category" value="category" />
+            {/* <Tab label="Category" value="category" /> */}
           </TabList>
         </Box>
         <TabPanel value="department">
           <DepartmentD />
         </TabPanel>
-        <TabPanel value="category">
+        {/* <TabPanel value="category">
           <CategoryD />
-        </TabPanel>
+        </TabPanel> */}
       </TabContext>
     </Box>
   );

@@ -22,7 +22,7 @@ const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const uid = window.sessionStorage.getItem("uid");
 const getRole = window.sessionStorage.getItem("roleName");
-console.log(getRole);
+
 let viewUpdated = false;
 const IdeaDetails = () => {
   const { id } = useParams();

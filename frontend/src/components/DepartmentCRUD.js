@@ -28,36 +28,42 @@ const DepartmentCRUD = () => {
   var date = new Date();
 
   // const [name, setDeptName] = useState("Unknown");
-  const [user, setUser] = useState([]);
-  // const [created_at, setCreateDate] = useState(date);
-  // const [updated_at, setUpdateDate] = useState();
-  // const [isPending, setIsPending] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
   const deptListUrl = `${baseURL}/departments`;
   const getDeptURL = `${baseURL}/department`;
 
-  const [DepartmentList, setDepartmentList] = useState([]);
-  //  const [Deptuser, setDeptUser] = useState({ });
+  // const [DepartmentList, setDepartmentList] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const Department = await axios(`${baseURL}/departments`);
-  //     const User = await axios(`${baseURL}/users`);
+  const [display, setDisplay] = useState("");
 
-  //     setDeptUser({ department: Department.data, users: User.data });
-  //     console.log(Department.data, User.data);
-  //   };
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    (async function () {
+      // const department = await axios.get(`${baseURL}/departments`);
+      const user = await axios.get(`${baseURL}/users`);
+      const listcoor = user.data.filter((u) => u.role_name === "Coordinator");
+      const coor = listcoor.map((item) => (
+        <Box>
+          <tr key={item._id}>
+            <td>{item.department_name}</td>
+            <td>{item.username}</td>
+          </tr>
+        </Box>
+      ));
+      setDisplay(coor);
+    })();
+  }, []);
 
-  // const display = Deptuser.map((item) => (
+  // const display = DeptUser.map((item) => (
   //   <TableRow
-  //     key={item._id}
+  //     // key={item._id}
   //     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
   //   >
-  //     <TableCell scope="row">{item.name}</TableCell>
-  //     <TableCell>
+  //     <TableCell scope="row" value="department._id">
+  //       {item.name}
+  //     </TableCell>
+  //     <TableCell scope="row" value="user._id">
   //       {item.fullname}
   //       {/* <IconButton size="small">
   //           <EditIcon fontSize="inherit" />
@@ -66,50 +72,51 @@ const DepartmentCRUD = () => {
   //   </TableRow>
   // ));
 
-  useEffect(() => {
-    (async function () {
-      const dept = await axios({
-        url: `${deptListUrl}`,
-        method: "get",
-      });
-      setDepartmentList(dept.data);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async function () {
+  //     const dept = await axios({
+  //       url: `${deptListUrl}`,
+  //       method: "get",
+  //     });
+  //     setDepartmentList(dept.data);
+  //     console.log(dept.data);
+  //   })();
+  // }, []);
 
-  //Fetch user
-  useEffect(() => {
-    (async function () {
-      const res = await axios({
-        url: `${baseURL}/users`,
-        method: "get",
-      });
-      setUser(res.data.results);
-    })();
-  }, []);
+  // //Fetch user
+  // useEffect(() => {
+  //   (async function () {
+  //     const res = await axios({
+  //       url: `${baseURL}/users`,
+  //       method: "get",
+  //     });
+  //     setUsers(res.data);
+  //     console.log(res.data);
+  //   })();
+  // }, []);
 
-  const display = DepartmentList.map((item) => (
-    <TableRow
-      key={item._id}
-      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-    >
-      <TableCell scope="row">{item.name}</TableCell>
-
-      <TableCell>
-        {/* {user.fullname} */}
-        {/* <IconButton size="small">
-          <EditIcon fontSize="inherit" />
-        </IconButton> */}
-      </TableCell>
-    </TableRow>
-  ));
-
-  // const displays = UserList.map((user) => (
+  // const display = DepartmentList.map((item) => (
   //   <TableRow
-  //     key={user._id}
+  //     key={item._id}
   //     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
   //   >
-  //     <TableCell scope="row">{user.fullname}</TableCell>
-  //     console.log(user.fullname);
+  //     <TableCell scope="row">{item.name}</TableCell>
+
+  //     <TableCell>
+  //       {user.fullname}
+  //       <IconButton size="small">
+  //         <EditIcon fontSize="inherit" />
+  //       </IconButton>
+  //     </TableCell>
+  //   </TableRow>
+  // ));
+
+  // const display = UserList.map((item) => (
+  //   <TableRow
+  //     key={item._id}
+  //     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+  //   >
+  //     <TableCell scope="row">{item.fullname}</TableCell>
   //     {/* <TableCell>
   //       Fullname
   //       <IconButton size="small">

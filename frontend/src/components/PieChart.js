@@ -7,20 +7,13 @@ import React, { useEffect, useState } from "react";
 function PieChart({ data }) {
   return (
     <Box>
-      {/* <h1>{ideas.filter((idea) => idea.department = 'Math')}</h1> */}
-
       {/* Chart area: labels+color and chart */}
       <Box
         sx={{
           width: "100%",
         }}
       >
-        <Typography
-          variant="h6"
-          gutterBottom
-          // textAlign="center"
-          fontWeight="bold"
-        >
+        <Typography variant="h6" gutterBottom fontWeight="bold">
           Number of ideas per section
         </Typography>
         <Pie data={data} />
