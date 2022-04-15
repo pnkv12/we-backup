@@ -24,6 +24,7 @@ const pages = [
   "Ideas",
   "Employees",
   "Submissions",
+  "Academic",
   "Dashboard",
   "Categories",
   "Departments",
