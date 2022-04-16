@@ -26,9 +26,9 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <h1>Welcome Staff</h1>
+        <h1>Welcome</h1>
         <img
-          src="images/ak.jpg"
+          src="images/Staff.png"
           style={{
             height: "50%",
             width: "50%",
@@ -48,9 +48,9 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <h1>Welcome Manager</h1>
+        <h1>Welcome</h1>
         <img
-          src="images/ak.jpg"
+          src="images/Manager.png"
           style={{
             height: "50%",
             width: "50%",
@@ -72,7 +72,7 @@ const Home = () => {
       >
         <h1>Welcome Coordinator</h1>
         <img
-          src="images/ak.jpg"
+          src="images/Coordinator.jpg"
           style={{
             height: "50%",
             width: "50%",
@@ -94,7 +94,7 @@ const Home = () => {
       >
         <h1>Welcome Admin!</h1>
         <img
-          src="images/ak.jpg"
+          src="images/Admin.png"
           style={{
             height: "50%",
             width: "50%",
