@@ -39,22 +39,22 @@ const AcademicYear = () => {
 
   const [isPending, setIsPending] = useState(false);
 
-  const cateListUrl = `${baseURL}/categories`;
-  const getCateURL = `${baseURL}/category`;
-  const [CategoryList, setCategory] = useState([]);
+  // const cateListUrl = `${baseURL}/categories`;
+  // const getCateURL = `${baseURL}/category`;
+  // const [CategoryList, setCategory] = useState([]);
 
   const academicYearListUrl = `${baseURL}/academicYear`;
   const [AcademicYearList, setAcademicYearList] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get(cateListUrl)
-      .then((res) => {
-        // console.log(res.data);
-        setCategory(res.data);
-      })
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(cateListUrl)
+  //     .then((res) => {
+  //       // console.log(res.data);
+  //       setCategory(res.data);
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   useEffect(() => {
     axios
@@ -79,11 +79,11 @@ const AcademicYear = () => {
 
   function remove(id) {
     axios
-      .delete(getCateURL + "/" + id)
+      .delete(academicYearListUrl + "/" + id)
       .then((res) => {
         console.log(res.data);
-        const myalldata = CategoryList.filter((item) => item._id !== id);
-        setCategory(myalldata);
+        const myalldata = AcademicYearList.filter((item) => item._id !== id);
+        setAcademicYearList(myalldata);
       })
       .catch((err) => console.error(err));
   }
