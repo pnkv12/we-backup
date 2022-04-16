@@ -44,12 +44,12 @@ const DepartmentCRUD = () => {
       const user = await axios.get(`${baseURL}/users`);
       const listcoor = user.data.filter((u) => u.role_name === "Coordinator");
       const coor = listcoor.map((item) => (
-        <Box>
-          <tr key={item._id}>
-            <td>{item.department_name}</td>
-            <td>{item.username}</td>
-          </tr>
-        </Box>
+        <TableRow key={item._id}>
+          <TableCell sx={{ fontWeight: "bold" }}>
+            {item.department_name}
+          </TableCell>
+          <TableCell>{item.username}</TableCell>
+        </TableRow>
       ));
       setDisplay(coor);
     })();
