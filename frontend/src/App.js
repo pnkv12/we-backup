@@ -18,13 +18,21 @@ import EmployeeCreate from "./pages/Employee/EmployeeCreate";
 import "./App.css";
 import { Box } from "@mui/material";
 import IdeaCreate from "./components/Idea/IdeaCreate";
-import Search from "./components/Search/SearchFunction";
 import Home from "./pages/Home";
-import Header from "./components/Header/Header";
 import CategoryCreate from "./components/CategoryCreate";
 import Comments from "./components/Comment/Comments";
 import IdeaDetails from "./components/Idea/IdeaDetails";
 import EmployeeUpdate from "./pages/Employee/EmployeeUpdate";
+import DepartmentCRUD from "./components/DepartmentCRUD";
+import StaffHeader from "./components/Header/StaffHeader";
+import AdminHeader from "./components/Header/AdminHeader";
+import QAManagerHeader from "./components/Header/QAManager";
+import QCHeader from "./components/Header/QCHeader";
+import StaffStatus from "./components/Staff/StaffStatus";
+import Submissions from "./pages/Submission/Submissions";
+import SubmissionDetails from "./components/Submission/SubmissionDetail";
+import NotificationComponent from "./pages/NotificationComponent";
+import AcademicYear from "./components/AcademicYear";
 
 const theme = createTheme({
   palette: {
@@ -64,20 +72,41 @@ const theme = createTheme({
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [roleName, setRoleName] = useState();
 
   useEffect(() => {
     setIsAuthenticated(window.sessionStorage.getItem("isAuthenticated"));
   }, []);
 
+  useEffect(() => {
+    setRoleName(window.sessionStorage.getItem("roleName"));
+  });
+
   return (
     <ThemeProvider theme={theme}>
       <Box className="App">
         <Router>
-          {isAuthenticated ? (
-            <Header belongToAuth={setIsAuthenticated} />
+          {isAuthenticated && roleName === "Staff" ? (
+            <StaffHeader belongToAuth={setIsAuthenticated} />
           ) : (
             <></>
           )}
+          {isAuthenticated && roleName === "Administrator" ? (
+            <AdminHeader belongToAuth={setIsAuthenticated} />
+          ) : (
+            <></>
+          )}
+          {isAuthenticated && roleName === "Manager" ? (
+            <QAManagerHeader belongToAuth={setIsAuthenticated} />
+          ) : (
+            <></>
+          )}
+          {isAuthenticated && roleName === "Coordinator" ? (
+            <QCHeader belongToAuth={setIsAuthenticated} />
+          ) : (
+            <></>
+          )}
+
           <main>
             <AppContext.Provider
               value={{ isAuthenticated, setIsAuthenticated }}
@@ -86,6 +115,7 @@ function App() {
                 {/* // TODO 1: when not authenticated, no NavBar */}
                 {/* // TODO 2: when authenticated, go to main page */}
                 {/* <Route path="/" element={<Login />}></Route>{" "} */}
+
                 <Route
                   path="/"
                   element={
@@ -96,6 +126,38 @@ function App() {
                     )
                   }
                 />
+
+                {/*<Route*/}
+                {/*    path="/QC"*/}
+                {/*    element={*/}
+                {/*        isAuthenticated ? (*/}
+                {/*            <QCHome/>*/}
+                {/*        ) : (*/}
+                {/*            <Login authenticate={setIsAuthenticated}/>*/}
+                {/*        )*/}
+                {/*    }*/}
+                {/*/>*/}
+
+                {/*<Route*/}
+                {/*    path="/QAManager"*/}
+                {/*    element={*/}
+                {/*        isAuthenticated ? (*/}
+                {/*            <QAManagerHome/>*/}
+                {/*        ) : (*/}
+                {/*            <Login authenticate={setIsAuthenticated}/>*/}
+                {/*        )*/}
+                {/*    }*/}
+                {/*/>*/}
+                {/*<Route*/}
+                {/*    path="/Administrator"*/}
+                {/*    element={*/}
+                {/*        isAuthenticated ? (*/}
+                {/*            <AdministratorHome/>*/}
+                {/*        ) : (*/}
+                {/*            <Login authenticate={setIsAuthenticated}/>*/}
+                {/*        )*/}
+                {/*    }*/}
+                {/*/>*/}
 
                 <Route
                   path="/ideas"
@@ -109,7 +171,39 @@ function App() {
                 />
 
                 <Route
+                  path="/submissions"
+                  element={
+                    isAuthenticated ? (
+                      <Submissions />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+
+                <Route
                   path="/ideas/:id"
+                  element={
+                    isAuthenticated ? (
+                      <IdeaDetails />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+
+                <Route
+                  path="/notifications"
+                  element={
+                    isAuthenticated ? (
+                      <NotificationComponent />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+                <Route
+                  path="/submissions/:id"
                   element={
                     isAuthenticated ? (
                       <IdeaDetails />
@@ -185,7 +279,39 @@ function App() {
                     )
                   }
                 />
-                {/* <Route path="/your-ideas" element={}></Route> */}
+
+                <Route
+                  path="/academic"
+                  element={
+                    isAuthenticated ? (
+                      <AcademicYear />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+
+                <Route
+                  path="/departments"
+                  element={
+                    isAuthenticated ? (
+                      <DepartmentCRUD />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
+
+                <Route
+                  path="/staffstatus"
+                  element={
+                    isAuthenticated ? (
+                      <StaffStatus />
+                    ) : (
+                      <Login authenticate={setIsAuthenticated} />
+                    )
+                  }
+                />
 
                 <Route
                   path="/login"
@@ -197,8 +323,6 @@ function App() {
                     )
                   }
                 />
-
-                <Route path="/search" element={<Search />} />
                 <Route path="/comments" element={<Comments />} />
               </Routes>
             </AppContext.Provider>

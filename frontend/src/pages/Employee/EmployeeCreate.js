@@ -18,7 +18,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -29,21 +29,38 @@ const TitleFrame = styled("div")({
 
 export default function EmployeeCreate(props) {
   let navigate = useNavigate();
-  // const token = window.localStorage.getItem('authToken');
   // const [result, setResult] = useState(null);
-  const [user, setUser] = useState(null);
-  // const { response, loading, error } = useAxios({
-  //     url: "users",
-  //     method: "post",
-  //     body: user,
-  //     // headers: { token: token }
-  // });
+  const [user, setUser] = useState({});
+
+  // router.get("/roles", roleController.getAllRole); //? Get all roles
+  // const [role, setRole] = useState();
+  const [roleData, setRoleData] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/roles`,
+        method: "get",
+      });
+      console.log(response.data);
+      setRoleData(response.data);
+    })();
+
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/departments`,
+        method: "get",
+      });
+      setDepartmentData(response.data);
+    })();
+  }, []);
 
   const createUser = () => {
     if (user != null) {
       axios({
         method: "post",
-        url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/register",
+        url: `${baseURL}/register`,
         data: user,
       }).then((response) => {
         if (response.status === 201 || 204 || 200) {
@@ -59,8 +76,6 @@ export default function EmployeeCreate(props) {
   };
 
   // if (error) throw error;
-  // if (loading) return <LoadingIndicator />;
-  // if (result.length === 0) return <PageNotFound />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -117,7 +132,7 @@ export default function EmployeeCreate(props) {
           <br />
           <TextField
             id="outlined-basic"
-            type="text"
+            type="password"
             label="Password"
             variant="outlined"
             name="password"
@@ -129,7 +144,7 @@ export default function EmployeeCreate(props) {
           <br />
           <TextField
             id="outlined-basic"
-            type="text"
+            type="password"
             label="confirmPassword"
             variant="outlined"
             name="confirmPassword"
@@ -143,19 +158,20 @@ export default function EmployeeCreate(props) {
           <br />
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Role</InputLabel>
+
             <Select
+              // value={role}
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               label="Role"
               name="role_id"
               onChange={(e) => setUser({ ...user, roleId: e.target.value })}
             >
-              <MenuItem value={"6248fd50b7d420daa06ee42b"}>Admin</MenuItem>
-              <MenuItem value={"62482a63ad01d9a46b24608b"}>QAM</MenuItem>
-              <MenuItem value={"62482516ad01d9a46b246089"}>
-                Coordinator
-              </MenuItem>
-              <MenuItem value={"6248fd5cb7d420daa06ee42d"}>Staff</MenuItem>
+              {roleData.map((role) => (
+                <MenuItem key={role._id} value={role._id}>
+                  {role.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <br />
@@ -168,10 +184,11 @@ export default function EmployeeCreate(props) {
               name="department_id"
               onChange={(e) => setUser({ ...user, departId: e.target.value })}
             >
-              <MenuItem value={"6249c9dcabe8dbf2e9785f4c"}>IT Lab</MenuItem>
-              <MenuItem value={"6249cd25abe8dbf2e9785f8b"}>
-                Business Room
-              </MenuItem>
+              {departmentData.map((department) => (
+                <MenuItem key={department._id} value={department._id}>
+                  {department.name}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
           <br />
@@ -196,9 +213,6 @@ export default function EmployeeCreate(props) {
               <ReplayRoundedIcon />
             </Button>
           </Box>
-          {/* <p>
-                        {result !== null ? result : 'Invalid'}
-                    </p> */}
         </Box>
       </form>
     </Box>

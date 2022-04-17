@@ -2,13 +2,12 @@ import React from "react";
 import styled from "@emotion/styled";
 import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import { Box, Divider } from "@mui/material";
+import { Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { lightBlue } from "@mui/material/colors";
-import SendIcon from "@mui/icons-material/Send";
-import { Link as RouterLink } from "react-router-dom";
 import axios from "axios";
-import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -21,7 +20,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
-  fontSize: 30,
+  fontSize: 25,
   fontWeight: "bold",
   marginBottom: "1rem",
 });
@@ -30,35 +29,53 @@ const CategoryCreate = () => {
   var date = new Date();
 
   const [name, setCategoryName] = useState("Unknown category");
+  const [ideas, setIdeas] = useState();
   const [created_at, setCreateDate] = useState(date);
   const [updated_at, setUpdateDate] = useState();
   const [isPending, setIsPending] = useState(false);
 
-  const cateListUrl = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/categories";
-  const getCateURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/category";
+  const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
+  const cateListUrl = `${baseURL}/categories`;
+  const getCateURL = `${baseURL}/category`;
+
   const [CategoryList, setCategory] = useState([]);
 
-  //H thêm
   useEffect(() => {
-    axios
-      .get(cateListUrl)
-      .then((res) => {
-        // console.log(res.data);
-        setCategory(res.data);
-      })
-      .catch((err) => console.error(err));
-  });
+    (async function () {
+      const cate = await axios({
+        url: `${cateListUrl}`,
+        method: "get",
+      });
+      setCategory(cate.data);
+    })();
+  }, []);
 
+  useEffect(() => {
+    (async function () {
+      const ideas = await axios({
+        url: `${baseURL}/ideas`,
+        method: "get",
+      });
+      setIdeas(ideas.data.results);
+    })();
+  }, []);
+  
+ 
   const display = CategoryList.map((item) => (
-    <tr key={item._id}>
-      <td>{item.name}</td>
-      <td>{item.used}</td>
-      <td>
-        <Button variant="text" color="error" onClick={() => remove(item._id)}>
-          <HighlightOffIcon />
-        </Button>
-      </td>
-    </tr>
+    <Box>
+      <tr key={item._id}>
+        <td>
+          <IconButton
+            // variant="text"
+            color="error"
+            onClick={() => remove(item._id)}
+          >
+            <HighlightOffIcon />
+          </IconButton>
+        </td>
+        <td>{item.name}</td>
+      </tr>
+    </Box>
   ));
 
   function remove(id) {
@@ -97,30 +114,20 @@ const CategoryCreate = () => {
     } catch (error) {
       console.log(`ERROR: ${error}`);
     }
+    window.location.reload(false);
   };
+  
 
   return (
     <Box>
       <Box
         sx={{
-          border: 1,
-          borderColor: "white",
-          boxShadow: 4,
-          borderRadius: "25px",
           margin: "2rem 3rem",
           padding: "2rem",
-          maxWidth: "100%",
         }}
       >
-        <TitleFrame>Create Category</TitleFrame>
-        <Divider
-          sx={{
-            marginBottom: "1.5rem",
-          }}
-        />
-
         <form onSubmit={handleSubmit}>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-start" }}>
             <TextField
               id="outlined-basic"
               type="text"
@@ -130,30 +137,13 @@ const CategoryCreate = () => {
               onChange={(e) => setCategoryName(e.target.value)}
               size="small"
               sx={{
-                width: "50%",
+                width: "20rem",
                 alignSelf: "center",
               }}
             />
-            <Box>
-              <Button
-                type="submit"
-                variant="contained"
-                startIcon={<SendIcon />}
-                sx={{ marginLeft: "1rem", marginRight: "1rem" }}
-              >
-                Create
-              </Button>
-
-              <Button
-                component={RouterLink}
-                to="/"
-                variant="contained"
-                color="secondary"
-                sx={{ margin: "1rem 0rem" }}
-              >
-                Cancel
-              </Button>
-            </Box>
+            <Button type="submit" variant="text" sx={{ marginLeft: "1rem" }}>
+              <AddIcon />
+            </Button>
           </Box>
         </form>
       </Box>
@@ -165,10 +155,9 @@ const CategoryCreate = () => {
           borderRadius: "25px",
           margin: "2rem 3rem",
           padding: "2rem",
-          maxWidth: "100%",
         }}
       >
-        <TitleFrame>Category/Tags List</TitleFrame>
+        <TitleFrame>Category List</TitleFrame>
         <TableContainer sx={{ width: "60%", marginLeft: "3rem" }}>
           <Table aria-label="simple table">
             <TableBody>{display}</TableBody>

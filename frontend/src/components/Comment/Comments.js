@@ -5,122 +5,95 @@ import {
   updateComment as updateCommentApi,
 } from "./api";
 import Comment from "./Comment";
-import CommentForm from "./CommentForm";
+import CreateComment from "./CreateComment";
 import data from "../../data/comments.json";
 import useFetch from "./useFetch";
 import PageNotFound from "../../components/errorHandling/PageNotFound";
 import LoadingIndicator from "../../components/Loading";
 import useAxios from "../../services/useAxios";
-
+import { Box, Divider } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import "./styles.css";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
-const token = window.localStorage.getItem("authToken");
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
+const uid = window.sessionStorage.getItem("uid");
 
 const Comments = ({ commentsUrl, ideaId, currentUserId }) => {
-  // const {data: comments, isPending, error} = useFetch('http://localhost:8081/comment');
   const [comments, setComments] = useState([]);
-  const [activeComment, setActiveComment] = useState(null);
-  const [rootComments, setRootComments] = useState([]);
+
 
   useEffect(() => {
     (async function () {
       try {
-        const response = await axios.get(
-          `${baseURL}/comments?ideaId=${ideaId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${baseURL}/comments`);
 
-        console.log("comments of this idea:", response.data);
+        // console.log("comments of this idea:", response.data);
         if (response != null) {
-          setRootComments(response.data);
+          const commentList = response.data.map((comment, id) => {
+            return {
+              id: id + 1,
+              commentId: comment._id,
+              content: comment.content,
+              commentIdeaId: comment.idea_id,
+            };
+          });
+          // console.log(response.data);
+          setComments(response.data);
         }
       } catch (e) {
         throw e;
-      } finally {
-        return <LoadingIndicator />;
       }
     })();
-  }, [ideaId]);
+  }, []);
 
-  // if (response !== null) {
-  //     setComments(response.data)
-  // }
-  // if (loading) return <LoadingIndicator />;
-  // if (error) throw error;
-  // if (Comments.length === 0) return <PageNotFound />;
+  // const updateComment = (params) => {
+  //   axios
+  //     .patch(`https://be-enterprise.herokuapp.com/v1.0/comment/${params.commentId}`, data)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       navigate("/idea/" + ideaId);
+  //       window.location.reload(false);
+  //     })
+  //     .catch((err) => console.error(err));
+  //     // setComments();
+  //     setActiveCommentUpdate(null);
+  // };
 
-  // useEffect(() => {
-  //     getCommentsApi().then((data) => {
-  //         setComments(data);
-  //     });
-  //     // Trong Edited
-  // }, [ideaId]);
+  // const deleteComment = async (commentId) => {
+  //   fetch("https://be-enterprise.herokuapp.com/v1.0/comment/" + commentId, {
+  //     method: "DELETE",
+  //   });
+  // };
 
-  // useEffect(() => {
-  //     setRootComments(Comments.filter(
-  //         (Comment) => Comment.parentId === null && Comment.ideaId === ideaId));
-  //     // Trong Edited
-  // }, [Comments, ideaId])
-
-
-  // const createComment = (content, parentId) => {
-  //     console.log("Add Comment", content, parentId);
-  // useCreateComment(text, parentId, ideaId).then(comment => {
-  //     setRootComments([comment, ...Comments])
-  // });
-  // }
-  // const deleteComment = (commentId) => {
-  //     if (window.confirm('Ae you sure')){
-  //         deleteCommentApi(commentId).then(() => {
-  //             const updatedComments = Comments.filter((Comment) => Comment.id !== commentId)
-  //             setComments(updatedComments);
-  //         });
-  //     }
-  // }
-  const updateComment = (text, commentId) => {
-    updateCommentApi(text).then(() => {
-      const updatedComments = comments.map((Comment) => {
-        if (Comment._id === commentId) {
-          return { ...Comment, body: text };
-        }
-        return Comment;
-      });
-      setComments(updatedComments);
-      setActiveComment(null);
-    });
-  };
+  // const handleDelete = () => {
+  //   fetch("https://be-enterprise.herokuapp.com/v1.0/idea/" + id, {
+  //     method: "DELETE",
+  //   }).then(() => {
+  //     navigate("/ideas");
+  //   });
+  // };
 
   return (
-    <div className="comments">
-      <h3 className="comments-title">Comment</h3>
-      <div className="comment-form-title">Write comment</div>
-      <CommentForm
-        submitLabel="Write"
-        ideaId={ideaId}
-        handleSubmit={(text, parentId) => {
-          setRootComments([text, ...comments]);
-        }}
-      />
-      <div className="comments-container">
-        {rootComments.map((rootComment) => (
+    <Box>
+      <CreateComment ideaId={ideaId} />
+      <Box>
+        {/* <div>list comment here</div> */}
+        {comments.map((comment) => (
           <Comment
-            key={rootComment._id}
-            comment={rootComment}
-            updateComment={updateComment}
-            activeComment={activeComment}
-            setActiveComment={setActiveComment}
-            currentUserId={currentUserId}
+            key={comment._id}
+            comment={comment}
+            currentUserId={uid}
+            commentIdeaId={ideaId}
           />
         ))}
-      </div>
+      </Box>
       <br />
-    </div>
+    </Box>
   );
 };
 

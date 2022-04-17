@@ -1,12 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
-// from .env file
-// const baseUrl = process.env.REACT_APP_API_BASE_URL;
-
-// axios.defaults.baseURL = baseUrl;
-
-axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+axios.defaults.baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 // useFetch with headers, url, method and body.
 // url is the part after the baseURL

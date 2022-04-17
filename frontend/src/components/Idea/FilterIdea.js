@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,6 +8,9 @@ import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { Box } from "@mui/material";
+import axios from "axios";
+
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,6 +33,16 @@ const filterItem = [
 
 export default function FilterIdea() {
   const [statList, setStatList] = React.useState([]);
+
+  // useEffect(() => {
+  //   (async function () {
+  //     const statData = await axios({
+  //       url: `${baseURL}/ideas`,
+  //       method: "get",
+  //     });
+  //     setStatList(statData.data);
+  //   })();
+  // }, []);
 
   const handleChange = (event) => {
     const {

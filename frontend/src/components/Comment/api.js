@@ -6,7 +6,7 @@
 //   return data.comment;
 // };
 // const token = window.localStorage.getItem('authToken');
-// const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+// const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 // export const useCreateComment = async (text, parentId = null, ideaId,) => {
 //   const [newComment, setNewComment] = useState({})
@@ -63,7 +63,7 @@
 // };
 
 //   // export const deleteComment = async () => {
-//   //   fetch('https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comment/' + comment.id, {
+//   //   fetch('https://be-enterprise.herokuapp.com/v1.0/comment/' + comment.id, {
 //   //     method: 'DELETE'
 //   //   }).then(() => {
 //   //     navigate.push('/');

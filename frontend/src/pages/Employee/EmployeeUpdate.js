@@ -10,9 +10,6 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-// import useAxios from "../../services/useAxios";
-// import LoadingIndicator from "../../components/Loading";
-// import PageNotFound from "../../components/errorHandling/PageNotFound";
 import axios from "axios";
 import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
 import { lightBlue } from "@mui/material/colors";
@@ -21,11 +18,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import NativeSelect from "@mui/material/NativeSelect";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 
-// const token = window.localStorage.getItem("authToken");
-axios.defaults.baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
 
 const TitleFrame = styled("div")({
   color: lightBlue[600],
@@ -36,20 +31,41 @@ const TitleFrame = styled("div")({
 
 export default function EmployeeUpdate(props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  let { userId } = useParams();
 
+  let { userId } = useParams();
+  // const password = password.current.value("password");
   let fullname = searchParams.get("fullname");
   let email = searchParams.get("email");
-  // let username = searchParams.get("username");
-  let password = searchParams.get("password");
-  let role = searchParams.get("role_id");
-  let dept = searchParams.get("department_id");
-
+  // let password = searchParams.get("password");
+  let role = searchParams.get("role");
+  let dept = searchParams.get("dept");
   let navigate = useNavigate();
+  const [roleData, setRoleData] = useState([]);
+  const [departmentData, setDepartmentData] = useState([]);
+
+  useEffect(() => {
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/roles`,
+        method: "get",
+      });
+      // console.log(response.data);
+      setRoleData(response.data);
+    })();
+
+    (async function () {
+      const response = await axios({
+        url: `${baseURL}/departments`,
+        method: "get",
+      });
+      setDepartmentData(response.data);
+    })();
+  }, []);
+
   const [user, setUser] = useState({
     fullname,
     email,
-    password,
+    // password,
     role,
     dept,
   });
@@ -58,26 +74,22 @@ export default function EmployeeUpdate(props) {
     setUser({
       fullname,
       email,
-      password,
+      // password,
       role,
       dept,
     });
-    console.log(user);
-  }, [fullname, email, password, role, dept]);
+  }, [fullname, email, role, dept]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (user != null) {
       axios({
         method: "patch",
-        url: `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/user/${userId}`,
-        // headers: {
-        //   "Content-Type": "application/json",
-        //   Authorization: `Bearer ${token}`,
-        // },
-        data: JSON.stringify(user),
+        url: `${baseURL}/user/${userId}`,
+        data: user,
       }).then((response) => {
         navigate("/employees");
+        window.location.reload();
       });
     }
   };
@@ -117,61 +129,54 @@ export default function EmployeeUpdate(props) {
           <br />
           {/* <TextField
             id="outlined-basic"
-            type="text"
-            value={user?.username}
-            variant="outlined"
-            name="username"
-            onChange={(e) => setUser({ ...user, username: e.target.value })}
-            size="small"
-          />
-          <br /> */}
-          <TextField
-            id="outlined-basic"
             type="password"
             value={user?.password}
             variant="outlined"
             name="password"
+            placeholder="Password"
             onChange={(e) => setUser({ ...user, password: e.target.value })}
             size="small"
           />
-          <br />
+          <br /> */}
           <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-              Role
-            </InputLabel>
-            <NativeSelect
-              defaultValue={user?.role_id}
-              inputProps={{
-                name: "role_id",
-                id: "uncontrolled-native",
-              }}
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+
+            <Select
+              defaultValue={user?.role}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Role"
+              name="role_id"
               onChange={(e) => setUser({ ...user, roleId: e.target.value })}
             >
-              <option value={"6248fd50b7d420daa06ee42b"}>Admin</option>
-              <option value={"62482a63ad01d9a46b24608b"}>QAM</option>
-              <option value={"62482516ad01d9a46b246089"}>Coordinator</option>
-              <option value={"6248fd5cb7d420daa06ee42d"}>Staff</option>
-            </NativeSelect>
+              {roleData.map((role) => (
+                <MenuItem key={role._id} value={role._id}>
+                  {role.name}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <br />
           <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+            <InputLabel variant="standard" id="demo-simple-select-label">
               Department
             </InputLabel>
-            <NativeSelect
-              defaultValue={user?.department_id}
-              inputProps={{
-                name: "department_id",
-                id: "uncontrolled-native",
-              }}
+            <Select
+              defaultValue={user?.dept}
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Department"
+              name="department_id"
               onChange={(e) => setUser({ ...user, departId: e.target.value })}
             >
-              <option value={"6249c9dcabe8dbf2e9785f4c"}>IT Lab</option>
-              <option value={"6249cd25abe8dbf2e9785f8b"}>Business Room</option>
-            </NativeSelect>
+              {departmentData.map((department) => (
+                <MenuItem key={department._id} value={department._id}>
+                  {department.name}
+                </MenuItem>
+              ))}
+            </Select>
           </FormControl>
           <br />
-
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               type="submit"

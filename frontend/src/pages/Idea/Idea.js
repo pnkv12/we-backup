@@ -1,32 +1,27 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import PageNotFound from "../../components/errorHandling/PageNotFound";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { hoverStyle } from "../../styles/boxStyles";
 import LoadingIndicator from "../../components/Loading";
-import SearchFunction from "../../components/Search/SearchFunction";
-// import useFetch from "../../services/useFetch";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
 import useAxios from "../../services/useAxios";
 import { Box, Divider } from "@mui/material";
-import FilterIdea from "../../components/Idea/FilterIdea";
 import NewIdeaBtn from "../../components/Idea/IdeaButtons";
 import axios from "axios";
 import Paging from "../../components/Paging";
 import queryString from "query-string";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import { Typography } from "@material-ui/core";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import IconButton from "@mui/material/IconButton";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import Grid from "@mui/material/Grid";
 import { experimentalStyled as styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
+import { Tooltip } from "@mui/material";
 
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
+const uid = window.sessionStorage.getItem("uid");
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -40,7 +35,7 @@ const Idea = () => {
   const { categories } = useParams();
 
   const { response, loading, error } = useAxios({
-    url: "https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?limit=5&page=1",
+    url: `${baseURL}/ideas?skip=0&limit=5`,
     method: "get",
   });
 
@@ -52,30 +47,26 @@ const Idea = () => {
   const limit = 5;
   const startIndex = (page - 1) * limit;
 
-  //const selectedIdeas = ideas.slice(startIndex, startIndex+limit);
   const [pagination, setPagination] = useState({
+    skip: 0,
     limit: 5,
-    page: 1,
   });
 
   const [totalPages, setTotalPages] = useState();
 
   const [filters, setFilters] = useState({
+    skip: 0,
     limit: 5,
-    page: 0,
-    search: "",
   });
 
-  const [commentsCounter, setCommentsCounter] = useState();
+  // const [commentsCounter, setCommentsCounter] = useState();
 
   useEffect(() => {
     if (response != null) {
-      setIdeas(response.results);
-
-      response.results.map(async (item) => {
-        const user = await axios.get(
-          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/users/${item.owner}`
-        );
+      setIdeas(response);
+      // console.log(response);
+      response.map(async (item) => {
+        const user = await axios.get(`${baseURL}/users/${item.owner}`);
         setOwnerName(user.data.name);
       });
     }
@@ -85,18 +76,14 @@ const Idea = () => {
     const fetchIdeaList = async () => {
       try {
         const paramsString = queryString.stringify(filters);
-        const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas?${paramsString}`;
+        const requestUrl = `${baseURL}/ideas?${paramsString}`;
         const response = await axios.get(requestUrl);
-        const re = await axios.get(
-          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/ideas`
-        );
-        const comments = await axios.get(
-          `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments`
-        );
+        const re = await axios.get(`${baseURL}/ideas`);
+        const comments = await axios.get(`${baseURL}/comments`);
 
-        setTotalPages(Math.ceil(response.data.results.length / limit));
-        setIdeas(response.data.results);
-        setPagination(response.data.results);
+        setTotalPages(Math.ceil(re.data.length / limit));
+        setIdeas(response.data);
+        setPagination(response.data);
       } catch (error) {
         console.log("failed to fetch post list", error.message);
       }
@@ -108,27 +95,36 @@ const Idea = () => {
     setPage(num);
     setFilters({
       ...filters,
-      page: 1,
+      skip: (num - 1) * limit,
     });
   };
+  let navigate = useNavigate();
 
-  const handleFiltersChange = (newFilters) => {
-    console.log(newFilters);
-    setFilters({
-      ...filters,
-      page: 1,
-      search: newFilters.searchTerm,
-    });
+  const toDetail = (ideaId) => {
+    navigate(`/ideas/${ideaId}`);
   };
 
-  // const { data: ideas, loading, error } = useFetch(
-  //   "idea?category=" + category
-  // );
+  const thumbUp = async (ideaId) => {
+    console.log(`${uid} likes ${ideaId}`);
+    await axios.post(`${baseURL}/thumbUp/${ideaId}/${uid}`);
+    window.location.reload(false);
+  };
+
+  const thumbDown = async (ideaId) => {
+    console.log(`${uid} dislikes ${ideaId}`);
+    await axios.post(`${baseURL}/thumbDown/${ideaId}/${uid}`);
+    window.location.reload(false);
+  };
 
   if (error) throw error;
   if (loading) return <LoadingIndicator />;
   if (ideas.length === 0) {
-    return <h1>No idea created yet</h1>;
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", m: 2, p: 2 }}>
+        <NewIdeaBtn />
+        <h1>Be the first to post new idea</h1>
+      </Box>
+    );
   }
 
   return (
@@ -138,138 +134,123 @@ const Idea = () => {
         maxWidth: "100%",
       }}
     >
-      {/* Filter area */}
       <Box
         sx={{
           display: "flex",
           p: 1,
           m: 2,
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
         }}
       >
-        <Box
-          sx={{
-            display: "flex",
-            alignSelf: "center",
-          }}
-        >
-          <FilterIdea />
-        </Box>
-        {/* {category && <h2>Found {filteredProducts.length} items</h2>} */}
-
-        {/* Search + Create button area */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "right",
-          }}
-        >
-          <SearchFunction onSubmit={handleFiltersChange} />
-
-          <NewIdeaBtn />
-        </Box>
+        <NewIdeaBtn />
       </Box>
       <Divider />
 
       {/* Idea list */}
 
-      <Box
-        sx={{
-          margin: "2rem 0rem 2rem 0rem",
-          padding: "1rem 2rem 2rem 2rem",
-          border: 1,
-          borderRadius: "25px",
-          borderColor: "white",
-          listStyle: "none",
-          boxShadow: 4,
-          maxHeight: "100%",
-        }}
-      >
+      <Box>
         {ideas.map((idea) => {
           (async function () {
-            const requestUrl = `https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${idea._id}`;
+            const requestUrl = `${baseURL}/comments?ideaId=${idea._id}`;
             const response = await axios.get(requestUrl);
             // setCommentsCounter(response.data.length);
-            // const comments = await axios.get(`https://33c6-171-232-148-95.ap.ngrok.io/v1.0/comments?ideaId=${ideaId}`);
+            // const comments = await axios.get(`https://be-enterprise.herokuapp.com/v1.0/comments?ideaId=${ideaId}`);
 
             //resonse.data.ideaId
           })();
 
           return (
-            <List>
-              <ListItem alignItems="flex-start" key={idea._id}>
-                <ListItemText
-                  primary={
-                    <>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="h6"
-                        color="text.primary"
-                        data-testid="idea-title"
-                      >
-                        <Link
-                          to={`/ideas/${idea._id}`}
-                          underline="hover"
-                          key={idea._id}
-                        >
-                          {idea.title}
-                        </Link>
-                      </Typography>
-                    </>
-                  }
-                  secondary={
-                    <>
-                      <Typography
-                        sx={{ display: "inline" }}
-                        component="span"
-                        variant="body2"
-                        color="text.primary"
-                      >
-                        Views: {idea.views}
-                        <br />
-                        Content: {idea.content}
-                      </Typography>
-                      <Box sx={{ display: "flex" }} fullWidth>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="likes"
-                            component="span"
-                          >
-                            <ThumbUpOffAltIcon />
-                          </IconButton>
-                          <Typography>(1)</Typography>
-                        </Box>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="dislikes"
-                            component="span"
-                          >
-                            <ThumbDownOffAltIcon />
-                          </IconButton>
-                          <Typography>(3)</Typography>
-                        </Box>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <IconButton
-                            color="secondary"
-                            aria-label="comments"
-                            component="span"
-                          >
-                            <ChatBubbleOutlineOutlinedIcon />
-                          </IconButton>
-                          <Typography>{commentsCounter}</Typography>
-                        </Box>
-                      </Box>
-                    </>
-                  }
-                />
-              </ListItem>
-            </List>
+            <Box sx={hoverStyle}>
+              <Box
+                onClick={() => toDetail(`${idea._id}`)}
+                key={idea._id}
+                sx={{ cursor: "pointer" }}
+              >
+                <Typography
+                  variant="h6"
+                  color="primary"
+                  data-testid="idea-title"
+                >
+                  {idea.title}
+                </Typography>
+
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="text.primary"
+                  data-testid="idea-desc"
+                >
+                  {idea.description}
+                </Typography>
+              </Box>
+              <Box
+                sx={{ display: "flex", justifyContent: "flex-end" }}
+                fullWidth
+              >
+                {idea.documentURL !== "" && idea.documentURL !== null ? (
+                  <Tooltip title="Documents/Images included">
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <AttachFileIcon color="secondary" fontSize="small" />
+                    </Box>
+                  </Tooltip>
+                ) : (
+                  <></>
+                )}
+                <Divider orientation="vertical" flexItem></Divider>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="likes"
+                    component="span"
+                    size="small"
+                    onClick={() => thumbUp(`${idea._id}`)}
+                  >
+                    <ThumbUpOffAltIcon fontSize="inherit" />
+                  </IconButton>
+                  <Typography fontSize="small">
+                    {idea.thumbsUp.length}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="dislikes"
+                    component="span"
+                    size="small"
+                    onClick={() => thumbDown(`${idea._id}`)}
+                  >
+                    <ThumbDownOffAltIcon fontSize="inherit" />
+                  </IconButton>
+                  <Typography>{idea.thumbsDown.length}</Typography>
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton
+                    color="secondary"
+                    aria-label="views"
+                    component="span"
+                    size="small"
+                  >
+                    <VisibilityIcon fontSize="inherit" />
+                  </IconButton>
+                  <Typography>
+                    ({!idea.total_view ? "0" : idea.total_view})
+                  </Typography>
+                </Box>
+
+                {/* <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <IconButton
+                      color="secondary"
+                      aria-label="comments"
+                      component="span"
+                      size="small"
+                    >
+                      <ChatBubbleOutlineOutlinedIcon fontSize="inherit" />
+                    </IconButton>
+                  </Box> */}
+              </Box>
+            </Box>
           );
         })}
-
         {/* Pagination area */}
         <Box
           sx={{

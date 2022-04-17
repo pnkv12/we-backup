@@ -9,13 +9,16 @@ import LoadingIndicator from "../../components/Loading";
 import Cookies from "universal-cookie";
 import { TrainOutlined } from "@material-ui/icons";
 
-const baseURL = "https://33c6-171-232-148-95.ap.ngrok.io/v1.0";
+const baseURL = "https://be-enterprise.herokuapp.com/v1.0";
+
+// const localBaseURL = "http://localhost:8000/v1.0";
 
 function Login(props) {
-  // const cookies = new Cookies();
   const [user, setUser] = useState({ username: "" });
   const [error, setError] = useState("");
   const { setIsAuthenticated } = useAppContext();
+
+  // const navigate = useNavigate();
 
   const logIn = async (details) => {
     try {
@@ -30,28 +33,30 @@ function Login(props) {
           // headers: { "Access-Control-Allow-Origin": "*" },
         }
       );
-      console.log(response.headers);
-
-      // let cookie = response.headers["set-cookie"];
-      // console.log(cookie);
 
       if (response.status === 200) {
         setIsAuthenticated(true);
-        setUser({
+        await setUser({
           username: details.username,
           password: details.password,
         });
+        window.sessionStorage.setItem("uid", response.data.uid);
         window.sessionStorage.setItem("username", details.username);
+        window.sessionStorage.setItem("email", response.data.email);
         window.sessionStorage.setItem("fullname", response.data.fullname);
-        window.sessionStorage.setItem("password", details.password);
         window.sessionStorage.setItem("isAuthenticated", true);
-        // window.sessionStorage.setItem("logged", details.logged);
-        // window.sessionStorage.setItem("userId", details.userId);
-        // window.sessionStorage.setItem("role", details.roleId);
+        window.sessionStorage.setItem("role", response.data.role);
+        window.sessionStorage.setItem("roleName", response.data.roleName);
+        window.sessionStorage.setItem(
+          "departmentName",
+          response.data.departmentName
+        );
+        window.sessionStorage.setItem("department", response.data.department);
       }
+      window.location.reload(true);
     } catch (error) {
       console.error(error);
-      setError("Username or Password do not match!");
+      setError("Wrong username or password");
     }
   };
 
