@@ -92,7 +92,7 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        <h1>Welcome Admin!</h1>
+        <h1>Welcome</h1>
         <img
           src="images/Admin.png"
           style={{
