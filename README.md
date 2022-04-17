@@ -33,7 +33,7 @@ Staff: staff || staff2 - 123456
 
 - Backend: https://github.com/TranHaHoangKhanh/Enterprise_Server
 - Frontend: https://github.com/pnkv12/we-backup
-  1. Open we-backup
+  1. Switch to branch develop
   2. In terminal: cd frontend
   3. npm i (if packages not yet installed. If already -> step 5)
   4. If failed to install react-notifications-menu: npm i react-notifications-menu --force
